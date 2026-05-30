@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { createContext, useContext, useMemo, useState } from "react";
 import {
   Archive,
   ChevronDown,
@@ -37,6 +37,33 @@ const skin = {
   shadowSoft: "0 12px 28px rgba(37,106,196,.10)",
 };
 
+const defaultSignature = {
+  text: "Collectium",
+  fontFamily: "Georgia, serif",
+  fontSize: 8,
+  fontWeight: 500,
+  italic: true,
+  color: "rgba(143,185,221,.72)",
+  beforeLine: 120,
+  afterLine: 0,
+  lineHeight: 1,
+  lineGap: 8,
+  opacity: 1,
+  letterSpacing: 0,
+  position: "bottomRight",
+  offsetX: 0,
+  offsetY: 0,
+  shadow: false,
+  shadowX: 0,
+  shadowY: 1,
+  shadowBlur: 2,
+  shadowColor: "rgba(6,19,35,.22)",
+  animation: "none",
+  duration: 2600,
+};
+
+const SignatureContext = createContext(defaultSignature);
+
 const filters = [
   { key: "source", label: "Kilde", note: "kildegrunnlag", values: [["Norske sedler", "1 636"], ["Norsk mynt", "412"], ["Reklameobjekter", "86"], ["Alle kilder", "2 134"]] },
   { key: "object_group", label: "Objekttype", note: "gruppe", values: [["Seddel", "1 636"], ["Mynt", "412"], ["Skilt", "86"], ["Alle typer", "2 134"]] },
@@ -69,12 +96,174 @@ const viewOptions = [
   { id: "list", label: "Liste", icon: List },
 ];
 
+function signatureAnchor(position) {
+  if (position === "bottomLeft") return { left: 18, bottom: 12 };
+  if (position === "topRight") return { right: 18, top: 12 };
+  if (position === "topLeft") return { left: 18, top: 12 };
+  if (position === "centerRight") return { right: 18, top: "50%" };
+  return { right: 18, bottom: 12 };
+}
+
+function signatureAnimation(name, duration) {
+  if (name === "float") return `collectiumSignatureFloat ${duration}ms ease-in-out infinite`;
+  if (name === "pulse") return `collectiumSignaturePulse ${duration}ms ease-in-out infinite`;
+  if (name === "slideOut") return `collectiumSignatureSlideOut ${duration}ms ease-in-out infinite`;
+  return "none";
+}
+
+function Signature() {
+  const settings = useContext(SignatureContext);
+  const textShadow = settings.shadow
+    ? `${settings.shadowX}px ${settings.shadowY}px ${settings.shadowBlur}px ${settings.shadowColor}`
+    : "none";
+
+  return (
+    <span
+      aria-hidden="true"
+      style={{
+        position: "absolute",
+        ...signatureAnchor(settings.position),
+        transform: `translate(${settings.offsetX}px, ${settings.offsetY}px)`,
+        display: "inline-flex",
+        alignItems: "center",
+        gap: settings.lineGap,
+        pointerEvents: "none",
+        opacity: settings.opacity,
+        color: settings.color,
+        fontFamily: settings.fontFamily,
+        fontSize: settings.fontSize,
+        fontWeight: settings.fontWeight,
+        fontStyle: settings.italic ? "italic" : "normal",
+        letterSpacing: settings.letterSpacing,
+        textShadow,
+        whiteSpace: "nowrap",
+        zIndex: 2,
+        animation: signatureAnimation(settings.animation, settings.duration),
+      }}
+    >
+      {settings.beforeLine > 0 && <span style={{ width: settings.beforeLine, height: settings.lineHeight, background: settings.color, opacity: 0.82 }} />}
+      <span>{settings.text}</span>
+      {settings.afterLine > 0 && <span style={{ width: settings.afterLine, height: settings.lineHeight, background: settings.color, opacity: 0.82 }} />}
+    </span>
+  );
+}
+
 function Panel({ children, style = {} }) {
   return (
-    <section style={{ position: "relative", borderRadius: 22, border: `1px solid ${skin.border}`, background: skin.panel, boxShadow: skin.shadow, ...style }}>
+    <section style={{ position: "relative", overflow: "visible", borderRadius: 22, border: `1px solid ${skin.border}`, background: skin.panel, boxShadow: skin.shadow, ...style }}>
       {children}
-      <span style={{ position: "absolute", right: 18, bottom: 12, fontSize: 8, fontStyle: "italic", color: "rgba(143,185,221,.72)" }}>____________ Collectium</span>
+      <Signature />
     </section>
+  );
+}
+
+function Control({ label, children }) {
+  return (
+    <label style={{ display: "grid", gap: 5, minWidth: 0 }}>
+      <span style={{ color: skin.muted, fontSize: 10, fontWeight: 900, textTransform: "uppercase", letterSpacing: ".08em" }}>{label}</span>
+      {children}
+    </label>
+  );
+}
+
+function inputStyle() {
+  return {
+    width: "100%",
+    minWidth: 0,
+    height: 34,
+    borderRadius: 12,
+    border: `1px solid ${skin.border}`,
+    background: "white",
+    color: skin.text,
+    padding: "0 9px",
+    outline: "none",
+    fontWeight: 750,
+  };
+}
+
+function SignatureDesigner({ signature, setSignature }) {
+  function patch(key, value) {
+    setSignature((current) => ({ ...current, [key]: value }));
+  }
+
+  return (
+    <Panel style={{ padding: 14, marginBottom: 16 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", gap: 14, flexWrap: "wrap", marginBottom: 12 }}>
+        <div>
+          <div style={{ color: skin.accent, fontSize: 10, fontWeight: 900, textTransform: "uppercase", letterSpacing: ".16em" }}>Signaturdesign</div>
+          <div style={{ marginTop: 4, color: skin.muted, fontSize: 12 }}>Endrer alle informasjonsbokser direkte: innhold, skrift, streker, farge, skygge, plassering og animasjon ut av feltet.</div>
+        </div>
+        <button type="button" onClick={() => setSignature(defaultSignature)} style={pillButton(false)}>Tilbakestill</button>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: 10 }}>
+        <Control label="Innhold">
+          <input value={signature.text} onChange={(event) => patch("text", event.target.value)} style={inputStyle()} />
+        </Control>
+        <Control label="Skrift">
+          <select value={signature.fontFamily} onChange={(event) => patch("fontFamily", event.target.value)} style={inputStyle()}>
+            <option value="Georgia, serif">Georgia</option>
+            <option value="Inter, ui-sans-serif, system-ui">Inter</option>
+            <option value="Times New Roman, serif">Times</option>
+            <option value="Arial, sans-serif">Arial</option>
+            <option value="Courier New, monospace">Monospace</option>
+          </select>
+        </Control>
+        <Control label="Farge">
+          <input type="color" value={signature.color.startsWith("#") ? signature.color : "#8fb9dd"} onChange={(event) => patch("color", event.target.value)} style={{ ...inputStyle(), padding: 4 }} />
+        </Control>
+        <Control label="Plassering">
+          <select value={signature.position} onChange={(event) => patch("position", event.target.value)} style={inputStyle()}>
+            <option value="bottomRight">Nede hoyre</option>
+            <option value="bottomLeft">Nede venstre</option>
+            <option value="topRight">Oppe hoyre</option>
+            <option value="topLeft">Oppe venstre</option>
+            <option value="centerRight">Midt hoyre</option>
+          </select>
+        </Control>
+        <Control label="Animasjon">
+          <select value={signature.animation} onChange={(event) => patch("animation", event.target.value)} style={inputStyle()}>
+            <option value="none">Ingen</option>
+            <option value="float">Flyt</option>
+            <option value="pulse">Puls</option>
+            <option value="slideOut">Ut av felt</option>
+          </select>
+        </Control>
+        <Control label="Kursiv">
+          <button type="button" onClick={() => patch("italic", !signature.italic)} style={pillButton(signature.italic)}>{signature.italic ? "Pa" : "Av"}</button>
+        </Control>
+        <Control label="Skygge">
+          <button type="button" onClick={() => patch("shadow", !signature.shadow)} style={pillButton(signature.shadow)}>{signature.shadow ? "Pa" : "Av"}</button>
+        </Control>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10, marginTop: 12 }}>
+        <RangeControl label="Skriftstorrelse" value={signature.fontSize} min={6} max={22} unit="px" onChange={(value) => patch("fontSize", value)} />
+        <RangeControl label="Tykkelse" value={signature.fontWeight} min={100} max={900} step={100} onChange={(value) => patch("fontWeight", value)} />
+        <RangeControl label="For-strek" value={signature.beforeLine} min={0} max={280} unit="px" onChange={(value) => patch("beforeLine", value)} />
+        <RangeControl label="Etter-strek" value={signature.afterLine} min={0} max={220} unit="px" onChange={(value) => patch("afterLine", value)} />
+        <RangeControl label="Strektykkelse" value={signature.lineHeight} min={1} max={6} unit="px" onChange={(value) => patch("lineHeight", value)} />
+        <RangeControl label="Avstand" value={signature.lineGap} min={0} max={28} unit="px" onChange={(value) => patch("lineGap", value)} />
+        <RangeControl label="Ut av felt X" value={signature.offsetX} min={-160} max={220} unit="px" onChange={(value) => patch("offsetX", value)} />
+        <RangeControl label="Ut av felt Y" value={signature.offsetY} min={-80} max={80} unit="px" onChange={(value) => patch("offsetY", value)} />
+        <RangeControl label="Opacity" value={signature.opacity} min={0.1} max={1} step={0.05} onChange={(value) => patch("opacity", value)} />
+        <RangeControl label="Bokstavavstand" value={signature.letterSpacing} min={-1} max={6} step={0.25} unit="px" onChange={(value) => patch("letterSpacing", value)} />
+        <RangeControl label="Skygge blur" value={signature.shadowBlur} min={0} max={18} unit="px" onChange={(value) => patch("shadowBlur", value)} />
+        <RangeControl label="Hastighet" value={signature.duration} min={800} max={6000} step={100} unit="ms" onChange={(value) => patch("duration", value)} />
+      </div>
+    </Panel>
+  );
+}
+
+function RangeControl({ label, value, min, max, step = 1, unit = "", onChange }) {
+  return (
+    <label style={{ display: "grid", gap: 4 }}>
+      <span style={{ display: "flex", justifyContent: "space-between", gap: 8, color: skin.muted, fontSize: 10, fontWeight: 900, textTransform: "uppercase", letterSpacing: ".08em" }}>
+        <span>{label}</span>
+        <b style={{ color: skin.text }}>{value}{unit}</b>
+      </span>
+      <input type="range" min={min} max={max} step={step} value={value} onChange={(event) => onChange(Number(event.target.value))} />
+    </label>
   );
 }
 
@@ -168,7 +357,7 @@ function FilterSystem({ filterIndexes, setFilterIndexes }) {
 
 function pillButton(active) {
   return {
-    height: 34,
+    minHeight: 34,
     borderRadius: 999,
     border: `1px solid ${active ? skin.borderStrong : skin.border}`,
     background: active ? skin.accent : skin.panel2,
@@ -261,11 +450,11 @@ function StandingCard({ row, segment }) {
 }
 
 function ListRow({ row, expanded, onToggle, segment }) {
-  return <article style={{ overflow: "hidden", borderRadius: 16, border: `1px solid ${skin.border}`, background: skin.panel, boxShadow: skin.shadowSoft }}><button onClick={onToggle} style={{ width: "100%", display: "grid", gridTemplateColumns: "82px 1.4fr .6fr .5fr .35fr 140px 24px", gap: 12, alignItems: "center", padding: "8px 12px", border: 0, background: "transparent", textAlign: "left", cursor: "pointer" }}><Banknote tone={row.tone} compact /><strong>{row.title}</strong><span>{row.issue}</span><span>{row.variant}</span><strong>{row.rarity}</strong><span style={{ textAlign: "right", fontWeight: 900 }}>{row.value}</span>{expanded ? <ChevronUp size={16} color={skin.accent} /> : <ChevronDown size={16} color={skin.accent} />}</button>{expanded && <div style={{ borderTop: `1px solid ${skin.border}`, padding: 12, background: "rgba(245,250,255,.76)" }}><DetailGrid row={row} segment={segment} /></div>}</article>;
+  return <article style={{ overflow: "visible", borderRadius: 16, border: `1px solid ${skin.border}`, background: skin.panel, boxShadow: skin.shadowSoft, position: "relative" }}><Signature /><button onClick={onToggle} style={{ width: "100%", display: "grid", gridTemplateColumns: "82px 1.4fr .6fr .5fr .35fr 140px 24px", gap: 12, alignItems: "center", padding: "8px 12px", border: 0, background: "transparent", textAlign: "left", cursor: "pointer" }}><Banknote tone={row.tone} compact /><strong>{row.title}</strong><span>{row.issue}</span><span>{row.variant}</span><strong>{row.rarity}</strong><span style={{ textAlign: "right", fontWeight: 900 }}>{row.value}</span>{expanded ? <ChevronUp size={16} color={skin.accent} /> : <ChevronDown size={16} color={skin.accent} />}</button>{expanded && <div style={{ borderTop: `1px solid ${skin.border}`, padding: 12, background: "rgba(245,250,255,.76)" }}><DetailGrid row={row} segment={segment} /></div>}</article>;
 }
 
 function smallBadge(color) {
-  return { display: "inline-flex", alignItems: "center", gap: 4, height: 28, borderRadius: 999, border: `1px solid ${skin.border}`, background: skin.panel2, padding: "0 8px", color, fontSize: 12, fontWeight: 800 };
+  return { display: "inline-flex", alignItems: "center", gap: 4, minHeight: 28, borderRadius: 999, border: `1px solid ${skin.border}`, background: skin.panel2, padding: "0 8px", color, fontSize: 12, fontWeight: 800 };
 }
 
 export default function CollectiumKatalogReactPreview() {
@@ -275,6 +464,7 @@ export default function CollectiumKatalogReactPreview() {
   const [query, setQuery] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
   const [expanded, setExpanded] = useState(rows[0].id);
+  const [signature, setSignature] = useState(defaultSignature);
   const [filterIndexes, setFilterIndexes] = useState(() => Object.fromEntries(filters.map((filter) => [filter.key, 0])));
 
   const filteredRows = useMemo(() => {
@@ -284,31 +474,48 @@ export default function CollectiumKatalogReactPreview() {
   }, [query, sortDirection]);
 
   return (
-    <div style={{ minHeight: "100vh", fontFamily: "Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif", color: skin.text, background: `radial-gradient(circle at 25% 0%, #f8fcff, ${skin.page} 44%, #dbeeff)` }}>
-      <div style={{ display: "grid", gridTemplateColumns: "78px 1fr", minHeight: "100vh" }}>
-        <aside style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, padding: 12, background: "linear-gradient(180deg, #10243d, #173456)", boxShadow: "18px 0 44px rgba(16,36,61,.22)" }}>
-          <div style={{ width: 44, height: 44, borderRadius: 16, display: "grid", placeItems: "center", color: "white", border: "1px solid rgba(255,255,255,.22)", fontWeight: 900 }}>C</div>
-          {[Database, LayoutGrid, Heart, Gavel, ShoppingBag].map((Icon, index) => <button key={index} style={{ width: 44, height: 44, border: 0, borderRadius: 16, display: "grid", placeItems: "center", color: "rgba(255,255,255,.82)", background: "transparent" }}><Icon size={22} /></button>)}
-        </aside>
-        <main style={{ padding: 24 }}>
-          <header style={{ borderBottom: `1px solid ${skin.border}`, paddingBottom: 18, marginBottom: 18 }}>
-            <div style={{ fontSize: 10, fontWeight: 900, color: skin.accent, textTransform: "uppercase", letterSpacing: ".22em" }}>Katalog / {segment}</div>
-            <h1 style={{ fontSize: 42, lineHeight: 1, margin: "8px 0 0" }}>1636 treff</h1>
-            <p style={{ marginTop: 10, color: skin.muted, maxWidth: 820 }}>React-forhandsvisning med tidslinje, filter, segment, visningsknapper, sok og katalogkort for Collectium.</p>
-          </header>
-          <TimelinePeriodRow timelineMode={timelineMode} setTimelineMode={setTimelineMode} setFilterIndexes={setFilterIndexes} />
-          <FilterSystem filterIndexes={filterIndexes} setFilterIndexes={setFilterIndexes} />
-          <section style={{ display: "grid", gridTemplateColumns: "270px 1fr", gap: 16 }}>
-            <SegmentRail segment={segment} setSegment={setSegment} />
-            <div>
-              <Toolbar view={view} setView={setView} query={query} setQuery={setQuery} sortDirection={sortDirection} setSortDirection={setSortDirection} />
-              {view === "horizontal" && <div style={{ display: "grid", gap: 16 }}>{filteredRows.map((row) => <HorizontalCard key={row.id} row={row} segment={segment} />)}</div>}
-              {view === "standing" && <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>{filteredRows.map((row) => <StandingCard key={row.id} row={row} segment={segment} />)}</div>}
-              {view === "list" && <div style={{ display: "grid", gap: 10 }}>{filteredRows.map((row) => <ListRow key={row.id} row={row} expanded={expanded === row.id} onToggle={() => setExpanded(expanded === row.id ? "" : row.id)} segment={segment} />)}</div>}
-            </div>
-          </section>
-        </main>
+    <SignatureContext.Provider value={signature}>
+      <style>{`
+        @keyframes collectiumSignatureFloat {
+          0%, 100% { transform: translate(var(--sig-x, 0), var(--sig-y, 0)); }
+          50% { transform: translate(calc(var(--sig-x, 0) + 0px), calc(var(--sig-y, 0) - 4px)); }
+        }
+        @keyframes collectiumSignaturePulse {
+          0%, 100% { filter: opacity(.55); }
+          50% { filter: opacity(1); }
+        }
+        @keyframes collectiumSignatureSlideOut {
+          0%, 100% { margin-right: 0; }
+          50% { margin-right: -26px; }
+        }
+      `}</style>
+      <div style={{ minHeight: "100vh", fontFamily: "Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif", color: skin.text, background: `radial-gradient(circle at 25% 0%, #f8fcff, ${skin.page} 44%, #dbeeff)` }}>
+        <div style={{ display: "grid", gridTemplateColumns: "78px 1fr", minHeight: "100vh" }}>
+          <aside style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, padding: 12, background: "linear-gradient(180deg, #10243d, #173456)", boxShadow: "18px 0 44px rgba(16,36,61,.22)" }}>
+            <div style={{ width: 44, height: 44, borderRadius: 16, display: "grid", placeItems: "center", color: "white", border: "1px solid rgba(255,255,255,.22)", fontWeight: 900 }}>C</div>
+            {[Database, LayoutGrid, Heart, Gavel, ShoppingBag].map((Icon, index) => <button key={index} style={{ width: 44, height: 44, border: 0, borderRadius: 16, display: "grid", placeItems: "center", color: "rgba(255,255,255,.82)", background: "transparent" }}><Icon size={22} /></button>)}
+          </aside>
+          <main style={{ padding: 24 }}>
+            <header style={{ borderBottom: `1px solid ${skin.border}`, paddingBottom: 18, marginBottom: 18 }}>
+              <div style={{ fontSize: 10, fontWeight: 900, color: skin.accent, textTransform: "uppercase", letterSpacing: ".22em" }}>Katalog / {segment}</div>
+              <h1 style={{ fontSize: 42, lineHeight: 1, margin: "8px 0 0" }}>1636 treff</h1>
+              <p style={{ marginTop: 10, color: skin.muted, maxWidth: 820 }}>React-forhandsvisning med tidslinje, filter, segment, visningsknapper, sok, katalogkort og redigerbar Collectium-signatur.</p>
+            </header>
+            <SignatureDesigner signature={signature} setSignature={setSignature} />
+            <TimelinePeriodRow timelineMode={timelineMode} setTimelineMode={setTimelineMode} setFilterIndexes={setFilterIndexes} />
+            <FilterSystem filterIndexes={filterIndexes} setFilterIndexes={setFilterIndexes} />
+            <section style={{ display: "grid", gridTemplateColumns: "270px 1fr", gap: 16 }}>
+              <SegmentRail segment={segment} setSegment={setSegment} />
+              <div>
+                <Toolbar view={view} setView={setView} query={query} setQuery={setQuery} sortDirection={sortDirection} setSortDirection={setSortDirection} />
+                {view === "horizontal" && <div style={{ display: "grid", gap: 16 }}>{filteredRows.map((row) => <HorizontalCard key={row.id} row={row} segment={segment} />)}</div>}
+                {view === "standing" && <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>{filteredRows.map((row) => <StandingCard key={row.id} row={row} segment={segment} />)}</div>}
+                {view === "list" && <div style={{ display: "grid", gap: 10 }}>{filteredRows.map((row) => <ListRow key={row.id} row={row} expanded={expanded === row.id} onToggle={() => setExpanded(expanded === row.id ? "" : row.id)} segment={segment} />)}</div>}
+              </div>
+            </section>
+          </main>
+        </div>
       </div>
-    </div>
+    </SignatureContext.Provider>
   );
 }
