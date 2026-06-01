@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "code-connect:publish": "figma connect publish",
+    "code-connect:unpublish": "figma connect unpublish"
   },
   "dependencies": {
     "@types/node": "latest",
