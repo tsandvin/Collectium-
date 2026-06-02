@@ -2377,3 +2377,453 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
     grid-template-columns: 1fr;
   }
 }
+
+/* V17 admin control center, archive tabs, notifications, customer presentation and dealer admin */
+:global(html) {
+  --ct-body-size: 13px;
+  --ct-title-size: 20px;
+  --ct-headline-size: 32px;
+  --ct-card-pad: 16px;
+}
+
+.appShell {
+  font-size: var(--ct-body-size, 13px);
+}
+
+.appTopbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.topbarMenuWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.designOverlay,
+.notificationOverlay {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 90;
+  width: 330px;
+  max-height: min(72vh, 620px);
+  overflow: auto;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(54, 91, 116, 0.24);
+  border-radius: 12px;
+  box-shadow: 0 22px 60px rgba(17, 38, 58, 0.20);
+}
+
+.designOverlay strong,
+.notificationOverlay strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
+.designOverlay p,
+.notificationOverlay p {
+  margin: 0 0 12px;
+  color: #58708a;
+}
+
+.designOverlay label {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0;
+  font-weight: 700;
+  color: #263f58;
+}
+
+.designOverlay input[type="range"] {
+  width: 100%;
+}
+
+.designButtonGrid {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 8px 0 10px;
+}
+
+.designButtonGrid button,
+.notificationOverlay article {
+  border: 1px solid rgba(54, 91, 116, 0.22);
+  background: rgba(238, 247, 255, 0.82);
+  border-radius: 12px;
+}
+
+.designButtonGrid button {
+  padding: 8px 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.notificationOverlay article {
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+  margin: 8px 0;
+}
+
+.notificationOverlay article span {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0f6fa8;
+  font-weight: 900;
+}
+
+.notificationOverlay article small {
+  color: #58708a;
+  line-height: 1.35;
+}
+
+.adminControlGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(210px, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.adminControlCard {
+  display: block;
+  min-height: 154px;
+  padding: var(--ct-card-pad, 16px);
+  color: inherit;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.80);
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.adminControlCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(23, 91, 145, 0.36);
+  box-shadow: 0 20px 54px rgba(28, 52, 76, 0.14);
+}
+
+.adminControlCard span {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: #0f6fa8;
+}
+
+.adminControlCard h2 {
+  margin: 10px 0 6px;
+  font-size: var(--ct-title-size, 20px);
+}
+
+.adminControlCard p {
+  margin: 0;
+  color: #526c82;
+  line-height: 1.45;
+}
+
+.adminUserWorkspaceWide {
+  display: grid;
+  grid-template-columns: minmax(480px, 0.95fr) minmax(620px, 1.45fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.archiveTabs {
+  display: flex;
+  align-items: end;
+  gap: 4px;
+  padding: 0 0 10px;
+  border-bottom: 1px solid rgba(63, 91, 70, 0.18);
+  margin-bottom: 8px;
+}
+
+.archiveTabs button {
+  padding: 10px 18px 9px;
+  min-width: 98px;
+  border: 1px solid rgba(118, 138, 95, 0.28);
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  background: linear-gradient(180deg, rgba(255,255,245,0.96), rgba(236,244,226,0.92));
+  color: #253624;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: inset 0 -6px 12px rgba(30, 50, 20, 0.04);
+}
+
+.archiveTabActive {
+  background: linear-gradient(180deg, #fff8d8, #f2e3ac) !important;
+  border-color: rgba(170, 130, 20, 0.42) !important;
+  color: #6b4a00 !important;
+  transform: translateY(1px);
+}
+
+.adminUserExpandable {
+  border-bottom: 1px solid rgba(60, 90, 66, 0.10);
+}
+
+.adminUserExpandable > .adminUserRow {
+  width: 100%;
+}
+
+.expandedUserRow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 12px;
+  padding: 12px 14px 16px 56px;
+  background: linear-gradient(180deg, rgba(255, 250, 230, 0.86), rgba(255, 255, 247, 0.74));
+  border-top: 1px solid rgba(170, 140, 60, 0.18);
+}
+
+.expandedUserRow h3 {
+  margin: 0 0 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #5b6f63;
+}
+
+.expandedUserRow p {
+  margin: 4px 0;
+  font-size: 12px;
+  color: #273a42;
+}
+
+.expandedUserRow a {
+  display: inline-flex;
+  margin-top: 8px;
+}
+
+.customerPage {
+  display: grid;
+  gap: 18px;
+}
+
+.customerHero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 26px;
+  background: rgba(255,255,255,0.84);
+}
+
+.customerHero h1 {
+  margin: 4px 0;
+  font-size: var(--ct-headline-size, 42px);
+  line-height: 1.05;
+}
+
+.customerHero p {
+  color: #536b82;
+}
+
+.customerHeroActions {
+  display: flex;
+  gap: 10px;
+}
+
+.customerMetricGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.customerMetricGrid article {
+  padding: 18px;
+  background: rgba(255,255,255,0.84);
+}
+
+.customerMetricGrid span {
+  display: block;
+  color: #62788c;
+  font-weight: 800;
+}
+
+.customerMetricGrid strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 28px;
+  color: #0d2234;
+}
+
+.customerMetricGrid small {
+  color: #117a51;
+  font-weight: 800;
+}
+
+.customerWorkspace {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
+  gap: 18px;
+}
+
+.customerPanel {
+  padding: 20px;
+  background: rgba(255,255,255,0.82);
+}
+
+.customerPanel h2 {
+  margin-top: 0;
+  font-size: var(--ct-title-size, 22px);
+}
+
+.activityGraph {
+  height: 210px;
+  display: flex;
+  align-items: end;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid rgba(52, 91, 116, 0.16);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(235,247,255,0.82), rgba(255,255,255,0.92));
+}
+
+.activityGraph span {
+  flex: 1;
+  min-width: 10px;
+  border-radius: 10px 10px 2px 2px;
+  background: linear-gradient(180deg, #1b78b4, #b7d9ef);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
+.pageUseRow {
+  display: grid;
+  grid-template-columns: 120px 1fr 46px;
+  gap: 12px;
+  align-items: center;
+  margin: 12px 0;
+}
+
+.pageUseRow span {
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(25, 84, 130, 0.10);
+  overflow: hidden;
+}
+
+.pageUseRow i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #0f6fa8, #93c8e8);
+}
+
+.customerListGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.customerListGrid p {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid rgba(52, 91, 116, 0.15);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.55);
+}
+
+.customerListGrid span {
+  color: #577086;
+}
+
+.activityLog {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.activityLog li {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(238, 247, 255, 0.78);
+}
+
+.dealerWorkspace {
+  display: grid;
+  grid-template-columns: minmax(360px, 0.8fr) minmax(620px, 1.4fr);
+  gap: 18px;
+}
+
+.dealerList,
+.dealerDetail {
+  padding: 18px;
+  background: rgba(255,255,255,0.82);
+}
+
+.dealerRow {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr 1fr;
+  gap: 10px;
+  text-align: left;
+  align-items: center;
+  padding: 14px 10px;
+  border: 0;
+  border-bottom: 1px solid rgba(52, 91, 116, 0.12);
+  background: transparent;
+  cursor: pointer;
+}
+
+.dealerRow small {
+  grid-column: 1 / -1;
+  color: #617487;
+}
+
+.dealerRow em {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #fff2c7;
+  color: #614200;
+  font-style: normal;
+  font-weight: 900;
+  justify-self: start;
+}
+
+.dealerDetail h2 {
+  font-size: var(--ct-headline-size, 38px);
+  margin: 4px 0;
+}
+
+@media (max-width: 1180px) {
+  .adminControlGrid,
+  .customerMetricGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .adminUserWorkspaceWide,
+  .dealerWorkspace,
+  .customerWorkspace {
+    grid-template-columns: 1fr;
+  }
+
+  .expandedUserRow {
+    grid-template-columns: repeat(2, 1fr);
+    padding-left: 16px;
+  }
+}
+
+@media (max-width: 720px) {
+  .adminControlGrid,
+  .customerMetricGrid,
+  .customerListGrid,
+  .expandedUserRow {
+    grid-template-columns: 1fr;
+  }
+
+  .customerHero {
+    display: grid;
+    gap: 12px;
+  }
+
+  .dealerRow {
+    grid-template-columns: 1fr;
+  }
+}

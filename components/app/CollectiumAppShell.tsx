@@ -4,43 +4,43 @@
  * COLLECTIUM FILE HEADER
  *
  * Overskrift:
- * CollectiumAppShell v16
+ * CollectiumAppShell v17
  *
  * Definering / formål:
- * Innlogget app-shell med global sidemeny og toppmeny for Min side og Admin.
- * Shell henter session fra /api/auth/session og viser tilgangsstyrt innhold.
+ * Innlogget Collectium-appshell med låst sidemeny, toppmeny, designpanel, varselmeny,
+ * admin-dashboard og ruting til adminmoduler. Dette er frontend-/previewlag som senere
+ * kobles til DB 8.4, MariaDB og ekte API-kontrakter.
  *
  * Bruksområde:
- * Brukes av /minside, /admin, /admin/brukere og /admin/innstillinger.
+ * Brukes av /minside, /admin, /admin/brukere, /admin/innstillinger, /admin/kunde/[userId]
+ * og /admin/forhandlere.
  *
  * Berørte sider / routes:
  * - /minside
  * - /admin
  * - /admin/brukere
  * - /admin/innstillinger
- * - /katalog
- * - /samling
- * - /auksjon
- * - /forhandler
+ * - /admin/kunde/[userId]
+ * - /admin/forhandlere
  *
  * Berørte DB-brytere / feature_keys:
  * - profile.view
  * - admin.control.view
  * - admin.users.view
+ * - admin.users.activity.view
+ * - admin.customer.presentation.view
+ * - admin.dealers.view
  * - admin.settings.view
+ * - admin.notifications.view
+ * - admin.design.control
  * - auth.logout
- *
- * Berørte API-ruter:
- * - GET /api/auth/session
- * - POST /api/auth/logout
- *
- * Dataretning:
- * API/backend -> Next.js -> React -> UI.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import AdminDealersClient from "../admin/AdminDealersClient";
 import AdminSettingsClient from "../admin/AdminSettingsClient";
 import AdminUsersClient from "../admin/AdminUsersClient";
+import CustomerPresentationClient from "../admin/CustomerPresentationClient";
 import styles from "../landing/collectium-frontpage.module.css";
 
 type Session = {
@@ -52,11 +52,12 @@ type Session = {
 };
 
 type AppPage = "minside" | "admin";
-type AdminModule = "dashboard" | "users" | "settings";
+type AdminModule = "dashboard" | "users" | "settings" | "customer" | "dealers";
 
 type CollectiumAppShellProps = {
   page: AppPage;
   adminModule?: AdminModule;
+  customerId?: string;
 };
 
 const mainMenu = [
@@ -71,12 +72,21 @@ const mainMenu = [
 const adminMenu = [
   { label: "Admin arbeidsflate", href: "/admin", module: "dashboard" },
   { label: "Brukere og medlemskap", href: "/admin/brukere", module: "users" },
+  { label: "Forhandlere", href: "/admin/forhandlere", module: "dealers" },
   { label: "Innstillinger", href: "/admin/innstillinger", module: "settings" },
 ];
 
-export default function CollectiumAppShell({ page, adminModule = "dashboard" }: CollectiumAppShellProps) {
+const notifications = [
+  { type: "Varsel", title: "Ny forhandlersøknad", text: "Demo Forhandler mangler avtaledokumentasjon." },
+  { type: "Prosess", title: "DB 8.4-kontroll", text: "3 action-routes må kobles mot API før produksjon." },
+  { type: "Aktivitet", title: "Kunde trenger hjelp", text: "Ola Berg har høy feilmengde i katalogfilter siste døgn." },
+];
+
+export default function CollectiumAppShell({ page, adminModule = "dashboard", customerId }: CollectiumAppShellProps) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [designOpen, setDesignOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
 
   useEffect(() => {
     fetch("/api/auth/session", { cache: "no-store" })
@@ -132,7 +142,7 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard" }: 
         <a href="/" className={styles.appBrandBlock}>
           <span>C</span>
           <strong>Collectium</strong>
-          <small>V16 låst sidemeny</small>
+          <small>V17 låst sidemeny</small>
         </a>
 
         <p className={styles.sidebarLabel}>Hovedmeny</p>
@@ -169,14 +179,20 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard" }: 
             <input placeholder="Collectium-Katalogen" />
           </label>
           <div className={styles.appTopbarActions}>
-            <button type="button">Design</button>
+            <div className={styles.topbarMenuWrap}>
+              <button type="button" onClick={() => setDesignOpen((open) => !open)} data-feature-key="admin.design.control">Design</button>
+              {designOpen ? <DesignOverlay /> : null}
+            </div>
             <button type="button">Prosesser <b>0</b></button>
-            <button type="button">Varsler <b>0</b></button>
+            <div className={styles.topbarMenuWrap}>
+              <button type="button" onClick={() => setNotificationsOpen((open) => !open)} data-feature-key="admin.notifications.view">🔔 Varsler <b>{notifications.length}</b></button>
+              {notificationsOpen ? <NotificationOverlay /> : null}
+            </div>
             <button type="button" onClick={logout} data-feature-key="auth.logout">Logg ut</button>
           </div>
         </header>
 
-        {isAdminPage ? <AdminContent module={adminModule} session={session} /> : <MyPageContent session={session} />}
+        {isAdminPage ? <AdminContent module={adminModule} session={session} customerId={customerId} /> : <MyPageContent session={session} />}
       </section>
     </main>
   );
@@ -186,6 +202,55 @@ function isActive(page: AppPage, href: string, adminModule: AdminModule) {
   if (page === "minside" && href === "/minside") return true;
   if (page === "admin" && href === "/admin" && adminModule === "dashboard") return true;
   return false;
+}
+
+function setDesignVars(key: string, value: string) {
+  if (typeof document === "undefined") return;
+  document.documentElement.style.setProperty(key, value);
+}
+
+function DesignOverlay() {
+  return (
+    <div className={`${styles.designOverlay} ct-card`}>
+      <strong>Design</strong>
+      <p>Styrer innlogget arbeidsflate globalt.</p>
+      <div className={styles.designButtonGrid}>
+        {[
+          ["collectium", "Collectium"],
+          ["enkel", "Enkel"],
+          ["museum", "Museum"],
+          ["finans", "Finans"],
+        ].map(([key, label]) => (
+          <button key={key} type="button" onClick={() => document.body.setAttribute("data-template", key)}>{label}</button>
+        ))}
+      </div>
+      <label>Hovedskrift <input type="range" min="9" max="17" defaultValue="13" onChange={(event) => setDesignVars("--ct-body-size", `${event.target.value}px`)} /></label>
+      <label>Overskrift <input type="range" min="16" max="25" defaultValue="20" onChange={(event) => setDesignVars("--ct-title-size", `${event.target.value}px`)} /></label>
+      <label>Headline <input type="range" min="18" max="42" defaultValue="32" onChange={(event) => setDesignVars("--ct-headline-size", `${event.target.value}px`)} /></label>
+      <label>Luft i bokser <input type="range" min="8" max="28" defaultValue="16" onChange={(event) => setDesignVars("--ct-card-pad", `${event.target.value}px`)} /></label>
+      <div className={styles.designButtonGrid}>
+        <button type="button" onClick={() => document.body.setAttribute("data-screen", "normal")}>Normal</button>
+        <button type="button" onClick={() => document.body.setAttribute("data-screen", "wide")}>Bred</button>
+        <button type="button" onClick={() => document.body.setAttribute("data-screen", "tv")}>TV</button>
+      </div>
+    </div>
+  );
+}
+
+function NotificationOverlay() {
+  return (
+    <div className={`${styles.notificationOverlay} ct-card`}>
+      <strong>Varsler og aktivitet</strong>
+      <p>Meldinger, prosesser og brukeraktivitet.</p>
+      {notifications.map((item) => (
+        <article key={`${item.type}-${item.title}`}>
+          <span>{item.type}</span>
+          <b>{item.title}</b>
+          <small>{item.text}</small>
+        </article>
+      ))}
+    </div>
+  );
 }
 
 function MyPageContent({ session }: { session: Session }) {
@@ -223,9 +288,30 @@ function MyPageContent({ session }: { session: Session }) {
   );
 }
 
-function AdminContent({ module, session }: { module: AdminModule; session: Session }) {
+function AdminContent({ module, session, customerId }: { module: AdminModule; session: Session; customerId?: string }) {
   if (module === "users") return <AdminUsersClient />;
   if (module === "settings") return <AdminSettingsClient />;
+  if (module === "customer") return <CustomerPresentationClient userId={customerId || "92121216"} />;
+  if (module === "dealers") return <AdminDealersClient />;
+
+  return <AdminDashboard session={session} />;
+}
+
+function AdminDashboard({ session }: { session: Session }) {
+  const modules = useMemo(() => [
+    ["Systemstatus", "Database OK, API-ruter varsler, 3 manglende action-routes", "Grønn/gul"],
+    ["Brukere", "184 aktive, 11 KYC-saker, 3 supportvarsler", "Brukere"],
+    ["Medlemskap", "Bronze/Silver/Gold/Platinum og rabatter", "Tilgang"],
+    ["Forhandlere", "Søknader, avtaler, fee og kategoriadgang", "Forhandler"],
+    ["Innleveringer", "Objekter til vurdering og prosess", "Prosess"],
+    ["Auksjon", "Aktive, kommende, avsluttede og oppgjør", "Marked"],
+    ["Nettbutikk", "Objekter, lager, salg og retur", "Salg"],
+    ["Katalog", "Kilder, objekter, relasjoner og filter", "Data"],
+    ["Objektgodkjenning", "AI/importforslag venter", "Godkjenning"],
+    ["Datakvalitet", "Uten bilde, verdi, relasjon, kilde", "Kontroll"],
+    ["Betaling/gebyrer", "Stripe, Vipps, Collectium-fee", "Økonomi"],
+    ["Sider/brytere/API", "DB 8.4-kjede og action-routes", "Teknisk"],
+  ], []);
 
   return (
     <>
@@ -241,20 +327,15 @@ function AdminContent({ module, session }: { module: AdminModule; session: Sessi
           <span>{session.role} · Admin</span>
         </div>
       </section>
-      <div className={styles.appGrid}>
-        <a href="/admin/brukere" className={`${styles.appCard} ct-card`}>
-          <h2>Brukere og medlemskap</h2>
-          <p>Administrer medlemskap, KYC, status, roller, samling, auksjon og profilark.</p>
-        </a>
-        <a href="/admin/innstillinger" className={`${styles.appCard} ct-card`}>
-          <h2>Innstillinger</h2>
-          <p>Organiser design, tilgang, forhandleravtaler, API-ruter og systeminnstillinger.</p>
-        </a>
-        <section className={`${styles.appCard} ct-card`}>
-          <h2>Datakvalitet</h2>
-          <p>Katalog, relasjoner, API-ruter og importstatus skal vises her.</p>
-        </section>
-      </div>
+      <section className={styles.adminControlGrid}>
+        {modules.map(([title, text, tag]) => (
+          <a key={title} href={title === "Brukere" ? "/admin/brukere" : title === "Forhandlere" ? "/admin/forhandlere" : "/admin"} className={`${styles.adminControlCard} ct-card`}>
+            <span>{tag}</span>
+            <h2>{title}</h2>
+            <p>{text}</p>
+          </a>
+        ))}
+      </section>
     </>
   );
 }
