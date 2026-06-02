@@ -57,3 +57,14 @@
 - Fjernet aktiv-template-feltet fra landingssiden.
 - Rettet Forhandlere-lenke og lagt inn aliasroute.
 - Lagt inn public root layout uten global sidemeny.
+
+## v15 - Auth, Min side, Admin og låst signatur
+
+- La inn opplastet Collectium locked signature CSS/JS i public/assets.
+- Root layout laster global signatur CSS/JS.
+- Login og registrering sender nå til API-ruter.
+- La inn midlertidig server-only session-cookie for innlogging.
+- La inn /minside med innlogget app-shell.
+- La inn /admin med superadmin-kontroll.
+- Designpanelet åpnes som overlay og skal ikke presse login-layout.
+- Auth/login støtter superadmin fra Vercel environment variables.

@@ -12,7 +12,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="no">
-      <body>{children}</body>
+      <head>
+        <link rel="stylesheet" href="/assets/collectium-signature.css" />
+      </head>
+      <body>
+        {children}
+        <script src="/assets/collectium-signature.js" defer />
+      </body>
     </html>
   );
 }
