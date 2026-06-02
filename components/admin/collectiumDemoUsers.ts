@@ -237,3 +237,4 @@ export function formatMinutes(value: number) {
 export function findDemoUser(userId: string) {
   return allDemoUsers.find((u) => u.id.toLowerCase() === userId.toLowerCase() || u.userIdInternal.toLowerCase() === userId.toLowerCase() || u.customerNumber.toLowerCase() === userId.toLowerCase()) || allDemoUsers[0];
 }
+
