@@ -1,3 +1,8 @@
 node_modules
-dist
+.next
 .env
+.env.local
+.env.production
+.DS_Store
+
+app/api/bridge/config.php

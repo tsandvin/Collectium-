@@ -1,0 +1,49 @@
+# CHANGELOG
+
+## v9
+
+- Beholder offentlig forside uten lokal sidemeny.
+- Dokumenterer at global sidemeny først vises etter innlogging via AppShell.
+- Flytter Samler / Historie / Finans-knappene over objektkortet.
+- Fjerner tre prikker i objektvisningsrammen.
+- Legger til animert veksling mellom Sedler og Mynter i objektkortet.
+- Beholder detaljert objektvisningskort under kortet.
+
+## v8
+
+- Tok utgangspunkt i v4-forsiden.
+- La til Samler / Historie / Finans i objektfeltet.
+- La til definisjon av detaljert objektvisningskort.
+
+## v11
+
+- Corrected membership prices.
+- Removed Premium as plan/wording.
+- Removed object-title prefix conflict.
+- Added feature switches for auth.register, auth.login, catalog.view, catalog.search, catalog.filters and catalog.object.open.
+- Added standalone base64 preview for local file opening.
+- Corrected skin names and visual rules.
+
+
+## v11 correction
+- Removed technical DB key text from public frontpage.
+- Removed dealer setup/fee details from public membership section; this belongs in dealer account onboarding.
+- Gold remains an annual plan with separate dealer registration flow.
+
+
+## v12
+
+- Delt funksjonsfelt i venstre brytere og høyre innhold.
+- Rettet template/skin-knapp i statisk preview.
+- Beholder offentlig forside uten sidemeny og uten tekniske DB-felter.
+
+## v13
+
+- V12 beholdt som låst designretning.
+- Lagt til offentlig toppmeny med Design-knapp.
+- Lagt til login-side.
+- Lagt til registreringsside.
+- Lagt til felles PublicTopMenu-komponent.
+- Lagt til felles AuthPageClient-komponent.
+- Silver rettet til både års- og månedsvisning.
+- Feature keys for login, registrering og katalog ligger som `data-feature-key`, men teknisk DB-info vises ikke offentlig.
