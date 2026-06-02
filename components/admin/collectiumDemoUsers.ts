@@ -169,7 +169,7 @@ const moreUsers: Array<[string,string,string,string,string,Membership,CustomerOr
   ["USR-000020","CT-NO-2026-000078","MR","Maja Ryen Ny","maja.ny@example.no","Free","admin_support",76400,112,"Paalogget"],
 ];
 
-export const allDemoUsers: AdminUser[] = [
+export const allDemoUsers = [
   ...demoUsers,
   ...moreUsers.map((raw, idx) => {
     const r = raw as unknown as [string,string,string,string,string,Membership,CustomerOriginType,number,number,Presence];
@@ -214,7 +214,7 @@ export const allDemoUsers: AdminUser[] = [
       originRegisteredChannel: "app.collectium.no",
       mostUsedPages: [{page:"Katalog",percent:40 + idx},{page:"Min samling",percent:30},{page:"Auksjon",percent:30 - idx % 10}],
       activityByDay: daySets[idx % daySets.length],
-      supportFlag: idx % 5 === 0 ? "Support bør kontrollere siste filterfeil" : "Ingen aktiv sak",
+      supportFlag: idx % 5 === 0 ? "Support bÃƒÂ¸r kontrollere siste filterfeil" : "Ingen aktiv sak",
       supportOpenCases: idx % 5 === 0 ? 1 : 0,
       activityLog: ["aapnet katalog", "viste objektpresentasjon", "oppdaterte samlingsstatus"],
       deletionMode: idx === 8 ? "delete_personal_keep_ownership" : "active",
@@ -239,3 +239,9 @@ export function formatMinutes(value: number) {
 export function findDemoUser(userId: string) {
   return allDemoUsers.find((u) => u.id.toLowerCase() === userId.toLowerCase() || u.userIdInternal.toLowerCase() === userId.toLowerCase() || u.customerNumber.toLowerCase() === userId.toLowerCase()) || allDemoUsers[0];
 }
+export const adminUserSearchSummary = {
+  totalUsers: allDemoUsers.length,
+  activeUsers: allDemoUsers.filter((user) => user.status === "active").length,
+  demoUsers: allDemoUsers.filter((user) => Boolean((user as any).isDemoUser)).length,
+  blockedUsers: allDemoUsers.filter((user) => user.status === "blocked" || user.status === "disabled").length,
+};

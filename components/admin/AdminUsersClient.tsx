@@ -7,21 +7,21 @@
  * Overskrift:
  * AdminUsersClient v21
  *
- * Definering / formål:
+ * Definering / formÃ¥l:
  * Fullbredde administrasjonsside for kunder, medlemmer og forhandlere med
  * sortering, arkivfaner, resultatvolum, demoaktivitet, brukernavn, ny bruker-
  * opprettelse, kundekilde, kundenummer, slette-/bevaringsregel og
  * profilfletting. Dette er frontend-/previewlag som senere skal kobles til
  * MariaDB/API og DB 8.4 action-routes.
  *
- * Bruksområde:
+ * BruksomrÃ¥de:
  * Brukes i innlogget adminflate /admin/brukere.
  *
- * Berørte sider / routes:
+ * BerÃ¸rte sider / routes:
  * - /admin/brukere
  * - /admin/kunde/[userId]
  *
- * Berørte DB-brytere / feature_keys:
+ * BerÃ¸rte DB-brytere / feature_keys:
  * - admin.users.view
  * - admin.users.create
  * - admin.users.edit
@@ -98,7 +98,7 @@ function originLabel(origin: CustomerOriginType) {
 }
 
 function archiveLabel(tab: Presence) {
-  if (tab === "Paalogget") return "Påloggede";
+  if (tab === "Paalogget") return "PÃ¥loggede";
   if (tab === "Avlogget") return "Avloggede";
   return "Admin";
 }
@@ -108,7 +108,7 @@ function getUsername(user: AdminUser) {
 }
 
 function isNewUser(user: AdminUser) {
-  // Demo-regel: lave/jevne sekvenser er markert som nye i dag for å vise fanetall.
+  // Demo-regel: lave/jevne sekvenser er markert som nye i dag for Ã¥ vise fanetall.
   return user.customerNumberSequence > 0 && user.customerNumberSequence % 5 === 0;
 }
 
@@ -126,7 +126,7 @@ function membershipTabText(users: AdminUser[], tab: "Alle" | Membership | "Forha
   const scoped = users.filter((user) => matchesMembershipTab(user, tab));
   const newCount = scoped.filter(isNewUser).length;
   const yesterdayCount = scoped.filter(isYesterdayUser).length;
-  return `${tab} ${scoped.length} (NY ${newCount} / i går ${yesterdayCount})`;
+  return `${tab} ${scoped.length} (NY ${newCount} / i gÃ¥r ${yesterdayCount})`;
 }
 
 function archiveTabText(users: AdminUser[], tab: Presence) {
@@ -171,7 +171,7 @@ const defaultNewUser: NewUserForm = {
 };
 
 export default function AdminUsersClient() {
-  const [users, setUsers] = useState<AdminUser[]>(allDemoUsers);
+  const [users, setUsers] = useState<AdminUser[]>(allDemoUsers as AdminUser[]);
   const [demoAccessPaused, setDemoAccessPaused] = useState(false);
 
   useEffect(() => {
@@ -195,7 +195,7 @@ export default function AdminUsersClient() {
         ...user,
         status: "suspended" as UserStatus,
         presence: "Avlogget" as Presence,
-        supportFlag: "Demo-tilgang er stoppet av admin. Brukeren kan ikke brukes til innlogging/testtilgang før demo-tilgang åpnes igjen.",
+        supportFlag: "Demo-tilgang er stoppet av admin. Brukeren kan ikke brukes til innlogging/testtilgang fÃ¸r demo-tilgang Ã¥pnes igjen.",
         supportOpenCases: Math.max(user.supportOpenCases, 1),
       };
     });
@@ -256,7 +256,7 @@ export default function AdminUsersClient() {
 
   function sortMark(key: SortKey) {
     if (sortKey !== key) return "";
-    return sortDirection === "asc" ? " ↑" : " ↓";
+    return sortDirection === "asc" ? " â†‘" : " â†“";
   }
 
   function createUser() {
@@ -339,9 +339,9 @@ export default function AdminUsersClient() {
       <section className={`${styles.demoAccessPanel} ct-panel`} data-demo-paused={demoAccessPaused ? "true" : "false"}>
         <div>
           <p className={styles.kicker}>Demo-tilgang</p>
-          <h2>{demoAccessPaused ? "Demo-brukere er stoppet" : "Demo-brukere er åpne"}</h2>
+          <h2>{demoAccessPaused ? "Demo-brukere er stoppet" : "Demo-brukere er Ã¥pne"}</h2>
           <p>
-            Denne bryteren stopper alle demo-brukere fra å brukes som testtilgang. Admin/superadmin beholdes,
+            Denne bryteren stopper alle demo-brukere fra Ã¥ brukes som testtilgang. Admin/superadmin beholdes,
             og historikk, kundekilde, eierhistorikk og aktivitetsdata vises fortsatt for kontroll.
           </p>
         </div>
@@ -351,7 +351,7 @@ export default function AdminUsersClient() {
           data-feature-key="admin.demo_users.access.toggle"
           onClick={() => updateDemoAccessPaused(!demoAccessPaused)}
         >
-          {demoAccessPaused ? "Åpne demo-tilgang" : "Stopp demo-brukere"}
+          {demoAccessPaused ? "Ã…pne demo-tilgang" : "Stopp demo-brukere"}
         </button>
       </section>
 
@@ -359,12 +359,12 @@ export default function AdminUsersClient() {
         <StatCard value={String(resultSummary.totalUsers)} label="Brukere i resultatet" note={membership === "Alle" ? "Total i valgt arkiv/status" : `Kun ${membership}`} tone="green" />
         <StatCard value={String(resultSummary.objects)} label="Samleobjekter" note="sum i filtrert brukerresultat" tone="gold" />
         <StatCard value={formatKr(resultSummary.value)} label="Estimert samlerverdi" note="sum for valgte brukere" tone="blue" />
-        <StatCard value={formatMinutes(resultSummary.online)} label="Online i dag" note={`${resultSummary.support} supportindikasjoner · ${resultSummary.auctions} med auksjonsaktivitet`} tone="red" />
+        <StatCard value={formatMinutes(resultSummary.online)} label="Online i dag" note={`${resultSummary.support} supportindikasjoner Â· ${resultSummary.auctions} med auksjonsaktivitet`} tone="red" />
       </section>
 
       <section className={`${styles.adminFilterBarV18} ct-panel`}>
         <label>
-          Søk bruker
+          SÃ¸k bruker
           <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Navn, brukernavn, e-post, telefon, kundenummer, adresse eller ID" />
         </label>
         <label>
@@ -399,14 +399,14 @@ export default function AdminUsersClient() {
 
       <section className={`${styles.retentionRulePanel} ct-panel`}>
         <div>
-          <p className={styles.kicker}>Låst brukerregel</p>
+          <p className={styles.kicker}>LÃ¥st brukerregel</p>
           <h2>{accountDeletionRule.title}</h2>
           <p>{accountDeletionRule.short}</p>
         </div>
         <div className={styles.retentionRuleGrid}>
           <article><b>Kundenummer</b><span>{customerNumberRule.customer}</span><small>Eksempel {customerNumberRule.exampleCustomer}</small></article>
           <article><b>Forhandlernummer</b><span>{customerNumberRule.dealer}</span><small>Eksempel {customerNumberRule.exampleDealer}</small></article>
-          <article><b>Eierhistorikk</b><span>Beholdes</span><small>Persondata kan slettes/anonymiseres uten å ødelegge proveniens.</small></article>
+          <article><b>Eierhistorikk</b><span>Beholdes</span><small>Persondata kan slettes/anonymiseres uten Ã¥ Ã¸delegge proveniens.</small></article>
           <article><b>Profilfletting</b><span>Admin-kontroll</span><small>Ny e-post + samme bosted/eiendel kan kobles til gammel eierhistorikk.</small></article>
         </div>
       </section>
@@ -443,14 +443,14 @@ export default function AdminUsersClient() {
         {filtered.map((user) => (
           <div key={user.id} className={`${styles.adminUserExpandable} ${expandedId === user.id ? styles.adminUserRowActive : ""}`}>
             <button type="button" className={styles.adminUserRowV18} onClick={() => toggleUser(user)}>
-              <span className={styles.userIdentity}><b>{user.initials}</b><strong>{user.name}</strong><small>@{getUsername(user)} · {user.email}</small></span>
-              <span><strong>{user.customerNumber}</strong><small>{user.customerCountryCode} · {user.customerNumberYear}</small></span>
+              <span className={styles.userIdentity}><b>{user.initials}</b><strong>{user.name}</strong><small>@{getUsername(user)} Â· {user.email}</small></span>
+              <span><strong>{user.customerNumber}</strong><small>{user.customerCountryCode} Â· {user.customerNumberYear}</small></span>
               <span><strong>{originLabel(user.originType)}</strong><small>{user.originSource}</small></span>
               <span><em className={`${styles.statusPill} ${styles[user.status] || ""}`}>{statusLabel(user.status)}</em></span>
               <span><em className={`${styles.statusPill} ${styles[user.kyc]}`}>{kycLabel(user.kyc)}</em></span>
               <span><strong>{formatKr(user.collectionValue)}</strong><small>{user.objects} objekter</small></span>
               <span><strong>{user.auction}</strong><small>{user.shop}</small></span>
-              <span><i>Åpne ark</i><small>Klikk for hurtigvisning</small></span>
+              <span><i>Ã…pne ark</i><small>Klikk for hurtigvisning</small></span>
             </button>
             {expandedId === user.id ? <ExpandedUserRow user={user} username={getUsername(user)} /> : null}
           </div>
@@ -503,7 +503,7 @@ function ExpandedUserRow({ user, username }: { user: AdminUser; username: string
         <p>{user.email}</p>
         <p>{user.phone}</p>
         <p>{user.address}</p>
-        <p>{user.country} · {user.customerCountryCode}</p>
+        <p>{user.country} Â· {user.customerCountryCode}</p>
       </div>
       <div>
         <h3>Kundenummer</h3>
@@ -519,21 +519,21 @@ function ExpandedUserRow({ user, username }: { user: AdminUser; username: string
         {user.originDealerId ? <p>Forhandler: {user.originDealerId}</p> : null}
       </div>
       <div>
-        <h3>Første aktivitet</h3>
-        <p>Første side: {user.originFirstPage}</p>
+        <h3>FÃ¸rste aktivitet</h3>
+        <p>FÃ¸rste side: {user.originFirstPage}</p>
         <p>Objektgruppe: {user.originFirstObjectGroup}</p>
         <p>Kanal: {user.originRegisteredChannel}</p>
       </div>
       <div>
         <h3>Samlergrupper</h3>
         {user.groups.length ? user.groups.map((group) => (
-          <p key={group.name}><b>{group.name}</b> · {group.count} objekter · {formatKr(group.value)}</p>
+          <p key={group.name}><b>{group.name}</b> Â· {group.count} objekter Â· {formatKr(group.value)}</p>
         )) : <p>Ingen grupper registrert</p>}
       </div>
       <div>
         <h3>Aktivitet/support</h3>
         <p>Online i dag: {formatMinutes(user.onlineTodayMin)}</p>
-        <p>Online måned: {formatMinutes(user.onlineMonthMin)}</p>
+        <p>Online mÃ¥ned: {formatMinutes(user.onlineMonthMin)}</p>
         <p>Mest brukt: {user.mostUsedPages[0]?.page}</p>
         <p>Support: {user.supportFlag}</p>
       </div>
@@ -552,7 +552,7 @@ function ExpandedUserRow({ user, username }: { user: AdminUser; username: string
       <div className={styles.expandedUserActions}>
         <h3>Kundepresentasjon</h3>
         <p>Egen side med full profil, aktivitet, grafer, supportlogg, slettevalg og profilfletting.</p>
-        <a href={`/admin/kunde/${encodeURIComponent(user.id)}`} className={styles.goldButton} data-feature-key="admin.customer.presentation.view">Åpne kundepresentasjon</a>
+        <a href={`/admin/kunde/${encodeURIComponent(user.id)}`} className={styles.goldButton} data-feature-key="admin.customer.presentation.view">Ã…pne kundepresentasjon</a>
       </div>
     </div>
   );

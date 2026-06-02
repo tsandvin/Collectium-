@@ -1,0 +1,53 @@
+COLLECTIUM FILE MAP
+ROOT: C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react
+
+AKTUELLE FILER:
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\postcss.config.cjs
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\tsconfig.json
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\components\admin\AdminUserSearchInsightRow.tsx
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\components\admin\collectiumDemoUsers.ts
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\db\queries\catalog.ts
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\docs\_backup\next-folder-backup-2026-05-31\src\db\queries\catalog.ts
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\src\db\queries\catalog.ts
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\src\types\catalog.ts
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\types\catalog.ts
+
+IMPORTS / EXPORTS / FELT:
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\app\api\catalog\search-db-test\route.ts:42: OR COALESCE(collectium_title, '') LIKE ?
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\app\api\catalog\search-db-test\route.ts:43: OR COALESCE(source_catalog_number, '') LIKE ?
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\app\katalog\components\CatalogFilterPanelClient.tsx:99: value: String(value?.filter_label ?? activeFilter.filterValue),
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\app\katalog\components\CatalogFilterPanelClient.tsx:142: {value.filter_label ?? value.filter_value}
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\app\katalog\components\CatalogFilterPanelClient.tsx:143: <strong>{Number(value.object_count ?? 0)}</strong>
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\app\katalog\components\CatalogFilterPanelClient.tsx:280: <span>{filter.filter_label ?? filter.filter_value}</span>
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\app\katalog\components\CatalogFilterPanelClient.tsx:281: <strong>{Number(filter.object_count ?? 0)}</strong>
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\app\katalog-db-test\page.tsx:9: source_catalog_number?: string | null;
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\app\katalog-db-test\page.tsx:114: <strong>Katalognummer:</strong> {object.source_catalog_number || "Ikke registrert"}
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\app\objekt\[sourceKey]\[objectGroup]\[objectId]\page.tsx:66: title: ["collectium_title", "frontend_title", "object_title_no"],
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\app\objekt\[sourceKey]\[objectGroup]\[objectId]\page.tsx:67: meta: ["collectium_catalog_meta", "source_catalog_number", "local_catalog_number", "pick_catalog_number"],
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\components\admin\AdminUsersClient.tsx:52: } from "./collectiumDemoUsers";
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\components\admin\AdminUserSearchInsightRow.tsx:26: adminUserSearchSummary,
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\components\admin\AdminUserSearchInsightRow.tsx:29: } from "./collectiumDemoUsers";
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\components\admin\AdminUserSearchInsightRow.tsx:34: const summary = adminUserSearchSummary;
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\components\admin\collectiumDemoUsers.ts:5: * collectiumDemoUsers v20
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\components\admin\CustomerPresentationClient.tsx:29: import { accountDeletionRule, findDemoUser, formatKr, formatMinutes } from "./collectiumDemoUsers";
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\src\db\queries\catalog.ts:61: collectium_title:
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\src\db\queries\catalog.ts:62: (row.collectium_title as string | null | undefined) ??
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\src\db\queries\catalog.ts:69: (row.source_catalog_number as string | null | undefined) ??
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\src\db\queries\catalog.ts:73: source_catalog_number: (row.source_catalog_number as string | null | undefined) ?? null,
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\src\db\queries\catalog.ts:142: filter_label: value,
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\src\db\queries\catalog.ts:143: object_count: count,
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\src\db\queries\catalog.ts:149: const countA = Number(a.object_count ?? 0);
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\src\db\queries\catalog.ts:150: const countB = Number(b.object_count ?? 0);
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\src\db\queries\catalog.ts:152: return countB - countA || String(a.filter_label ?? "").localeCompare(String(b.filter_label ?? ""));
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\src\types\catalog.ts:9: collectium_title?: string | null;
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\src\types\catalog.ts:12: source_catalog_number?: string | null;
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\src\types\catalog.ts:37: filter_label?: string | null;
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\src\types\catalog.ts:38: object_count?: number | string | null;
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\types\catalog.ts:35: filter_label?: string;
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\types\catalog.ts:36: object_count?: number;
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\types\catalog.ts:62: source_catalog_number?: string;
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\types\catalog.ts:67: collectium_title?: string;
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\types\catalog.ts:86: filter_label?: string;
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\types\catalog.ts:87: object_count?: number;
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\types\catalog.ts:89: filter_label?: string;
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react\types\catalog.ts:90: object_count?: number;

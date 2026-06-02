@@ -1,4 +1,4 @@
-﻿/**
+/**
  * COLLECTIUM FILE HEADER
  *
  * Overskrift:
@@ -83,11 +83,7 @@ export type CatalogObject = {
 
   year?: string | number;
   object_year_label?: string;
-  filter_label?: string;
-  object_count?: number;
   publication_year_label?: string;
-  filter_label?: string;
-  object_count?: number;
 
   litra?: string;
   litra_raw_no?: string;

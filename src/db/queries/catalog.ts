@@ -1,4 +1,4 @@
-﻿import "server-only";
+import "server-only";
 
 import type { CatalogFilterValue, CatalogObject } from "@/types/catalog";
 
@@ -27,11 +27,11 @@ const filterFields = [
   // Hovedinnganger etter land
   { field: "ruler", title: "Konge / regent / dynasti" },
   { field: "denomination", title: "Type objekt / objektbetegnelse" },
-  { field: "year_label", title: "Årstall" },
+  { field: "year_label", title: "Ã…rstall" },
 
   // Underfilter hentes videre fra DB/API
   { field: "litra", title: "Litra / nummer / detalj" },
-  { field: "denomination_issue", title: "Valørutgave / serie" },
+  { field: "denomination_issue", title: "ValÃ¸rutgave / serie" },
   { field: "variant", title: "Variant / type" },
   { field: "signature", title: "Signatur / personer" },
   { field: "producer", title: "Produsent" },
@@ -62,31 +62,31 @@ function normalizeCatalogObject(raw: unknown): CatalogObject {
       (row.collectium_title as string | null | undefined) ??
       (row.title_no as string | null | undefined) ??
       (row.frontend_title as string | null | undefined) ??
-      null,
+      undefined,
 
     collectium_catalog_meta:
       (row.collectium_catalog_meta as string | null | undefined) ??
       (row.source_catalog_number as string | null | undefined) ??
       null,
 
-    frontend_title: (row.frontend_title as string | null | undefined) ?? null,
-    source_catalog_number: (row.source_catalog_number as string | null | undefined) ?? null,
-    image_path: (row.image_path as string | null | undefined) ?? null,
+    frontend_title: (row.frontend_title as string | null | undefined) ?? undefined,
+    source_catalog_number: (row.source_catalog_number as string | null | undefined) ?? undefined,
+    image_path: (row.image_path as string | null | undefined) ?? undefined,
 
-    country: (row.country as string | null | undefined) ?? null,
-    producer: (row.producer as string | null | undefined) ?? null,
-    issuer: (row.issuer as string | null | undefined) ?? null,
-    denomination: (row.denomination as string | null | undefined) ?? null,
-    variant: (row.variant as string | null | undefined) ?? null,
-    litra: (row.litra as string | null | undefined) ?? null,
-    ruler: (row.ruler as string | null | undefined) ?? null,
-    historical_period: (row.historical_period as string | null | undefined) ?? null,
-    material: (row.material as string | null | undefined) ?? null,
-    year_label: (row.year_label as string | null | undefined) ?? null,
+    country: (row.country as string | null | undefined) ?? undefined,
+    producer: (row.producer as string | null | undefined) ?? undefined,
+    issuer: (row.issuer as string | null | undefined) ?? undefined,
+    denomination: (row.denomination as string | null | undefined) ?? undefined,
+    variant: (row.variant as string | null | undefined) ?? undefined,
+    litra: (row.litra as string | null | undefined) ?? undefined,
+    ruler: (row.ruler as string | null | undefined) ?? undefined,
+    historical_period: (row.historical_period as string | null | undefined) ?? undefined,
+    material: (row.material as string | null | undefined) ?? undefined,
+    year_label: (row.year_label as string | null | undefined) ?? undefined,
 
-    market_value_low: (row.market_value_low as string | number | null | undefined) ?? null,
-    market_value_high: (row.market_value_high as string | number | null | undefined) ?? null,
-    value_label: (row.value_label as string | null | undefined) ?? null,
+    market_value_low: (row.market_value_low as string | number | null | undefined) ?? undefined,
+    market_value_high: (row.market_value_high as string | number | null | undefined) ?? undefined,
+    value_label: (row.value_label as string | null | undefined) ?? undefined,
     currency: (row.currency as string | null | undefined) ?? "NOK",
   };
 }
