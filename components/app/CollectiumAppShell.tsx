@@ -4,18 +4,20 @@
  * COLLECTIUM FILE HEADER
  *
  * Overskrift:
- * CollectiumAppShell v15
+ * CollectiumAppShell v16
  *
  * Definering / formål:
- * Innlogget app-shell med global sidemeny for Min side og Admin. Shell henter session
- * fra /api/auth/session og viser tilgangsstyrt innhold.
+ * Innlogget app-shell med global sidemeny og toppmeny for Min side og Admin.
+ * Shell henter session fra /api/auth/session og viser tilgangsstyrt innhold.
  *
  * Bruksområde:
- * Brukes av /minside og /admin.
+ * Brukes av /minside, /admin, /admin/brukere og /admin/innstillinger.
  *
  * Berørte sider / routes:
  * - /minside
  * - /admin
+ * - /admin/brukere
+ * - /admin/innstillinger
  * - /katalog
  * - /samling
  * - /auksjon
@@ -24,6 +26,8 @@
  * Berørte DB-brytere / feature_keys:
  * - profile.view
  * - admin.control.view
+ * - admin.users.view
+ * - admin.settings.view
  * - auth.logout
  *
  * Berørte API-ruter:
@@ -32,13 +36,11 @@
  *
  * Dataretning:
  * API/backend -> Next.js -> React -> UI.
- *
- * Logging:
- * log_category: app_shell
- * log_action: view
  */
 
 import { useEffect, useState } from "react";
+import AdminSettingsClient from "../admin/AdminSettingsClient";
+import AdminUsersClient from "../admin/AdminUsersClient";
 import styles from "../landing/collectium-frontpage.module.css";
 
 type Session = {
@@ -49,11 +51,15 @@ type Session = {
   createdAt: string;
 };
 
+type AppPage = "minside" | "admin";
+type AdminModule = "dashboard" | "users" | "settings";
+
 type CollectiumAppShellProps = {
-  page: "minside" | "admin";
+  page: AppPage;
+  adminModule?: AdminModule;
 };
 
-const menu = [
+const mainMenu = [
   { label: "Min side", href: "/minside" },
   { label: "Katalog", href: "/katalog" },
   { label: "Samling", href: "/samling" },
@@ -62,7 +68,13 @@ const menu = [
   { label: "Admin", href: "/admin" },
 ];
 
-export default function CollectiumAppShell({ page }: CollectiumAppShellProps) {
+const adminMenu = [
+  { label: "Admin arbeidsflate", href: "/admin", module: "dashboard" },
+  { label: "Brukere og medlemskap", href: "/admin/brukere", module: "users" },
+  { label: "Innstillinger", href: "/admin/innstillinger", module: "settings" },
+];
+
+export default function CollectiumAppShell({ page, adminModule = "dashboard" }: CollectiumAppShellProps) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -117,72 +129,132 @@ export default function CollectiumAppShell({ page }: CollectiumAppShellProps) {
   return (
     <main className={styles.appShell}>
       <aside className={styles.appSidebar}>
-        <a href="/" className={styles.appLogo}>Collectium</a>
+        <a href="/" className={styles.appBrandBlock}>
+          <span>C</span>
+          <strong>Collectium</strong>
+          <small>V16 låst sidemeny</small>
+        </a>
+
+        <p className={styles.sidebarLabel}>Hovedmeny</p>
         <nav>
-          {menu.map((item) => (
-            <a key={item.href} href={item.href} className={page === "admin" && item.href === "/admin" ? styles.activeAppLink : ""}>
+          {mainMenu.map((item) => (
+            <a key={item.href} href={item.href} className={isActive(page, item.href, adminModule) ? styles.activeAppLink : ""}>
               {item.label}
             </a>
           ))}
         </nav>
+
+        {isSuperAdmin ? (
+          <div className={styles.sidebarGroup}>
+            <p className={styles.sidebarLabel}>Admin</p>
+            {adminMenu.map((item) => (
+              <a key={item.href} href={item.href} className={adminModule === item.module ? styles.activeAppLink : ""}>
+                {item.label}
+              </a>
+            ))}
+          </div>
+        ) : null}
+
+        <div className={`${styles.sidebarUserCard} ct-card`}>
+          <strong>{session.name}</strong>
+          <small>{session.membership} · {session.role}</small>
+        </div>
       </aside>
 
       <section className={styles.appMain}>
-        <header className={`${styles.appHeader} ct-panel`}>
-          <div>
-            <p className={styles.kicker}>{isAdminPage ? "Admin kontroll" : "Min side"}</p>
-            <h1>{isAdminPage ? "Collectium Admin" : "Velkommen til Collectium"}</h1>
-          </div>
-          <div className={styles.sessionBox}>
-            <strong>{session.name}</strong>
-            <span>{session.email}</span>
-            <span>{session.role} · {session.membership}</span>
+        <header className={styles.appTopbar}>
+          <a href="/admin" className={styles.topbarButton}>Admin</a>
+          <label className={styles.appSearch}>
+            <span>Søk</span>
+            <input placeholder="Collectium-Katalogen" />
+          </label>
+          <div className={styles.appTopbarActions}>
+            <button type="button">Design</button>
+            <button type="button">Prosesser <b>0</b></button>
+            <button type="button">Varsler <b>0</b></button>
             <button type="button" onClick={logout} data-feature-key="auth.logout">Logg ut</button>
           </div>
         </header>
 
-        {isAdminPage ? <AdminContent /> : <MyPageContent session={session} />}
+        {isAdminPage ? <AdminContent module={adminModule} session={session} /> : <MyPageContent session={session} />}
       </section>
     </main>
   );
 }
 
+function isActive(page: AppPage, href: string, adminModule: AdminModule) {
+  if (page === "minside" && href === "/minside") return true;
+  if (page === "admin" && href === "/admin" && adminModule === "dashboard") return true;
+  return false;
+}
+
 function MyPageContent({ session }: { session: Session }) {
   return (
-    <div className={styles.appGrid}>
-      <section className={`${styles.appCard} ct-card`}>
-        <h2>Min samling</h2>
-        <p>Samling, ønskeliste, favoritter og private notater kobles mot MariaDB senere.</p>
-        <strong>Medlemskap: {session.membership}</strong>
+    <>
+      <section className={`${styles.appHeader} ct-panel`}>
+        <div>
+          <p className={styles.kicker}>Min side</p>
+          <h1>Velkommen til Collectium</h1>
+          <p>Dette er innlogget arbeidsflate. Sidemeny, varsler og samlingsfunksjoner styres herfra.</p>
+        </div>
+        <div className={styles.sessionBox}>
+          <strong>{session.name}</strong>
+          <span>{session.email}</span>
+          <span>{session.role} · {session.membership}</span>
+        </div>
       </section>
-      <section className={`${styles.appCard} ct-card`}>
-        <h2>Katalogstatus</h2>
-        <p>Åpne katalogen, lagre objekter og bygg relasjonsbasert samling.</p>
-        <a href="/katalog">Åpne katalog</a>
-      </section>
-      <section className={`${styles.appCard} ct-card`}>
-        <h2>Aktivitet</h2>
-        <p>Her kommer varsler, prosesser, auksjoner og samlingsaktivitet.</p>
-      </section>
-    </div>
+      <div className={styles.appGrid}>
+        <section className={`${styles.appCard} ct-card`}>
+          <h2>Min samling</h2>
+          <p>Samling, ønskeliste, favoritter og private notater kobles mot MariaDB senere.</p>
+          <strong>Medlemskap: {session.membership}</strong>
+        </section>
+        <section className={`${styles.appCard} ct-card`}>
+          <h2>Katalogstatus</h2>
+          <p>Åpne katalogen, lagre objekter og bygg relasjonsbasert samling.</p>
+          <a href="/katalog">Åpne katalog</a>
+        </section>
+        <section className={`${styles.appCard} ct-card`}>
+          <h2>Aktivitet</h2>
+          <p>Her kommer varsler, prosesser, auksjoner og samlingsaktivitet.</p>
+        </section>
+      </div>
+    </>
   );
 }
 
-function AdminContent() {
+function AdminContent({ module, session }: { module: AdminModule; session: Session }) {
+  if (module === "users") return <AdminUsersClient />;
+  if (module === "settings") return <AdminSettingsClient />;
+
   return (
-    <div className={styles.appGrid}>
-      <section className={`${styles.appCard} ct-card`}>
-        <h2>Systemstatus</h2>
-        <p>Adminside er tilgjengelig for superadmin-session. DB 8.4-kontroll kobles videre.</p>
+    <>
+      <section className={`${styles.appHeader} ct-panel`}>
+        <div>
+          <p className={styles.kicker}>Admin kontroll</p>
+          <h1>Collectium Admin</h1>
+          <p>Kontrollsenter for brukere, medlemskap, forhandlere, DB/API, datakvalitet og prosesser.</p>
+        </div>
+        <div className={styles.sessionBox}>
+          <strong>Collectium superadmin</strong>
+          <span>{session.email}</span>
+          <span>{session.role} · Admin</span>
+        </div>
       </section>
-      <section className={`${styles.appCard} ct-card`}>
-        <h2>Brukere og medlemskap</h2>
-        <p>Brukeradministrasjon skal senere kobles mot MariaDB og feature/access-regler.</p>
-      </section>
-      <section className={`${styles.appCard} ct-card`}>
-        <h2>Datakvalitet</h2>
-        <p>Katalog, relasjoner, API-ruter og importstatus skal vises her.</p>
-      </section>
-    </div>
+      <div className={styles.appGrid}>
+        <a href="/admin/brukere" className={`${styles.appCard} ct-card`}>
+          <h2>Brukere og medlemskap</h2>
+          <p>Administrer medlemskap, KYC, status, roller, samling, auksjon og profilark.</p>
+        </a>
+        <a href="/admin/innstillinger" className={`${styles.appCard} ct-card`}>
+          <h2>Innstillinger</h2>
+          <p>Organiser design, tilgang, forhandleravtaler, API-ruter og systeminnstillinger.</p>
+        </a>
+        <section className={`${styles.appCard} ct-card`}>
+          <h2>Datakvalitet</h2>
+          <p>Katalog, relasjoner, API-ruter og importstatus skal vises her.</p>
+        </section>
+      </div>
+    </>
   );
 }

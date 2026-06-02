@@ -1818,3 +1818,562 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
     display: block;
   }
 }
+
+/* V16 admin workspace, topbar, users and settings */
+.appBrandBlock {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  color: #163b2e;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(195, 185, 150, 0.48);
+  border-radius: 14px;
+  padding: 10px;
+  margin-bottom: 26px;
+}
+
+.appBrandBlock span {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  border: 1px solid rgba(170, 135, 30, 0.42);
+  color: #9b7807;
+  font-family: Georgia, serif;
+  font-weight: 800;
+  font-size: 1.45rem;
+  background: rgba(255, 255, 255, 0.64);
+}
+
+.appBrandBlock strong,
+.appBrandBlock small {
+  display: block;
+}
+
+.appBrandBlock small {
+  color: rgba(22, 59, 46, 0.68);
+  font-size: 0.74rem;
+}
+
+.sidebarLabel {
+  margin: 18px 0 8px;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.sidebarGroup {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.sidebarGroup a {
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+
+.sidebarUserCard {
+  margin-top: 28px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #0f2c42;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 12px;
+}
+
+.sidebarUserCard strong,
+.sidebarUserCard small {
+  display: block;
+}
+
+.appTopbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: auto minmax(260px, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  margin: -28px -28px 22px;
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.76);
+  border-bottom: 1px solid rgba(37, 92, 139, 0.16);
+  backdrop-filter: blur(14px);
+}
+
+.topbarButton,
+.appTopbarActions button {
+  border: 1px solid rgba(37, 92, 139, 0.22);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.86);
+  color: #0f2c42;
+  padding: 9px 14px;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.appTopbarActions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.appTopbarActions b {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  margin-left: 4px;
+  border-radius: 999px;
+  background: rgba(20, 60, 95, 0.08);
+}
+
+.appSearch {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(37, 92, 139, 0.22);
+  border-radius: 12px;
+  background: #fff;
+  padding: 8px 12px;
+}
+
+.appSearch span {
+  font-size: 0.78rem;
+  color: #5a7185;
+  font-weight: 800;
+}
+
+.appSearch input {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: inherit;
+  min-width: 0;
+}
+
+.adminUsersPage,
+.adminSettingsPage {
+  display: grid;
+  gap: 18px;
+}
+
+.adminPageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 22px;
+}
+
+.adminPageHeader h1 {
+  margin: 0;
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+}
+
+.adminPageHeader p {
+  margin: 6px 0 0;
+  color: #42596b;
+}
+
+.adminHeaderActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.goldButton {
+  border: 1px solid rgba(155, 120, 7, 0.45);
+  border-radius: 10px;
+  background: linear-gradient(135deg, #d69a0d, #b88406);
+  color: #1c1603;
+  font-weight: 900;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.adminStatsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.adminStatCard {
+  min-height: 90px;
+  display: grid;
+  gap: 3px;
+  padding: 18px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.74);
+  border: 1px solid rgba(37, 92, 139, 0.18);
+}
+
+.adminStatCard strong {
+  font-family: Georgia, serif;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.adminStatCard span {
+  font-weight: 800;
+  color: #20394d;
+}
+
+.adminStatCard small {
+  font-weight: 800;
+}
+
+.green strong,
+.green small { color: #207243; }
+.gold strong,
+.gold small { color: #987008; }
+.red strong,
+.red small { color: #9d263a; }
+.blue strong,
+.blue small { color: #1f6d9d; }
+
+.adminFilterBar {
+  display: grid;
+  grid-template-columns: 1.8fr repeat(3, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(37, 92, 139, 0.18);
+}
+
+.adminFilterBar label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: #516a7d;
+  font-weight: 800;
+}
+
+.adminFilterBar input,
+.adminFilterBar select {
+  width: 100%;
+  border: 1px solid rgba(37, 92, 139, 0.18);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.92);
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.adminUserWorkspace {
+  display: grid;
+  grid-template-columns: minmax(420px, 0.92fr) minmax(560px, 1.5fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.adminUserList,
+.userArchiveCard,
+.settingsMenu,
+.settingsContent {
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(37, 92, 139, 0.18);
+  box-shadow: 0 20px 60px rgba(18, 55, 91, 0.08);
+}
+
+.adminUserList {
+  overflow: hidden;
+}
+
+.adminTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 14px 14px 0;
+}
+
+.adminTabs button,
+.userProfileTabs button,
+.settingsMenu button {
+  border: 1px solid rgba(37, 92, 139, 0.16);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.70);
+  padding: 8px 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.adminTabActive,
+.settingsMenuActive {
+  background: rgba(222, 244, 220, 0.90) !important;
+  border-color: rgba(70, 140, 88, 0.28) !important;
+  color: #194d2c !important;
+}
+
+.adminUserTableHeader,
+.adminUserRow {
+  display: grid;
+  grid-template-columns: 1.5fr 0.75fr 0.8fr 0.8fr 0.85fr 0.75fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.adminUserTableHeader {
+  margin-top: 10px;
+  padding: 12px 16px;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #627888;
+  border-top: 1px solid rgba(37, 92, 139, 0.12);
+  border-bottom: 1px solid rgba(37, 92, 139, 0.12);
+}
+
+.adminUserRow {
+  width: 100%;
+  min-height: 72px;
+  text-align: left;
+  border: 0;
+  border-bottom: 1px solid rgba(37, 92, 139, 0.10);
+  background: rgba(255, 255, 250, 0.70);
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+.adminUserRow:hover,
+.adminUserRowActive {
+  background: rgba(255, 239, 188, 0.58);
+}
+
+.userIdentity {
+  display: grid;
+  grid-template-columns: 34px minmax(0,1fr);
+  column-gap: 10px;
+  align-items: center;
+}
+
+.userIdentity b {
+  grid-row: span 2;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(80, 145, 100, 0.28);
+  background: rgba(232, 250, 230, 0.75);
+  color: #265d3c;
+}
+
+.userIdentity strong,
+.adminUserRow strong,
+.adminUserRow small {
+  display: block;
+}
+
+.userIdentity small,
+.adminUserRow small {
+  color: #5a7185;
+}
+
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 0.72rem;
+  border: 1px solid transparent;
+}
+
+.active,
+.verified {
+  background: rgba(212, 247, 224, 0.82);
+  border-color: rgba(50, 145, 86, 0.24);
+  color: #176c3b;
+}
+
+.suspended {
+  background: rgba(255, 218, 224, 0.82);
+  border-color: rgba(160, 30, 50, 0.24);
+  color: #9d263a;
+}
+
+.pending {
+  background: rgba(255, 239, 187, 0.82);
+  border-color: rgba(170, 120, 20, 0.26);
+  color: #8b6408;
+}
+
+.not_started {
+  background: rgba(230, 233, 236, 0.82);
+  border-color: rgba(90, 105, 120, 0.20);
+  color: #546270;
+}
+
+.userArchiveCard {
+  padding: 20px;
+}
+
+.userArchiveTop {
+  display: grid;
+  grid-template-columns: 78px minmax(0,1fr) auto;
+  gap: 18px;
+  align-items: center;
+}
+
+.bigInitials {
+  width: 70px;
+  height: 70px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(232, 250, 230, 0.80);
+  border: 1px solid rgba(80, 145, 100, 0.22);
+  font-family: Georgia, serif;
+  font-size: 1.6rem;
+}
+
+.userArchiveTop h2 {
+  margin: 0 0 4px;
+  font-family: Georgia, serif;
+  font-size: 1.7rem;
+}
+
+.userArchiveTop p {
+  margin: 2px 0;
+  color: #52697b;
+}
+
+.userOnline {
+  color: #42596b;
+  white-space: nowrap;
+}
+
+.userOnline b {
+  color: #0d2b42;
+}
+
+.userProfileTabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 22px 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(37, 92, 139, 0.14);
+}
+
+.membershipGrid,
+.settingsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.infoBox {
+  min-height: 160px;
+  padding: 18px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(37, 92, 139, 0.16);
+}
+
+.infoBox span {
+  display: block;
+  color: #506a7d;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.infoBox strong {
+  display: block;
+  margin-top: 8px;
+  font-family: Georgia, serif;
+  font-size: 1.45rem;
+}
+
+.infoBox p {
+  color: #52697b;
+  line-height: 1.45;
+}
+
+.infoBox button {
+  margin-top: 8px;
+  border: 1px solid rgba(155, 120, 7, 0.34);
+  border-radius: 8px;
+  background: rgba(255, 241, 193, 0.72);
+  padding: 7px 10px;
+  font-weight: 800;
+}
+
+.settingsSplit {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.settingsMenu {
+  padding: 18px;
+  display: grid;
+  gap: 8px;
+}
+
+.settingsMenu h2 {
+  margin: 0 0 8px;
+}
+
+.settingsMenu button {
+  text-align: left;
+}
+
+.settingsContent {
+  padding: 24px;
+}
+
+.settingsContent h2 {
+  margin-top: 0;
+  font-family: Georgia, serif;
+  font-size: 2.4rem;
+}
+
+@media (max-width: 1180px) {
+  .adminStatsGrid,
+  .membershipGrid,
+  .settingsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .adminUserWorkspace,
+  .settingsSplit {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .appTopbar,
+  .adminFilterBar,
+  .adminUserTableHeader,
+  .adminUserRow,
+  .userArchiveTop,
+  .adminPageHeader {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .adminStatsGrid,
+  .membershipGrid,
+  .settingsGrid {
+    grid-template-columns: 1fr;
+  }
+}
