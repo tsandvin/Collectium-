@@ -37,3 +37,4 @@ collectium-backups/
 *.bak
 *.backup
 *.tmp
+tsconfig.tsbuildinfo
