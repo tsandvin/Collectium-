@@ -88,3 +88,10 @@
 ## v21
 - Admin brukerlisten har nå sorterbare kolonner, resultatvolum, brukernavn, opprett ny bruker-panel og fungerende global designknapp.
 - Fikser TypeScript-typing for demoUsers customerType.
+
+## Final v22 patch
+
+- Samlet v20, v21 og v22 i én endelig v22-pakke.
+- Lagt til bryter for å stoppe demo-brukere fra testtilgang.
+- Lagt til dokumentasjon for `COLLECTIUM_API_BASE_URL` og katalog/API-bridge.
+- Beholder kundekilde, kundenummer, demoaktivitet, sletteregel, profilfletting og katalogarbeidsflate.

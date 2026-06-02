@@ -34,7 +34,7 @@
  * - admin.customer.origin.view
  */
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "../landing/collectium-frontpage.module.css";
 import {
   accountDeletionRule,
@@ -172,6 +172,34 @@ const defaultNewUser: NewUserForm = {
 
 export default function AdminUsersClient() {
   const [users, setUsers] = useState<AdminUser[]>(allDemoUsers);
+  const [demoAccessPaused, setDemoAccessPaused] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setDemoAccessPaused(window.localStorage.getItem("collectium-demo-users-paused") === "true");
+  }, []);
+
+  function updateDemoAccessPaused(next: boolean) {
+    setDemoAccessPaused(next);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("collectium-demo-users-paused", String(next));
+      window.dispatchEvent(new CustomEvent("collectium-demo-access-change", { detail: { paused: next } }));
+    }
+  }
+
+  const visibleUsers = useMemo(() => {
+    if (!demoAccessPaused) return users;
+    return users.map((user) => {
+      if (user.id === "ADMIN-001") return user;
+      return {
+        ...user,
+        status: "suspended" as UserStatus,
+        presence: "Avlogget" as Presence,
+        supportFlag: "Demo-tilgang er stoppet av admin. Brukeren kan ikke brukes til innlogging/testtilgang før demo-tilgang åpnes igjen.",
+        supportOpenCases: Math.max(user.supportOpenCases, 1),
+      };
+    });
+  }, [users, demoAccessPaused]);
   const [search, setSearch] = useState("");
   const [membership, setMembership] = useState<"Alle" | Membership | "Forhandlere">("Alle");
   const [status, setStatus] = useState<"Alle" | UserStatus>("Alle");
@@ -185,7 +213,7 @@ export default function AdminUsersClient() {
   const [newUser, setNewUser] = useState<NewUserForm>(defaultNewUser);
 
   const filtered = useMemo(() => {
-    const rows = users.filter((user) => {
+    const rows = visibleUsers.filter((user) => {
       const textMatch = `${user.name} ${getUsername(user)} ${user.email} ${user.phone} ${user.id} ${user.customerNumber} ${user.originSource} ${user.address}`.toLowerCase().includes(search.toLowerCase());
       const membershipMatch = matchesMembershipTab(user, membership);
       const statusMatch = status === "Alle" || user.status === status;
@@ -201,7 +229,7 @@ export default function AdminUsersClient() {
       const order = typeof av === "number" && typeof bv === "number" ? av - bv : String(av).localeCompare(String(bv), "nb");
       return sortDirection === "asc" ? order : -order;
     });
-  }, [users, search, membership, status, kyc, origin, archive, sortKey, sortDirection]);
+  }, [visibleUsers, search, membership, status, kyc, origin, archive, sortKey, sortDirection]);
 
   const resultSummary = useMemo(() => {
     const totalUsers = filtered.length;
@@ -308,6 +336,25 @@ export default function AdminUsersClient() {
 
       {createOpen ? <CreateUserPanel value={newUser} onChange={setNewUser} onCreate={createUser} onCancel={() => setCreateOpen(false)} /> : null}
 
+      <section className={`${styles.demoAccessPanel} ct-panel`} data-demo-paused={demoAccessPaused ? "true" : "false"}>
+        <div>
+          <p className={styles.kicker}>Demo-tilgang</p>
+          <h2>{demoAccessPaused ? "Demo-brukere er stoppet" : "Demo-brukere er åpne"}</h2>
+          <p>
+            Denne bryteren stopper alle demo-brukere fra å brukes som testtilgang. Admin/superadmin beholdes,
+            og historikk, kundekilde, eierhistorikk og aktivitetsdata vises fortsatt for kontroll.
+          </p>
+        </div>
+        <button
+          type="button"
+          className={demoAccessPaused ? styles.secondaryButton : styles.goldButton}
+          data-feature-key="admin.demo_users.access.toggle"
+          onClick={() => updateDemoAccessPaused(!demoAccessPaused)}
+        >
+          {demoAccessPaused ? "Åpne demo-tilgang" : "Stopp demo-brukere"}
+        </button>
+      </section>
+
       <section className={styles.adminStatsGrid}>
         <StatCard value={String(resultSummary.totalUsers)} label="Brukere i resultatet" note={membership === "Alle" ? "Total i valgt arkiv/status" : `Kun ${membership}`} tone="green" />
         <StatCard value={String(resultSummary.objects)} label="Samleobjekter" note="sum i filtrert brukerresultat" tone="gold" />
@@ -369,14 +416,14 @@ export default function AdminUsersClient() {
           <div className={styles.archiveTabsLeft} aria-label="Medlemskap og kundetype">
             {membershipTabs.map((item) => (
               <button key={item} type="button" onClick={() => setMembership(item)} className={membership === item ? styles.archiveTabActive : ""}>
-                {membershipTabText(users, item)}
+                {membershipTabText(visibleUsers, item)}
               </button>
             ))}
           </div>
           <div className={styles.archiveTabsRight} aria-label="Statusfaner">
             {archiveTabs.map((item) => (
               <button key={item} type="button" onClick={() => setArchive(item)} className={archive === item ? styles.archiveTabActive : ""}>
-                {archiveTabText(users, item)}
+                {archiveTabText(visibleUsers, item)}
               </button>
             ))}
           </div>

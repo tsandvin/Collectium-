@@ -3756,3 +3756,60 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
     min-height: 150px;
   }
 }
+
+/* V22 final patch: demo access stop switch and DB env guidance */
+.demoAccessPanel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  margin: 18px 0;
+  padding: 18px 20px;
+  border: 1px solid rgba(57, 97, 130, 0.18);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.demoAccessPanel h2 {
+  margin: 2px 0 6px;
+  font-size: clamp(18px, 2vw, 24px);
+}
+
+.demoAccessPanel p {
+  margin: 0;
+  max-width: 860px;
+  color: rgba(29, 52, 74, 0.78);
+}
+
+.demoAccessPanel[data-demo-paused="true"] {
+  background: linear-gradient(135deg, rgba(255, 244, 220, 0.92), rgba(255, 255, 255, 0.72));
+  border-color: rgba(197, 141, 22, 0.34);
+}
+
+.demoSettingsRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  margin: 18px 0 22px;
+  padding: 16px;
+  border: 1px solid rgba(57, 97, 130, 0.18);
+  border-radius: var(--ct-card-radius, 12px);
+  background: rgba(244, 249, 252, 0.76);
+}
+
+.demoSettingsRow p {
+  margin: 6px 0;
+  color: rgba(29, 52, 74, 0.76);
+}
+
+.demoSettingsRow small {
+  color: rgba(29, 52, 74, 0.58);
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .demoAccessPanel,
+  .demoSettingsRow {
+    grid-template-columns: 1fr;
+  }
+}

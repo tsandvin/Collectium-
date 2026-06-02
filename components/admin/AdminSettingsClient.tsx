@@ -20,7 +20,7 @@
  * - admin.routes.view
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../landing/collectium-frontpage.module.css";
 
 const sections = [
@@ -36,6 +36,20 @@ const sections = [
 
 export default function AdminSettingsClient() {
   const [active, setActive] = useState(sections[0]);
+  const [demoAccessPaused, setDemoAccessPaused] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setDemoAccessPaused(window.localStorage.getItem("collectium-demo-users-paused") === "true");
+  }, []);
+
+  function updateDemoAccessPaused(next: boolean) {
+    setDemoAccessPaused(next);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("collectium-demo-users-paused", String(next));
+      window.dispatchEvent(new CustomEvent("collectium-demo-access-change", { detail: { paused: next } }));
+    }
+  }
 
   return (
     <div className={styles.adminSettingsPage}>
@@ -68,6 +82,25 @@ export default function AdminSettingsClient() {
             Denne modulen organiserer hvilke kontroller som senere skal lagres i MariaDB og styres via DB 8.4.
             Ingen knapp skal bare være visuell; den skal ha feature_key, action_route eller være tydelig lokal template-kontroll.
           </p>
+
+          <div className={styles.demoSettingsRow}>
+            <div>
+              <strong>Stopp demo-brukere</strong>
+              <p>
+                Stopper alle demo-brukere fra testtilgang uten å slette aktivitetsdata, kundekilde,
+                kundenummer eller eierhistorikk. Admin/superadmin beholdes.
+              </p>
+              <small>Feature: admin.demo_users.access.toggle</small>
+            </div>
+            <button
+              type="button"
+              className={demoAccessPaused ? styles.secondaryButton : styles.goldButton}
+              data-feature-key="admin.demo_users.access.toggle"
+              onClick={() => updateDemoAccessPaused(!demoAccessPaused)}
+            >
+              {demoAccessPaused ? "Åpne demo-tilgang" : "Stopp demo-brukere"}
+            </button>
+          </div>
 
           <div className={styles.settingsGrid}>
             <SettingCard title="Status" value="Klar for kobling" text="Viser hvordan denne innstillingen skal kobles til API/backend." />
