@@ -156,9 +156,7 @@ export const demoUsers: AdminUser[] = [
   },
 ];
 
-type MoreUserSeed = [string, string, string, string, string, Membership, CustomerOriginType, number, number, Presence];
-
-const moreUsers: MoreUserSeed[] = [
+const moreUsers: AdminUser[] = [
   ["USR-000012","CT-NO-2026-000072","GS","Grete Strand","grete@example.no","Bronze","kampanje",18500,40,"Avlogget"],
   ["USR-000013","CT-NO-2026-000073","HP","Hans Petter","hans@example.no","Free","organisk",0,0,"Avlogget"],
   ["USR-000014","CT-NO-2026-000074","IR","Ingrid Rogn","ingrid@example.no","Silver","forhandler",93000,143,"Paalogget"],
@@ -168,12 +166,12 @@ const moreUsers: MoreUserSeed[] = [
   ["USR-000018","CT-NO-2026-000076","AH","Ane Holm","ane@example.no","Silver","museum",64000,118,"Avlogget"],
   ["USR-000019","CT-NO-2026-000077","OS","Ola Solvik","ola.solvik@example.no","Bronze","organisk",128450,247,"Avlogget"],
   ["USR-000020","CT-NO-2026-000078","MR","Maja Ryen Ny","maja.ny@example.no","Free","admin_support",76400,112,"Paalogget"],
-];
+] as unknown as AdminUser[];
 
 export const allDemoUsers: AdminUser[] = [
   ...demoUsers,
-  ...moreUsers.map((raw, idx): AdminUser => {
-    const r = raw;
+  ...moreUsers.map((raw, idx) => {
+    const r = raw as unknown as [string,string,string,string,string,Membership,CustomerOriginType,number,number,Presence];
     const [id, customerNumber, initials, name, email, membership, originType, value, objects, presence] = r;
     const country = customerNumber.split("-")[1] || "NO";
     return {
@@ -183,7 +181,7 @@ export const allDemoUsers: AdminUser[] = [
       customerCountryCode: country,
       customerNumberYear: 2026,
       customerNumberSequence: Number(customerNumber.split("-").pop()) || idx + 72,
-      customerType: "customer" as CustomerType,
+      customerType: "customer",
       initials,
       name,
       email,
@@ -239,36 +237,3 @@ export function formatMinutes(value: number) {
 export function findDemoUser(userId: string) {
   return allDemoUsers.find((u) => u.id.toLowerCase() === userId.toLowerCase() || u.userIdInternal.toLowerCase() === userId.toLowerCase() || u.customerNumber.toLowerCase() === userId.toLowerCase()) || allDemoUsers[0];
 }
-
-
-export const adminUserSearchSummary = {
-  totalUsers: allDemoUsers.length,
-  visibleUsers: allDemoUsers.filter((u) => u.status !== "anonymized").length,
-  totalCollectionValue: allDemoUsers.reduce((sum, u) => sum + u.collectionValue, 0),
-  totalObjects: allDemoUsers.reduce((sum, u) => sum + u.objects, 0),
-  totalGroups: allDemoUsers.reduce((sum, u) => sum + u.groups.length, 0),
-  supportIndicators: allDemoUsers.filter((u) => u.supportOpenCases > 0 || u.supportFlag !== "Ingen aktiv sak").length,
-  controlledOrganicBots: allDemoUsers.length,
-  membershipCounts: allDemoUsers.reduce<Record<Membership, number>>(
-    (acc, user) => {
-      acc[user.membership] += 1;
-      return acc;
-    },
-    { Free: 0, Bronze: 0, Silver: 0, Gold: 0, Platinum: 0 }
-  ),
-  customerTypeCounts: allDemoUsers.reduce<Record<CustomerType, number>>(
-    (acc, user) => {
-      acc[user.customerType] += 1;
-      return acc;
-    },
-    { customer: 0, dealer: 0 }
-  ),
-  monthDevelopment: {
-    newMembersThisMonth: 8,
-    newMembersPreviousMonth: 5,
-    percentChange: 60,
-    collectionValueChangePercent: 14,
-    searchActivityChangePercent: 22,
-  },
-};
-
