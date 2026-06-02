@@ -83,3 +83,8 @@
 
 ## v19
 - Fjernet egen Prosesser-knapp fra innlogget topbar. Prosesser vises under Varsler-menyen.
+
+
+## v21
+- Admin brukerlisten har nå sorterbare kolonner, resultatvolum, brukernavn, opprett ny bruker-panel og fungerende global designknapp.
+- Fikser TypeScript-typing for demoUsers customerType.

@@ -1,19 +1,12 @@
-import { ctOk, ctFail } from '@/lib/response';
-import { ctLogError } from '@/lib/logger';
-import { getCatalogObject } from '@/db/queries/catalog';
+import { NextRequest, NextResponse } from "next/server";
+import { getResolvedObject, getResolvedObjects, getSources } from "@/lib/data/collectiumMockData";
+import { objectFilterOrder } from "@/lib/specs/collectiumSpecs";
 
-export async function GET(request: Request) {
-  const url = new URL(request.url);
-  const sourceKey = url.searchParams.get('source_key');
-  const objectGroup = url.searchParams.get('object_group');
-  const objectId = url.searchParams.get('object_id');
-  if (!sourceKey || !objectGroup || !objectId) return ctFail('MISSING_OBJECT_KEY', 'Mangler source_key, object_group eller object_id.', 422);
-  try {
-    const object = await getCatalogObject(sourceKey, objectGroup, objectId);
-    if (!object) return ctFail('OBJECT_NOT_FOUND', 'Objektet finnes ikke.', 404);
-    return ctOk(object, { source_key: sourceKey, object_group: objectGroup, object_id: objectId });
-  } catch (error) {
-    ctLogError('api.catalog.object', error);
-    return ctFail('CATALOG_OBJECT_FAILED', 'Kunne ikke hente objekt.', 500);
-  }
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const source_key = searchParams.get("source_key") ?? "norske_sedler";
+  const object_group = searchParams.get("object_group") ?? "banknote";
+  const object_id = searchParams.get("object_id") ?? "NO-BN-1949-10-A";
+  const object = getResolvedObject(source_key, object_group, object_id);
+  return NextResponse.json({ sources: getSources(), object, objects: getResolvedObjects(), filterOrder: objectFilterOrder });
 }

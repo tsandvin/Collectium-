@@ -1,0 +1,15 @@
+{
+  "name": "Figma / master brytere og felt",
+  "status": "included_as_json_reference",
+  "source_files_found": [
+    "collectium-builder-control-global-v4.php",
+    "collectium-builder-control-global-v18/v19.php",
+    "collectium-builder-control-preview.php"
+  ],
+  "principles": [
+    "Builder/AI can edit presentation, order, layout choices and safe fields for one page at a time.",
+    "Collectium/MariaDB owns data, access, feature switches, routes, publish approval and live version.",
+    "Each page needs page_key, components, switches, APIs, data sources and DB status.",
+    "Switches can be boolean, text, select, number, JSON or safe_action."
+  ]
+}

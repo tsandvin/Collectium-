@@ -34,6 +34,7 @@ type CustomerPresentationClientProps = {
 
 export default function CustomerPresentationClient({ userId }: CustomerPresentationClientProps) {
   const user = findDemoUser(userId);
+  const username = user.username || user.email.split("@")[0];
 
   return (
     <div className={styles.customerPage}>
@@ -41,7 +42,7 @@ export default function CustomerPresentationClient({ userId }: CustomerPresentat
         <div>
           <p className={styles.kicker}>Admin / kundepresentasjon</p>
           <h1>{user.name}</h1>
-          <p>{user.customerNumber} · {user.email} · {user.membership}-medlem · {user.customerType === "dealer" ? "Forhandler" : "Kunde"}</p>
+          <p>{user.customerNumber} · @{username} · {user.email} · {user.membership}-medlem · {user.customerType === "dealer" ? "Forhandler" : "Kunde"}</p>
         </div>
         <div className={styles.customerHeroActions}>
           <a href="/admin/brukere" className={styles.secondaryButton}>Til brukerliste</a>
@@ -65,6 +66,7 @@ export default function CustomerPresentationClient({ userId }: CustomerPresentat
             <p><b>Kampanje</b><span>{user.originCampaign}</span></p>
             <p><b>Første objektgruppe</b><span>{user.originFirstObjectGroup}</span></p>
             <p><b>Registrert kanal</b><span>{user.originRegisteredChannel}</span></p>
+            <p><b>Brukernavn</b><span>@{username}</span></p>
             <p><b>Intern DB-ID</b><span>{user.userIdInternal}</span></p>
           </div>
         </div>

@@ -1,64 +1,56 @@
-# Collectium admin users v20.1
+# Collectium Developer Builder v1.5
 
-Denne pakken inneholder:
+## Nytt i v1.5
+- Ny knapp: **Se frontdesign**
+- Frontdesign-visning som viser:
+  - alle manifest-sider
+  - lokale `page`, `component` og `style` filer fra valgt mappe
+- Valgt lokal frontfil blir aktiv fil for preflight/deploy.
+- Ny knapp: **Deploy**
+- Deploy med dobbelbekreftelse:
+  1. **AI-sjekk / preflight**
+  2. **Deploy mock/staging**
+- Preflight sjekker blant annet:
+  - tom fil
+  - merge conflicts
+  - farlig SQL
+  - låste Collectium-kjernefiler
+  - mulig usikker API/DB-skriving
+  - manglende `object_group` ved `source_key`
+- Deploy er **mock/staging** i denne versjonen. Den skriver ikke live filer.
+- Live deploy må senere kobles til godkjent serverroute, audit-logg, tilgang og route whitelist.
 
-```txt
-components/admin/collectiumDemoUsers.ts
-components/admin/AdminUserSearchInsightRow.tsx
-styles/collectium-admin-users-v20-1.css
-install-admin-users-v20-1.ps1
+## Viktig
+Browseren kan ikke lese en Windows-mappe automatisk. Trykk **Last inn lokal mappe** og velg prosjektmappen manuelt:
+
+```text
+C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react
 ```
 
-## Innhold
-
-1. Retter TypeScript-feilen i `collectiumDemoUsers.ts`.
-2. Gjør demo-brukerne til organiserte, styrte, organiske testprofiler med `activityBot` og `functionTests`.
-3. Legger til ny boksrad for admin/brukere:
-   - søk / sortering
-   - antall synlige brukere
-   - samlet samlingsverdi
-   - type kunde/forhandler
-   - styrte testprofiler
-   - nye medlemmer etter Free/Bronze/Silver/Gold/Platinum
-   - utvikling fra forrige måned
-4. Legger til CSS-fix for Design/Varsler/Aktiviteter slik at panelene åpner som egne overlays og ikke inne i menyknappen.
-
-## Bruk
-
-Pakk ut ZIP i prosjektroten.
-
-Kjør:
+## Start
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\install-admin-users-v20-1.ps1
+.\Start-Collectium-Canvas.cmd
 ```
 
-Så må du importere komponenten der admin/brukere rendres:
-
-```tsx
-import "@/styles/collectium-admin-users-v20-1.css";
-import { AdminUserSearchInsightRow } from "@/components/admin/AdminUserSearchInsightRow";
-```
-
-Legg komponenten under øverste eksisterende boksrad:
-
-```tsx
-<AdminUserSearchInsightRow />
-```
-
-Test:
+## Manuell start
 
 ```powershell
-npm.cmd run build
+npm.cmd install
+npm.cmd run dev
 ```
 
-Hvis build er grønn:
+Åpne:
 
-```powershell
-git status
-git add components/admin/collectiumDemoUsers.ts components/admin/AdminUserSearchInsightRow.tsx styles/collectium-admin-users-v20-1.css app/admin/brukere/page.tsx components/admin/AdminUsersClient.tsx
-git commit -m "Add Collectium admin users v20.1 insights and menu panel fix"
-git push
+```text
+http://localhost:3000
 ```
 
-Hvis `AdminUsersClient.tsx` ikke finnes, ignorer den i `git add`.
+## API-er
+
+```text
+/api/control/manifest
+/api/control/search?q=catalog
+/api/deploy/preflight
+/api/deploy/mock
+```

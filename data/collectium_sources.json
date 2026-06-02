@@ -1,0 +1,85 @@
+{
+  "sources": [
+    {
+      "source_key": "norske_sedler",
+      "source_label": "Norske sedler",
+      "object_group": "banknote",
+      "objects": [
+        {
+          "source_key": "norske_sedler",
+          "object_group": "banknote",
+          "object_id": "NO-BN-1949-10-A",
+          "title": "10 kroner 1949 A",
+          "denomination_raw_no": "10 kroner",
+          "object_year_label": "1949",
+          "litra_raw_no": "A",
+          "denomination_issue_raw_no": "10 kroner 1949-serien",
+          "variant_type_raw_no": "A-utgave",
+          "signature_raw_no": "Norges Bank signaturfelt",
+          "ruler_name_raw_no": "Haakon VII",
+          "historical_ruler_raw_no": "Haakon VII",
+          "dynasty_house_raw_no": "Huset Glücksburg",
+          "issuer_raw_no": "Norges Bank",
+          "country_raw_no": "Norge",
+          "period_summary_no": "Etterkrigstid og gjenreisning i Norge.",
+          "material_raw_no": "Papir",
+          "grade_label": "01",
+          "rarity_label": "Sjelden",
+          "market_value": 15000,
+          "currency": "NOK",
+          "trend_percent_12m": 12,
+          "liquidity_label": "Middels",
+          "relations": [
+            {
+              "type": "regent",
+              "label": "Haakon VII"
+            },
+            {
+              "type": "issuer",
+              "label": "Norges Bank"
+            },
+            {
+              "type": "period",
+              "label": "Etterkrigstid"
+            }
+          ]
+        },
+        {
+          "source_key": "norske_sedler",
+          "object_group": "banknote",
+          "object_id": "NO-BN-1964-5-A",
+          "title": "5 kroner 1964 A",
+          "denomination_raw_no": "5 kroner",
+          "object_year_label": "1964",
+          "litra_raw_no": "A",
+          "denomination_issue_raw_no": "5 kroner 1963-serien",
+          "variant_type_raw_no": "A-utgave",
+          "signature_raw_no": "Norges Bank signaturfelt",
+          "ruler_name_raw_no": "Olav V",
+          "historical_ruler_raw_no": "Olav V",
+          "dynasty_house_raw_no": "Huset Glücksburg",
+          "issuer_raw_no": "Norges Bank",
+          "country_raw_no": "Norge",
+          "period_summary_no": "Modernisering av norsk betalingshistorie.",
+          "material_raw_no": "Papir",
+          "grade_label": "1+",
+          "rarity_label": "Vanlig",
+          "market_value": 1200,
+          "currency": "NOK",
+          "trend_percent_12m": 3,
+          "liquidity_label": "Høy",
+          "relations": [
+            {
+              "type": "regent",
+              "label": "Olav V"
+            },
+            {
+              "type": "issuer",
+              "label": "Norges Bank"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

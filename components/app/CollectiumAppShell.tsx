@@ -14,7 +14,7 @@
  *
  * Bruksområde:
  * Brukes av /minside, /admin, /admin/brukere, /admin/innstillinger, /admin/kunde/[userId]
- * og /admin/forhandlere.
+ * og /admin/forhandlere, samt /katalog.
  *
  * Berørte sider / routes:
  * - /minside
@@ -42,6 +42,7 @@ import AdminDealersClient from "../admin/AdminDealersClient";
 import AdminSettingsClient from "../admin/AdminSettingsClient";
 import AdminUsersClient from "../admin/AdminUsersClient";
 import CustomerPresentationClient from "../admin/CustomerPresentationClient";
+import CatalogWorkspaceClient from "../catalog/CatalogWorkspaceClient";
 import styles from "../landing/collectium-frontpage.module.css";
 
 type Session = {
@@ -52,7 +53,7 @@ type Session = {
   createdAt: string;
 };
 
-type AppPage = "minside" | "admin";
+type AppPage = "minside" | "admin" | "catalog";
 type AdminModule = "dashboard" | "users" | "settings" | "customer" | "dealers";
 
 type CollectiumAppShellProps = {
@@ -83,11 +84,25 @@ const notifications = [
   { type: "Aktivitet", title: "Kunde trenger hjelp", text: "Ola Berg har høy feilmengde i katalogfilter siste døgn." },
 ];
 
+
+function applyCollectiumDesign(template: string) {
+  if (typeof document === "undefined") return;
+  document.body.setAttribute("data-template", template);
+  document.documentElement.setAttribute("data-template", template);
+  window.localStorage.setItem("collectium-template", template);
+}
+
+
 export default function CollectiumAppShell({ page, adminModule = "dashboard", customerId }: CollectiumAppShellProps) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [designOpen, setDesignOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+
+  useEffect(() => {
+    const savedTemplate = window.localStorage.getItem("collectium-template") || "collectium";
+    applyCollectiumDesign(savedTemplate);
+  }, []);
 
   useEffect(() => {
     fetch("/api/auth/session", { cache: "no-store" })
@@ -143,7 +158,7 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
         <a href="/" className={styles.appBrandBlock}>
           <span>C</span>
           <strong>Collectium</strong>
-          <small>V19 låst sidemeny</small>
+          <small>V22 katalog arbeidsflate</small>
         </a>
 
         <p className={styles.sidebarLabel}>Hovedmeny</p>
@@ -192,7 +207,7 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
           </div>
         </header>
 
-        {isAdminPage ? <AdminContent module={adminModule} session={session} customerId={customerId} /> : <MyPageContent session={session} />}
+        {isAdminPage ? <AdminContent module={adminModule} session={session} customerId={customerId} /> : page === "catalog" ? <CatalogWorkspaceClient /> : <MyPageContent session={session} />}
       </section>
     </main>
   );
@@ -200,6 +215,7 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
 
 function isActive(page: AppPage, href: string, adminModule: AdminModule) {
   if (page === "minside" && href === "/minside") return true;
+  if (page === "catalog" && href === "/katalog") return true;
   if (page === "admin" && href === "/admin" && adminModule === "dashboard") return true;
   return false;
 }
@@ -207,6 +223,8 @@ function isActive(page: AppPage, href: string, adminModule: AdminModule) {
 function setDesignVars(key: string, value: string) {
   if (typeof document === "undefined") return;
   document.documentElement.style.setProperty(key, value);
+  document.body.style.setProperty(key, value);
+  window.localStorage.setItem(`collectium-design-${key}`, value);
 }
 
 function DesignOverlay() {
@@ -221,7 +239,7 @@ function DesignOverlay() {
           ["museum", "Museum"],
           ["finans", "Finans"],
         ].map(([key, label]) => (
-          <button key={key} type="button" onClick={() => document.body.setAttribute("data-template", key)}>{label}</button>
+          <button key={key} type="button" onClick={() => applyCollectiumDesign(key)}>{label}</button>
         ))}
       </div>
       <label>Hovedskrift <input type="range" min="9" max="17" defaultValue="13" onChange={(event) => setDesignVars("--ct-body-size", `${event.target.value}px`)} /></label>
