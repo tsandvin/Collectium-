@@ -68,3 +68,14 @@
 - La inn /admin med superadmin-kontroll.
 - Designpanelet åpnes som overlay og skal ikke presse login-layout.
 - Auth/login støtter superadmin fra Vercel environment variables.
+
+## v18 - Admin kundekilde og kundenummer
+
+- Lagt til låst kundenummerregel: CT-[LANDSKODE]-[ÅR]-[LØPENUMMER].
+- Lagt til forhandlernummerregel: CTD-[LANDSKODE]-[ÅR]-[LØPENUMMER].
+- Lagt til kundekilde/opprinnelse i adminlisten.
+- Lagt til filter for kundekilde.
+- Endret brukerlisten til fullbredde.
+- Flyttet arkivfaner slik at medlemskap/forhandlere ligger til venstre og Admin/Påloggede/Avloggede til høyre.
+- Utvidet ekspanderte brukerrader med kontakt, kundenummer, kundekilde, første aktivitet, samlergrupper, status og support.
+- Utvidet kundepresentasjonen med kundekilde, nummerregel og supportverktøy.

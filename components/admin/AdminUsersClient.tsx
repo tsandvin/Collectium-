@@ -4,12 +4,13 @@
  * COLLECTIUM FILE HEADER
  *
  * Overskrift:
- * AdminUsersClient v17
+ * AdminUsersClient v18
  *
  * Definering / formål:
- * Administrasjonsside for brukere, medlemskap, kundeaktivitet og support. Brukerlisten
- * ekspanderer ved klikk og gir rask oversikt over kontakt, samlergrupper, samlerverdi,
- * online-tid, mest brukte sider, status for samling/auksjon/nettbutikk og supportbehov.
+ * Fullbredde administrasjonsside for kunder, medlemskap, kundekilde/opprinnelse,
+ * aktivitet, support, samling, auksjon og nettbutikkstatus. Brukerlisten bruker
+ * arkivfaner med medlemskap/forhandlere til venstre og Admin/Påloggede/Avloggede
+ * til høyre. Rader ekspanderer og kan åpne egen kundepresentasjon.
  *
  * Bruksområde:
  * Brukes i innlogget adminflate /admin/brukere.
@@ -21,10 +22,27 @@
  * Berørte DB-brytere / feature_keys:
  * - admin.users.view
  * - admin.users.edit
+ * - admin.users.disable
+ * - admin.users.roles.manage
+ * - admin.users.sessions.view
  * - admin.users.activity.view
  * - admin.users.collection.view
  * - admin.users.payments.view
  * - admin.customer.presentation.view
+ * - admin.customer.origin.view
+ *
+ * Berørte fremtidige DB-felt:
+ * - customer_number
+ * - customer_country_code
+ * - customer_number_year
+ * - customer_number_sequence
+ * - customer_origin_type
+ * - customer_origin_source
+ * - customer_origin_referrer
+ * - customer_origin_campaign
+ * - customer_origin_dealer_id
+ * - customer_origin_first_page
+ * - customer_origin_first_object_group
  */
 
 import { useMemo, useState } from "react";
@@ -34,9 +52,16 @@ type Membership = "Free" | "Bronze" | "Silver" | "Gold" | "Platinum";
 type UserStatus = "active" | "suspended" | "pending" | "offline";
 type KycStatus = "verified" | "pending" | "not_started";
 type Presence = "Admin" | "Påloggede" | "Avloggede";
+type CustomerType = "customer" | "dealer";
+type CustomerOriginType = "organisk" | "forhandler" | "auksjon" | "nettbutikk" | "museum" | "kampanje" | "admin_support" | "import";
 
 type AdminUser = {
   id: string;
+  customerNumber: string;
+  customerCountryCode: string;
+  customerNumberYear: number;
+  customerNumberSequence: number;
+  customerType: CustomerType;
   initials: string;
   name: string;
   email: string;
@@ -58,6 +83,14 @@ type AdminUser = {
   onlineMonth: string;
   yearlyRevenue: string;
   since: string;
+  originType: CustomerOriginType;
+  originSource: string;
+  originReferrer: string;
+  originCampaign: string;
+  originDealerId?: string;
+  originFirstPage: string;
+  originFirstObjectGroup: string;
+  originRegisteredChannel: string;
   mostUsedPages: Array<{ page: string; percent: number }>;
   supportFlag: string;
   activityLog: string[];
@@ -66,6 +99,11 @@ type AdminUser = {
 const users: AdminUser[] = [
   {
     id: "92121216",
+    customerNumber: "CT-NO-2026-000001",
+    customerCountryCode: "NO",
+    customerNumberYear: 2026,
+    customerNumberSequence: 1,
+    customerType: "customer",
     initials: "OB",
     name: "Ola Berg",
     email: "ola@example.no",
@@ -84,13 +122,21 @@ const users: AdminUser[] = [
       { name: "Dokumenter", count: 23, value: "8 450 kr" },
     ],
     auction: "3 bud",
-    shop: "2 objekter til salgs",
+    shop: "2 butikkobjekter",
     collector: "Aktiv samler",
     lastOnline: "i dag 14:28",
     onlineToday: "2 t 14 min",
     onlineMonth: "38 t 20 min",
-    yearlyRevenue: "2 490 kr",
+    yearlyRevenue: "20 000 kr",
     since: "14.02.2026",
+    originType: "forhandler",
+    originSource: "Invitert av forhandler",
+    originReferrer: "Demo Forhandler",
+    originCampaign: "Vårkampanje 2026",
+    originDealerId: "CTD-NO-2026-000001",
+    originFirstPage: "/registrering",
+    originFirstObjectGroup: "Sedler",
+    originRegisteredChannel: "app.collectium.no",
     mostUsedPages: [
       { page: "Katalog", percent: 42 },
       { page: "Min samling", percent: 28 },
@@ -102,6 +148,11 @@ const users: AdminUser[] = [
   },
   {
     id: "10000018",
+    customerNumber: "CT-NO-2026-000018",
+    customerCountryCode: "NO",
+    customerNumberYear: 2026,
+    customerNumberSequence: 18,
+    customerType: "customer",
     initials: "KH",
     name: "Kari Hansen",
     email: "kari@example.no",
@@ -126,6 +177,13 @@ const users: AdminUser[] = [
     onlineMonth: "12 t 10 min",
     yearlyRevenue: "6 000 kr",
     since: "03.01.2026",
+    originType: "organisk",
+    originSource: "Organisk registrering",
+    originReferrer: "Google / søk",
+    originCampaign: "Ingen",
+    originFirstPage: "/",
+    originFirstObjectGroup: "Mynter",
+    originRegisteredChannel: "app.collectium.no",
     mostUsedPages: [
       { page: "Min samling", percent: 48 },
       { page: "Katalog", percent: 34 },
@@ -136,6 +194,11 @@ const users: AdminUser[] = [
   },
   {
     id: "ADMIN-001",
+    customerNumber: "CT-NO-2026-000000",
+    customerCountryCode: "NO",
+    customerNumberYear: 2026,
+    customerNumberSequence: 0,
+    customerType: "customer",
     initials: "CA",
     name: "Collectium Admin",
     email: "admin@collectium.no",
@@ -157,6 +220,13 @@ const users: AdminUser[] = [
     onlineMonth: "104 t",
     yearlyRevenue: "0 kr",
     since: "01.01.2026",
+    originType: "admin_support",
+    originSource: "Admin-opprettet",
+    originReferrer: "Collectium system",
+    originCampaign: "Intern",
+    originFirstPage: "/admin",
+    originFirstObjectGroup: "System",
+    originRegisteredChannel: "admin",
     mostUsedPages: [
       { page: "Admin", percent: 62 },
       { page: "Katalog", percent: 18 },
@@ -167,6 +237,11 @@ const users: AdminUser[] = [
   },
   {
     id: "DEALER-01",
+    customerNumber: "CTD-NO-2026-000001",
+    customerCountryCode: "NO",
+    customerNumberYear: 2026,
+    customerNumberSequence: 1,
+    customerType: "dealer",
     initials: "DF",
     name: "Demo Forhandler",
     email: "demo.forhandler@collectium.no",
@@ -191,6 +266,13 @@ const users: AdminUser[] = [
     onlineMonth: "18 t",
     yearlyRevenue: "20 000 kr",
     since: "18.02.2026",
+    originType: "admin_support",
+    originSource: "Forhandlerregistrering",
+    originReferrer: "Admin/support",
+    originCampaign: "Forhandlerpilot 2026",
+    originFirstPage: "/forhandler",
+    originFirstObjectGroup: "Sedler og mynter",
+    originRegisteredChannel: "app.collectium.no",
     mostUsedPages: [
       { page: "Forhandler", percent: 44 },
       { page: "Auksjon", percent: 34 },
@@ -201,9 +283,9 @@ const users: AdminUser[] = [
   },
 ];
 
-const membershipTabs: Array<"Alle" | Membership> = ["Alle", "Free", "Bronze", "Silver", "Gold", "Platinum"];
+const membershipTabs: Array<"Alle" | Membership | "Forhandlere"> = ["Alle", "Free", "Bronze", "Silver", "Gold", "Platinum", "Forhandlere"];
 const archiveTabs: Presence[] = ["Admin", "Påloggede", "Avloggede"];
-const profileTabs = ["Profil", "Medlemskap", "Samling", "Auksjon", "Historikk", "Sikkerhet", "KYC", "Prosess", "Innstillinger", "Admin"];
+const originFilters: Array<"Alle" | CustomerOriginType> = ["Alle", "organisk", "forhandler", "auksjon", "nettbutikk", "museum", "kampanje", "admin_support", "import"];
 
 function statusLabel(status: UserStatus) {
   if (status === "active") return "Aktiv";
@@ -218,39 +300,52 @@ function kycLabel(status: KycStatus) {
   return "Ikke startet";
 }
 
+function originLabel(origin: CustomerOriginType) {
+  const labels: Record<CustomerOriginType, string> = {
+    organisk: "Organisk",
+    forhandler: "Forhandler",
+    auksjon: "Auksjon",
+    nettbutikk: "Nettbutikk",
+    museum: "Museum",
+    kampanje: "Kampanje",
+    admin_support: "Admin/support",
+    import: "Import",
+  };
+  return labels[origin];
+}
+
 export default function AdminUsersClient() {
   const [search, setSearch] = useState("");
-  const [membership, setMembership] = useState<"Alle" | Membership>("Alle");
+  const [membership, setMembership] = useState<"Alle" | Membership | "Forhandlere">("Alle");
   const [status, setStatus] = useState<"Alle" | UserStatus>("Alle");
   const [kyc, setKyc] = useState<"Alle" | KycStatus>("Alle");
-  const [archive, setArchive] = useState<Presence>("Admin");
-  const [expandedId, setExpandedId] = useState(users[0].id);
-  const [selected, setSelected] = useState<AdminUser>(users[0]);
-  const [tab, setTab] = useState("Medlemskap");
+  const [origin, setOrigin] = useState<"Alle" | CustomerOriginType>("Alle");
+  const [archive, setArchive] = useState<Presence>("Påloggede");
+  const [expandedId, setExpandedId] = useState(users[1].id);
 
   const filtered = useMemo(() => {
     return users.filter((user) => {
-      const textMatch = `${user.name} ${user.email} ${user.phone} ${user.id}`.toLowerCase().includes(search.toLowerCase());
-      const membershipMatch = membership === "Alle" || user.membership === membership;
+      const textMatch = `${user.name} ${user.email} ${user.phone} ${user.id} ${user.customerNumber} ${user.originSource}`.toLowerCase().includes(search.toLowerCase());
+      const membershipMatch = membership === "Alle" || (membership === "Forhandlere" ? user.customerType === "dealer" : user.membership === membership);
       const statusMatch = status === "Alle" || user.status === status;
       const kycMatch = kyc === "Alle" || user.kyc === kyc;
-      const archiveMatch = archive === "Admin" ? true : user.presence === archive;
-      return textMatch && membershipMatch && statusMatch && kycMatch && archiveMatch;
+      const originMatch = origin === "Alle" || user.originType === origin;
+      const archiveMatch = archive === "Admin" ? user.presence === "Admin" || user.membership === "Platinum" : user.presence === archive;
+      return textMatch && membershipMatch && statusMatch && kycMatch && originMatch && archiveMatch;
     });
-  }, [search, membership, status, kyc, archive]);
+  }, [search, membership, status, kyc, origin, archive]);
 
-  function selectUser(user: AdminUser) {
-    setSelected(user);
+  function toggleUser(user: AdminUser) {
     setExpandedId((current) => (current === user.id ? "" : user.id));
   }
 
   return (
-    <div className={styles.adminUsersPage}>
+    <div className={styles.adminUsersPageFull}>
       <section className={styles.adminPageHeader}>
         <div>
           <p className={styles.kicker}>Admin / brukere</p>
           <h1>Brukere og medlemskap</h1>
-          <p>Brukeroversikt med medlemskap, kundeaktivitet, supportlogg, samling, auksjon og nettbutikkstatus.</p>
+          <p>Brukeroversikt med medlemskap, kundenummer, kundekilde, aktivitet, supportlogg, samling, auksjon og nettbutikkstatus.</p>
         </div>
         <div className={styles.adminHeaderActions}>
           <a href="/admin" className={styles.secondaryButton}>Admin dashboard</a>
@@ -265,10 +360,10 @@ export default function AdminUsersClient() {
         <StatCard value={'2,4"'} label="Omsetning hittil i år" note="180 000 kr fee" tone="blue" />
       </section>
 
-      <section className={`${styles.adminFilterBar} ct-panel`}>
+      <section className={`${styles.adminFilterBarV18} ct-panel`}>
         <label>
           Søk bruker
-          <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Navn, e-post, telefon eller ID" />
+          <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Navn, e-post, telefon, kundenummer eller ID" />
         </label>
         <label>
           Status
@@ -290,52 +385,51 @@ export default function AdminUsersClient() {
           </select>
         </label>
         <label>
-          Medlemskap
-          <select value={membership} onChange={(event) => setMembership(event.target.value as "Alle" | Membership)}>
-            {membershipTabs.map((item) => <option key={item}>{item}</option>)}
+          Kundekilde
+          <select value={origin} onChange={(event) => setOrigin(event.target.value as "Alle" | CustomerOriginType)}>
+            {originFilters.map((item) => <option key={item} value={item}>{item === "Alle" ? "Alle" : originLabel(item)}</option>)}
           </select>
         </label>
         <button type="button" className={styles.goldButton}>Filtrer</button>
       </section>
 
-      <section className={styles.adminUserWorkspaceWide}>
-        <div className={`${styles.adminUserList} ct-panel`}>
-          <div className={styles.archiveTabs}>
+      <section className={`${styles.adminUserListFull} ct-panel`}>
+        <div className={styles.userArchiveTabsSplit}>
+          <div className={styles.archiveTabsLeft} aria-label="Medlemskap og kundetype">
+            {membershipTabs.map((item) => (
+              <button key={item} type="button" onClick={() => setMembership(item)} className={membership === item ? styles.archiveTabActive : ""}>
+                {item}
+              </button>
+            ))}
+          </div>
+          <div className={styles.archiveTabsRight} aria-label="Statusfaner">
             {archiveTabs.map((item) => (
               <button key={item} type="button" onClick={() => setArchive(item)} className={archive === item ? styles.archiveTabActive : ""}>
                 {item}
               </button>
             ))}
           </div>
-
-          <div className={styles.adminTabs}>
-            {membershipTabs.map((item) => (
-              <button key={item} type="button" onClick={() => setMembership(item)} className={membership === item ? styles.adminTabActive : ""}>
-                {item}
-              </button>
-            ))}
-          </div>
-
-          <div className={styles.adminUserTableHeader}>
-            <span>Bruker</span><span>Status</span><span>KYC</span><span>Samling</span><span>Auksjon</span><span>Handling</span>
-          </div>
-
-          {filtered.map((user) => (
-            <div key={user.id} className={`${styles.adminUserExpandable} ${selected.id === user.id ? styles.adminUserRowActive : ""}`}>
-              <button type="button" className={styles.adminUserRow} onClick={() => selectUser(user)}>
-                <span className={styles.userIdentity}><b>{user.initials}</b><strong>{user.name}</strong><small>{user.email} / {user.id}</small></span>
-                <span><em className={`${styles.statusPill} ${styles[user.status]}`}>{statusLabel(user.status)}</em></span>
-                <span><em className={`${styles.statusPill} ${styles[user.kyc]}`}>{kycLabel(user.kyc)}</em></span>
-                <span><strong>{user.collectionValue}</strong><small>{user.objects} objekter</small></span>
-                <span><strong>{user.auction}</strong></span>
-                <span><i>Åpne ark</i><small>Klikk for profilkort</small></span>
-              </button>
-              {expandedId === user.id ? <ExpandedUserRow user={user} /> : null}
-            </div>
-          ))}
         </div>
 
-        <UserArchiveCard user={selected} activeTab={tab} onTabChange={setTab} />
+        <div className={styles.adminUserTableHeaderV18}>
+          <span>Bruker</span><span>Kundenummer</span><span>Kilde</span><span>Status</span><span>KYC</span><span>Samling</span><span>Auksjon</span><span>Handling</span>
+        </div>
+
+        {filtered.map((user) => (
+          <div key={user.id} className={`${styles.adminUserExpandable} ${expandedId === user.id ? styles.adminUserRowActive : ""}`}>
+            <button type="button" className={styles.adminUserRowV18} onClick={() => toggleUser(user)}>
+              <span className={styles.userIdentity}><b>{user.initials}</b><strong>{user.name}</strong><small>{user.email} / {user.id}</small></span>
+              <span><strong>{user.customerNumber}</strong><small>{user.customerCountryCode} · {user.customerNumberYear}</small></span>
+              <span><strong>{originLabel(user.originType)}</strong><small>{user.originSource}</small></span>
+              <span><em className={`${styles.statusPill} ${styles[user.status]}`}>{statusLabel(user.status)}</em></span>
+              <span><em className={`${styles.statusPill} ${styles[user.kyc]}`}>{kycLabel(user.kyc)}</em></span>
+              <span><strong>{user.collectionValue}</strong><small>{user.objects} objekter</small></span>
+              <span><strong>{user.auction}</strong><small>{user.shop}</small></span>
+              <span><i>Åpne ark</i><small>Klikk for hurtigvisning</small></span>
+            </button>
+            {expandedId === user.id ? <ExpandedUserRow user={user} /> : null}
+          </div>
+        ))}
       </section>
     </div>
   );
@@ -353,12 +447,32 @@ function StatCard({ value, label, note, tone }: { value: string; label: string; 
 
 function ExpandedUserRow({ user }: { user: AdminUser }) {
   return (
-    <div className={styles.expandedUserRow}>
+    <div className={styles.expandedUserRowV18}>
       <div>
         <h3>Kontakt</h3>
         <p>{user.email}</p>
         <p>{user.phone}</p>
         <p>{user.address}</p>
+        <p>{user.country} · {user.customerCountryCode}</p>
+      </div>
+      <div>
+        <h3>Kundenummer</h3>
+        <p><b>{user.customerNumber}</b></p>
+        <p>Format: {user.customerType === "dealer" ? "CTD" : "CT"}-[LAND]-[ÅR]-[LØPENR]</p>
+        <p>Sekvens: {String(user.customerNumberSequence).padStart(6, "0")}</p>
+      </div>
+      <div>
+        <h3>Kundekilde</h3>
+        <p>{user.originSource}</p>
+        <p>Referrer: {user.originReferrer}</p>
+        <p>Kampanje: {user.originCampaign}</p>
+        {user.originDealerId ? <p>Forhandler: {user.originDealerId}</p> : null}
+      </div>
+      <div>
+        <h3>Første aktivitet</h3>
+        <p>Første side: {user.originFirstPage}</p>
+        <p>Objektgruppe: {user.originFirstObjectGroup}</p>
+        <p>Kanal: {user.originRegisteredChannel}</p>
       </div>
       <div>
         <h3>Samlergrupper</h3>
@@ -377,70 +491,12 @@ function ExpandedUserRow({ user }: { user: AdminUser }) {
         <p>Online i dag: {user.onlineToday}</p>
         <p>Mest brukt: {user.mostUsedPages[0]?.page}</p>
         <p>Support: {user.supportFlag}</p>
-        <a href={`/admin/kunde/${encodeURIComponent(user.id)}`} className={styles.secondaryButton} data-feature-key="admin.customer.presentation.view">Åpne kundepresentasjon</a>
+      </div>
+      <div className={styles.expandedUserActions}>
+        <h3>Kundepresentasjon</h3>
+        <p>Egen side med full profil, aktivitet, grafer, supportlogg og systemgrunnlag.</p>
+        <a href={`/admin/kunde/${encodeURIComponent(user.id)}`} className={styles.goldButton} data-feature-key="admin.customer.presentation.view">Åpne kundepresentasjon</a>
       </div>
     </div>
-  );
-}
-
-function UserArchiveCard({ user, activeTab, onTabChange }: { user: AdminUser; activeTab: string; onTabChange: (tab: string) => void }) {
-  return (
-    <aside className={`${styles.userArchiveCard} ct-panel`}>
-      <div className={styles.userArchiveTop}>
-        <div className={styles.bigInitials}>{user.initials}</div>
-        <div>
-          <h2>{user.name}</h2>
-          <p>{user.email} · {user.phone}</p>
-          <p>{user.membership}-medlem · {user.collector} · KYC {kycLabel(user.kyc).toLowerCase()}</p>
-        </div>
-        <div className={styles.userOnline}>Sist online: <b>{user.lastOnline}</b> ●</div>
-      </div>
-
-      <nav className={styles.userProfileTabs}>
-        {profileTabs.map((item) => (
-          <button key={item} type="button" onClick={() => onTabChange(item)} className={activeTab === item ? styles.adminTabActive : ""}>
-            {item}
-          </button>
-        ))}
-      </nav>
-
-      {activeTab === "Medlemskap" ? <MembershipPanel user={user} /> : <GenericPanel user={user} activeTab={activeTab} />}
-    </aside>
-  );
-}
-
-function MembershipPanel({ user }: { user: AdminUser }) {
-  return (
-    <div className={styles.membershipGrid}>
-      <InfoBox title="Nåværende medlemskap" value={user.membership} note="Tilgang, filter og medlemsfordeler" action="Endre medlemskap" />
-      <InfoBox title="Ble medlem" value={user.since} note="Invitert av Collectium" />
-      <InfoBox title="Medlemskapet går ut" value="01.12.2027" note="Automatisk fornyelse kan styres" action="Forleng medlemskap" />
-      <InfoBox title="Betalingsstatus" value="Betalt" note={`Neste fornyelse ${user.yearlyRevenue}`} action="Fakturaer" />
-      <InfoBox title="Samlerverdi" value={user.collectionValue} note={`${user.objects} objekter fordelt på ${user.groups.length || 0} grupper`} action="Se samling" />
-      <InfoBox title="Inkludert tilgang" value="Aktiv" note="Auksjon, samling, rapporter og statistikk" action="Se fordeler" />
-      <InfoBox title="Kampanje / rabatt" value="Vårkampanje 2026" note="Gyldig til 30.06.2026" />
-      <InfoBox title="Historikk" value="Oppgradert" note="Free → Gold / fornyet medlemskap" action="Se historikk" />
-    </div>
-  );
-}
-
-function GenericPanel({ user, activeTab }: { user: AdminUser; activeTab: string }) {
-  return (
-    <div className={styles.membershipGrid}>
-      <InfoBox title={`${activeTab} status`} value="Klar" note={`${activeTab} for ${user.name} vises her når API er koblet.`} />
-      <InfoBox title="Aktivitetsgrunnlag" value={user.onlineMonth} note="Samlet online-tid siste 30 dager" />
-      <InfoBox title="Support" value={user.supportFlag} note="Brukes for å hjelpe kunden raskere." />
-    </div>
-  );
-}
-
-function InfoBox({ title, value, note, action }: { title: string; value: string; note: string; action?: string }) {
-  return (
-    <article className={`${styles.infoBox} ct-card`}>
-      <span>{title}</span>
-      <strong>{value}</strong>
-      <p>{note}</p>
-      {action ? <button type="button">{action}</button> : null}
-    </article>
   );
 }

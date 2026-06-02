@@ -2827,3 +2827,199 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
     grid-template-columns: 1fr;
   }
 }
+
+/* V18 customer number, customer origin and full-width admin user registry */
+.adminUsersPageFull {
+  display: grid;
+  gap: 18px;
+  width: 100%;
+}
+
+.adminFilterBarV18 {
+  display: grid;
+  grid-template-columns: minmax(280px, 2fr) repeat(3, minmax(160px, 1fr)) auto;
+  gap: 12px;
+  align-items: end;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(37, 92, 139, 0.18);
+}
+
+.adminFilterBarV18 label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: #516a7d;
+  font-weight: 900;
+}
+
+.adminFilterBarV18 input,
+.adminFilterBarV18 select {
+  width: 100%;
+  border: 1px solid rgba(37, 92, 139, 0.18);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.92);
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.adminUserListFull {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.80);
+  border: 1px solid rgba(37, 92, 139, 0.18);
+  box-shadow: 0 20px 60px rgba(18, 55, 91, 0.08);
+  padding: 18px;
+}
+
+.userArchiveTabsSplit {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 14px;
+  border-bottom: 1px solid rgba(63, 91, 70, 0.18);
+  margin-bottom: 12px;
+}
+
+.archiveTabsLeft,
+.archiveTabsRight {
+  display: flex;
+  align-items: end;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.archiveTabsLeft button,
+.archiveTabsRight button {
+  padding: 10px 18px 9px;
+  min-width: 92px;
+  border: 1px solid rgba(118, 138, 95, 0.28);
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  background: linear-gradient(180deg, rgba(255,255,245,0.96), rgba(236,244,226,0.92));
+  color: #253624;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: inset 0 -6px 12px rgba(30, 50, 20, 0.04);
+}
+
+.archiveTabsRight button {
+  background: linear-gradient(180deg, rgba(252,252,255,0.98), rgba(232,240,250,0.94));
+}
+
+.adminUserTableHeaderV18,
+.adminUserRowV18 {
+  display: grid;
+  grid-template-columns: minmax(210px, 1.5fr) minmax(150px, 1fr) minmax(150px, 1fr) 0.75fr 0.75fr 0.85fr 0.9fr 0.8fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.adminUserTableHeaderV18 {
+  padding: 12px 16px;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #627888;
+  border-bottom: 1px solid rgba(37, 92, 139, 0.12);
+}
+
+.adminUserRowV18 {
+  width: 100%;
+  min-height: 76px;
+  text-align: left;
+  border: 0;
+  border-bottom: 1px solid rgba(37, 92, 139, 0.10);
+  background: rgba(255, 255, 250, 0.70);
+  padding: 12px 16px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.adminUserRowV18:hover {
+  background: rgba(255, 239, 188, 0.58);
+}
+
+.adminUserRowV18 strong,
+.adminUserRowV18 small {
+  display: block;
+}
+
+.adminUserRowV18 small {
+  color: #5a7185;
+}
+
+.expandedUserRowV18 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 14px;
+  padding: 16px 18px 18px 62px;
+  background: linear-gradient(180deg, rgba(255, 250, 230, 0.88), rgba(255, 255, 247, 0.76));
+  border-top: 1px solid rgba(170, 140, 60, 0.18);
+}
+
+.expandedUserRowV18 h3 {
+  margin: 0 0 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #5b6f63;
+}
+
+.expandedUserRowV18 p {
+  margin: 4px 0;
+  font-size: 12px;
+  color: #273a42;
+}
+
+.expandedUserActions {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+}
+
+.expandedUserActions a {
+  justify-content: center;
+  text-decoration: none;
+  width: max-content;
+}
+
+@media (max-width: 1360px) {
+  .adminUserTableHeaderV18,
+  .adminUserRowV18 {
+    grid-template-columns: minmax(210px, 1.5fr) minmax(150px, 1fr) minmax(150px, 1fr) 0.75fr 0.8fr 0.8fr;
+  }
+
+  .adminUserTableHeaderV18 span:nth-child(5),
+  .adminUserTableHeaderV18 span:nth-child(7),
+  .adminUserRowV18 > span:nth-child(5),
+  .adminUserRowV18 > span:nth-child(7) {
+    display: none;
+  }
+}
+
+@media (max-width: 1040px) {
+  .adminFilterBarV18 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .adminFilterBarV18 .goldButton {
+    grid-column: 1 / -1;
+  }
+
+  .userArchiveTabsSplit {
+    display: grid;
+  }
+
+  .adminUserTableHeaderV18 {
+    display: none;
+  }
+
+  .adminUserRowV18,
+  .expandedUserRowV18 {
+    grid-template-columns: 1fr;
+    padding-left: 16px;
+  }
+}

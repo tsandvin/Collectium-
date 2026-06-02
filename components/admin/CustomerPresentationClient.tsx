@@ -4,18 +4,19 @@
  * COLLECTIUM FILE HEADER
  *
  * Overskrift:
- * CustomerPresentationClient v17
+ * CustomerPresentationClient v18
  *
  * Definering / formål:
- * Kundepresentasjon for support/admin med aktivitet, påloggingstid, mest brukte sider,
- * samling, auksjon, nettbutikkstatus og aktivitetslogg. Dette er en egen dypere side
- * for valgt kunde.
+ * Kundepresentasjon for support/admin med kundenummer, kundekilde/opprinnelse,
+ * aktivitet, påloggingstid, mest brukte sider, samlergrupper, auksjon, nettbutikkstatus
+ * og aktivitetslogg. Dette er egen dypere side for valgt kunde.
  *
  * Bruksområde:
  * Brukes av /admin/kunde/[userId].
  *
  * Berørte DB-brytere / feature_keys:
  * - admin.customer.presentation.view
+ * - admin.customer.origin.view
  * - admin.users.activity.view
  * - admin.users.collection.view
  * - admin.users.support.view
@@ -37,13 +38,16 @@ const pageUse = [
 const loginGraph = [34, 52, 28, 65, 44, 78, 61, 88, 42, 70, 55, 92];
 
 export default function CustomerPresentationClient({ userId }: CustomerPresentationClientProps) {
+  const isDealer = userId.toLowerCase().includes("dealer");
+  const customerNumber = isDealer ? "CTD-NO-2026-000001" : "CT-NO-2026-000001";
+
   return (
     <div className={styles.customerPage}>
       <section className={`${styles.customerHero} ct-panel`}>
         <div>
-          <p className={styles.kicker}>Admin / kunde presentasjon</p>
-          <h1>Ola Berg</h1>
-          <p>Kunde-ID {userId} · ola@example.no · 92121216 · Gold-medlem · KYC venter</p>
+          <p className={styles.kicker}>Admin / kundepresentasjon</p>
+          <h1>{isDealer ? "Demo Forhandler" : "Ola Berg"}</h1>
+          <p>{customerNumber} · {isDealer ? "demo.forhandler@collectium.no" : "ola@example.no"} · {isDealer ? "Forhandlerkonto" : "Gold-medlem"} · KYC venter</p>
         </div>
         <div className={styles.customerHeroActions}>
           <a href="/admin/brukere" className={styles.secondaryButton}>Til brukerliste</a>
@@ -52,13 +56,25 @@ export default function CustomerPresentationClient({ userId }: CustomerPresentat
       </section>
 
       <section className={styles.customerMetricGrid}>
-        <article className="ct-card"><span>Total samlerverdi</span><strong>128 450 kr</strong><small>247 objekter</small></article>
-        <article className="ct-card"><span>Online i dag</span><strong>2 t 14 min</strong><small>38 t siste måned</small></article>
-        <article className="ct-card"><span>Mest brukt side</span><strong>Katalog</strong><small>42 % av aktiviteten</small></article>
-        <article className="ct-card"><span>Supportstatus</span><strong>Trenger hjelp</strong><small>Katalogfilter / auksjon</small></article>
+        <article className="ct-card"><span>Kundenummer</span><strong>{customerNumber}</strong><small>Landkode NO · år 2026</small></article>
+        <article className="ct-card"><span>Total samlerverdi</span><strong>{isDealer ? "0 kr" : "128 450 kr"}</strong><small>{isDealer ? "forhandlerkonto" : "247 objekter"}</small></article>
+        <article className="ct-card"><span>Online i dag</span><strong>{isDealer ? "31 min" : "2 t 14 min"}</strong><small>{isDealer ? "18 t siste måned" : "38 t siste måned"}</small></article>
+        <article className="ct-card"><span>Supportstatus</span><strong>Trenger oppfølging</strong><small>Katalogfilter / avtale / auksjon</small></article>
       </section>
 
       <section className={styles.customerWorkspace}>
+        <div className={`${styles.customerPanel} ct-panel`}>
+          <h2>Kundeopprinnelse</h2>
+          <div className={styles.customerListGrid}>
+            <p><b>Kildetype</b><span>{isDealer ? "Forhandlerregistrering" : "Invitert av forhandler"}</span></p>
+            <p><b>Første side</b><span>{isDealer ? "/forhandler" : "/registrering"}</span></p>
+            <p><b>Kampanje</b><span>{isDealer ? "Forhandlerpilot 2026" : "Vårkampanje 2026"}</span></p>
+            <p><b>Første objektgruppe</b><span>{isDealer ? "Sedler og mynter" : "Sedler"}</span></p>
+            <p><b>Registrert kanal</b><span>app.collectium.no</span></p>
+            <p><b>Regel</b><span>CT-[LAND]-[ÅR]-[LØPENR]</span></p>
+          </div>
+        </div>
+
         <div className={`${styles.customerPanel} ct-panel`}>
           <h2>Aktivitet siste periode</h2>
           <div className={styles.activityGraph} aria-label="Påloggingsgraf">
@@ -66,7 +82,7 @@ export default function CustomerPresentationClient({ userId }: CustomerPresentat
               <span key={index} style={{ height: `${value}%` }} title={`${value}%`} />
             ))}
           </div>
-          <p>Grafen viser online-aktivitet og kan senere hentes fra aktivitetslogg i MariaDB.</p>
+          <p>Grafen viser online-aktivitet og skal senere hentes fra aktivitetslogg i MariaDB.</p>
         </div>
 
         <div className={`${styles.customerPanel} ct-panel`}>
@@ -83,12 +99,22 @@ export default function CustomerPresentationClient({ userId }: CustomerPresentat
         <div className={`${styles.customerPanel} ct-panel`}>
           <h2>Samling og marked</h2>
           <div className={styles.customerListGrid}>
-            <p><b>Sedler</b><span>128 objekter · 88 200 kr</span></p>
-            <p><b>Mynter</b><span>96 objekter · 31 800 kr</span></p>
-            <p><b>Dokumenter</b><span>23 objekter · 8 450 kr</span></p>
-            <p><b>Auksjon</b><span>3 aktive bud</span></p>
-            <p><b>Nettbutikk</b><span>2 objekter til salgs</span></p>
+            <p><b>Sedler</b><span>{isDealer ? "0 objekter · kategori aktiv" : "128 objekter · 88 200 kr"}</span></p>
+            <p><b>Mynter</b><span>{isDealer ? "0 objekter · kategori aktiv" : "96 objekter · 31 800 kr"}</span></p>
+            <p><b>Dokumenter</b><span>{isDealer ? "ikke aktiv" : "23 objekter · 8 450 kr"}</span></p>
+            <p><b>Auksjon</b><span>{isDealer ? "Auksjonskonto aktiv" : "3 aktive bud"}</span></p>
+            <p><b>Nettbutikk</b><span>{isDealer ? "Nettbutikk aktiv" : "2 objekter til salgs"}</span></p>
             <p><b>Risiko</b><span>1 åpen supportindikasjon</span></p>
+          </div>
+        </div>
+
+        <div className={`${styles.customerPanel} ct-panel`}>
+          <h2>Supportverktøy</h2>
+          <div className={styles.customerListGrid}>
+            <p><b>Siste feilside</b><span>/katalog/filter</span></p>
+            <p><b>Feiltype</b><span>Filter ga 0 treff</span></p>
+            <p><b>Anbefalt hjelp</b><span>Vis riktig filterrekkefølge og nullstill filter</span></p>
+            <p><b>Kontakt</b><span>Send melding / opprett supportsak</span></p>
           </div>
         </div>
 
