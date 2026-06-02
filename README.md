@@ -1,64 +1,64 @@
-# Collectium API bridge patch
+# Collectium admin users v20.1
 
-Denne pakken flytter MariaDB-tilkoblingen bort fra lokal Next.js og over til PHP/API på Domeneshop.
+Denne pakken inneholder:
 
-## 1. Last opp PHP-filer
-
-Last opp innholdet i:
-
-```text
-app/api/bridge/
+```txt
+components/admin/collectiumDemoUsers.ts
+components/admin/AdminUserSearchInsightRow.tsx
+styles/collectium-admin-users-v20-1.css
+install-admin-users-v20-1.ps1
 ```
 
-til serveren:
+## Innhold
 
-```text
-www/app/api/bridge/
-```
+1. Retter TypeScript-feilen i `collectiumDemoUsers.ts`.
+2. Gjør demo-brukerne til organiserte, styrte, organiske testprofiler med `activityBot` og `functionTests`.
+3. Legger til ny boksrad for admin/brukere:
+   - søk / sortering
+   - antall synlige brukere
+   - samlet samlingsverdi
+   - type kunde/forhandler
+   - styrte testprofiler
+   - nye medlemmer etter Free/Bronze/Silver/Gold/Platinum
+   - utvikling fra forrige måned
+4. Legger til CSS-fix for Design/Varsler/Aktiviteter slik at panelene åpner som egne overlays og ikke inne i menyknappen.
 
-## 2. Lag config.php på server
+## Bruk
 
-Kopier:
+Pakk ut ZIP i prosjektroten.
 
-```text
-config.example.php
-```
-
-til:
-
-```text
-config.php
-```
-
-Fyll inn ekte DB-passord og en lang API-nøkkel.
-
-## 3. Oppdater lokal .env.local i Next.js
-
-Legg til:
-
-```env
-COLLECTIUM_API_BASE_URL=https://www.collectium.no/app/api/bridge/
-COLLECTIUM_API_KEY=samme_api_nokkel_som_i_config_php
-```
-
-Du kan la DB_* stå, men Next.js skal ikke lenger bruke dem for katalog/admin-kontroll når filene i denne pakken er lagt inn.
-
-## 4. Kopier Next-filer
-
-Kopier filene fra `next/` inn i prosjektroten din. De erstatter tilsvarende filer.
-
-## 5. Test
-
-Start lokalt:
+Kjør:
 
 ```powershell
-npm.cmd run dev
+powershell -ExecutionPolicy Bypass -File .\install-admin-users-v20-1.ps1
 ```
 
-Åpne:
+Så må du importere komponenten der admin/brukere rendres:
 
-```text
-http://localhost:3000/admin/kontroll
+```tsx
+import "@/styles/collectium-admin-users-v20-1.css";
+import { AdminUserSearchInsightRow } from "@/components/admin/AdminUserSearchInsightRow";
 ```
 
-Forventet: siden viser databasenavn og antall i `ct_app_pages`.
+Legg komponenten under øverste eksisterende boksrad:
+
+```tsx
+<AdminUserSearchInsightRow />
+```
+
+Test:
+
+```powershell
+npm.cmd run build
+```
+
+Hvis build er grønn:
+
+```powershell
+git status
+git add components/admin/collectiumDemoUsers.ts components/admin/AdminUserSearchInsightRow.tsx styles/collectium-admin-users-v20-1.css app/admin/brukere/page.tsx components/admin/AdminUsersClient.tsx
+git commit -m "Add Collectium admin users v20.1 insights and menu panel fix"
+git push
+```
+
+Hvis `AdminUsersClient.tsx` ikke finnes, ignorer den i `git add`.

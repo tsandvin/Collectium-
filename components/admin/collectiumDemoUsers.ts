@@ -240,3 +240,35 @@ export function findDemoUser(userId: string) {
   return allDemoUsers.find((u) => u.id.toLowerCase() === userId.toLowerCase() || u.userIdInternal.toLowerCase() === userId.toLowerCase() || u.customerNumber.toLowerCase() === userId.toLowerCase()) || allDemoUsers[0];
 }
 
+
+export const adminUserSearchSummary = {
+  totalUsers: allDemoUsers.length,
+  visibleUsers: allDemoUsers.filter((u) => u.status !== "anonymized").length,
+  totalCollectionValue: allDemoUsers.reduce((sum, u) => sum + u.collectionValue, 0),
+  totalObjects: allDemoUsers.reduce((sum, u) => sum + u.objects, 0),
+  totalGroups: allDemoUsers.reduce((sum, u) => sum + u.groups.length, 0),
+  supportIndicators: allDemoUsers.filter((u) => u.supportOpenCases > 0 || u.supportFlag !== "Ingen aktiv sak").length,
+  controlledOrganicBots: allDemoUsers.length,
+  membershipCounts: allDemoUsers.reduce<Record<Membership, number>>(
+    (acc, user) => {
+      acc[user.membership] += 1;
+      return acc;
+    },
+    { Free: 0, Bronze: 0, Silver: 0, Gold: 0, Platinum: 0 }
+  ),
+  customerTypeCounts: allDemoUsers.reduce<Record<CustomerType, number>>(
+    (acc, user) => {
+      acc[user.customerType] += 1;
+      return acc;
+    },
+    { customer: 0, dealer: 0 }
+  ),
+  monthDevelopment: {
+    newMembersThisMonth: 8,
+    newMembersPreviousMonth: 5,
+    percentChange: 60,
+    collectionValueChangePercent: 14,
+    searchActivityChangePercent: 22,
+  },
+};
+
