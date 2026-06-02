@@ -135,3 +135,9 @@
     flex-basis: 100%;
   }
 }
+
+.collectium-admin-mobile-nav__item.is-active {
+  background: rgba(32, 92, 170, 0.12);
+  color: #143761;
+  font-weight: 700;
+}
