@@ -4,11 +4,11 @@
  * COLLECTIUM FILE HEADER
  *
  * Overskrift:
- * PublicTopMenu v13
+ * PublicTopMenu v14
  *
  * Definering / formål:
  * Offentlig toppmeny for Collectium landing, login og registrering. Menyen viser ikke
- * innlogget sidemeny. Den har egen Design-knapp som åpner skin-valg for offentlig template.
+ * innlogget sidemeny. Den har egen Design-knapp som åpner skin-valg, typografislidere, luft/spacing og skjermmodus for offentlig template. Valgene lagres i localStorage og settes som CSS-variabler på documentElement/body.
  *
  * Bruksområde:
  * Brukes på /, /login og /registrering før brukeren er logget inn.
@@ -38,7 +38,7 @@
  * log_action: public_topmenu.view
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../landing/collectium-frontpage.module.css";
 
 export type PublicSkin = "collectium" | "enkel" | "museum" | "finans";
@@ -50,7 +50,7 @@ const publicLinks = [
     href: "/medlemskap",
     featureKey: "landing.membership",
   },
-  { label: "Forhandlere", href: "/forhandlere", featureKey: "dealer.view" },
+  { label: "Forhandlere", href: "/forhandler", featureKey: "dealer.view" },
   { label: "Auksjon", href: "/auksjon", featureKey: "auction.view" },
 ];
 
@@ -69,6 +69,49 @@ const skins: Array<{ key: PublicSkin; label: string; note: string }> = [
   { key: "finans", label: "Finans", note: "mørk blå finansflate" },
 ];
 
+
+export type PublicViewportMode = "normal" | "mobile" | "tablet" | "desktop" | "wide";
+
+type DesignState = {
+  bodySize: number;
+  titleSize: number;
+  headlineSize: number;
+  fieldAir: number;
+  viewportMode: PublicViewportMode;
+};
+
+const defaultDesign: DesignState = {
+  bodySize: 15,
+  titleSize: 21,
+  headlineSize: 38,
+  fieldAir: 18,
+  viewportMode: "normal",
+};
+
+const viewportLabels: Array<{ key: PublicViewportMode; label: string }> = [
+  { key: "normal", label: "Normal" },
+  { key: "mobile", label: "Mobil" },
+  { key: "tablet", label: "Tablet" },
+  { key: "desktop", label: "Desktop" },
+  { key: "wide", label: "Bred" },
+];
+
+function readSavedDesign(): Partial<DesignState> {
+  try {
+    const raw = window.localStorage.getItem("collectium.public.design");
+    if (!raw) return {};
+    return JSON.parse(raw) as Partial<DesignState>;
+  } catch {
+    return {};
+  }
+}
+
+function clampValue(value: unknown, min: number, max: number, fallback: number) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return fallback;
+  return Math.min(max, Math.max(min, numeric));
+}
+
 type PublicTopMenuProps = {
   skin: PublicSkin;
   logoSrc: string;
@@ -82,6 +125,59 @@ export default function PublicTopMenu({
 }: PublicTopMenuProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [designOpen, setDesignOpen] = useState(false);
+  const [design, setDesign] = useState<DesignState>(defaultDesign);
+
+  useEffect(() => {
+    try {
+      const savedSkin = window.localStorage.getItem("collectium.public.skin") as PublicSkin | null;
+      if (savedSkin && skins.some((item) => item.key === savedSkin)) {
+        onSkinChange(savedSkin);
+      }
+      const saved = readSavedDesign();
+      setDesign({
+        bodySize: clampValue(saved.bodySize, 9, 17, defaultDesign.bodySize),
+        titleSize: clampValue(saved.titleSize, 16, 25, defaultDesign.titleSize),
+        headlineSize: clampValue(saved.headlineSize, 18, 42, defaultDesign.headlineSize),
+        fieldAir: clampValue(saved.fieldAir, 10, 34, defaultDesign.fieldAir),
+        viewportMode:
+          saved.viewportMode && viewportLabels.some((item) => item.key === saved.viewportMode)
+            ? saved.viewportMode
+            : defaultDesign.viewportMode,
+      });
+    } catch {
+      // Design settings are optional.
+    }
+  }, [onSkinChange]);
+
+  useEffect(() => {
+    document.body.dataset.template = skin;
+    document.documentElement.dataset.template = skin;
+    try {
+      window.localStorage.setItem("collectium.public.skin", skin);
+    } catch {
+      // localStorage is optional.
+    }
+  }, [skin]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty("--ct-body-size", `${design.bodySize}px`);
+    root.style.setProperty("--ct-title-size", `${design.titleSize}px`);
+    root.style.setProperty("--ct-headline-size", `${design.headlineSize}px`);
+    root.style.setProperty("--ct-field-air", `${design.fieldAir}px`);
+    document.body.dataset.viewportMode = design.viewportMode;
+    try {
+      window.localStorage.setItem("collectium.public.design", JSON.stringify(design));
+    } catch {
+      // localStorage is optional.
+    }
+  }, [design]);
+
+  const updateDesign = (key: keyof DesignState, value: number | PublicViewportMode) => {
+    setDesign((current) => ({ ...current, [key]: value }));
+  };
+
+  const resetDesign = () => setDesign(defaultDesign);
 
   return (
     <header className={styles.topbar}>
@@ -117,23 +213,88 @@ export default function PublicTopMenu({
               id="collectium-public-design-panel"
               className={styles.designPopover}
             >
-              <strong>Velg template</strong>
-              <span>
-                Offentlig visning. Innlogget sidemeny kommer etter login.
-              </span>
-              <div className={styles.skinButtons}>
-                {skins.map((item) => (
-                  <button
-                    key={item.key}
-                    type="button"
-                    onClick={() => onSkinChange(item.key)}
-                    className={skin === item.key ? styles.activeSkin : ""}
-                    title={item.note}
-                  >
-                    {item.label}
-                  </button>
-                ))}
+              <strong>Design</strong>
+              <span>Template, skrift, luft og skjermmodus lagres og følger sidene.</span>
+
+              <div className={styles.designGroup}>
+                <b>Template</b>
+                <div className={styles.skinButtons}>
+                  {skins.map((item) => (
+                    <button
+                      key={item.key}
+                      type="button"
+                      onClick={() => onSkinChange(item.key)}
+                      className={skin === item.key ? styles.activeSkin : ""}
+                      title={item.note}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
               </div>
+
+              <div className={styles.designSliderGrid}>
+                <label>
+                  <span>Hovedskrift {design.bodySize}px</span>
+                  <input
+                    type="range"
+                    min="9"
+                    max="17"
+                    value={design.bodySize}
+                    onChange={(event) => updateDesign("bodySize", Number(event.target.value))}
+                  />
+                </label>
+                <label>
+                  <span>Overskrift {design.titleSize}px</span>
+                  <input
+                    type="range"
+                    min="16"
+                    max="25"
+                    value={design.titleSize}
+                    onChange={(event) => updateDesign("titleSize", Number(event.target.value))}
+                  />
+                </label>
+                <label>
+                  <span>Headline {design.headlineSize}px</span>
+                  <input
+                    type="range"
+                    min="18"
+                    max="42"
+                    value={design.headlineSize}
+                    onChange={(event) => updateDesign("headlineSize", Number(event.target.value))}
+                  />
+                </label>
+                <label>
+                  <span>Luft i bokser {design.fieldAir}px</span>
+                  <input
+                    type="range"
+                    min="10"
+                    max="34"
+                    value={design.fieldAir}
+                    onChange={(event) => updateDesign("fieldAir", Number(event.target.value))}
+                  />
+                </label>
+              </div>
+
+              <div className={styles.designGroup}>
+                <b>Skjermstørrelse</b>
+                <div className={styles.viewportButtons}>
+                  {viewportLabels.map((item) => (
+                    <button
+                      key={item.key}
+                      type="button"
+                      className={design.viewportMode === item.key ? styles.activeSkin : ""}
+                      onClick={() => updateDesign("viewportMode", item.key)}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <button type="button" className={styles.resetDesignButton} onClick={resetDesign}>
+                Nullstill design
+              </button>
             </div>
           )}
         </div>

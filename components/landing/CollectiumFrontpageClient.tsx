@@ -4,12 +4,13 @@
  * COLLECTIUM FILE HEADER
  *
  * Overskrift:
- * CollectiumFrontpageClient v13
+ * CollectiumFrontpageClient v14
  *
  * Definering / formål:
  * Interaktiv klientkomponent for offentlig Collectium-forside. Forsiden har ikke lokal
  * sidemeny. Sidemeny skal komme fra global innlogget AppShell etter login. Komponentens
- * lokale state brukes kun til skin, medlemskapsvisning, objektsegment, objektfamilie og offentlig feature-visning.
+ * lokale state brukes til medlemskapsvisning, objektsegment, objektfamilie og offentlig feature-visning.
+ * Template, typografi og skjermmodus styres globalt fra PublicTopMenu og lagres i localStorage.
  *
  * Bruksområde:
  * Importeres av app/page.tsx.
@@ -55,34 +56,6 @@ type Skin = PublicSkin;
 type BillingMode = "month" | "year";
 type ObjectSegment = "samler" | "historie" | "finans";
 type ObjectFamily = "banknote" | "coin";
-
-const skins: Array<{ key: Skin; label: string; short: string; note: string }> =
-  [
-    {
-      key: "collectium",
-      label: "Collectium",
-      short: "Collectium",
-      note: "8px hjørne, svak indre ramme og signaturhjørne",
-    },
-    {
-      key: "enkel",
-      label: "Enkel",
-      short: "Enkel",
-      note: "12px hjørne, Comfortaa og enklere signatur",
-    },
-    {
-      key: "museum",
-      label: "Museum",
-      short: "Museum",
-      note: "grå/svart museumsflate",
-    },
-    {
-      key: "finans",
-      label: "Finans",
-      short: "Finans",
-      note: "mørk blå finansflate",
-    },
-  ];
 
 const featureGroups = [
   {
@@ -346,7 +319,7 @@ export default function CollectiumFrontpageClient() {
   }, [skin]);
 
   return (
-    <main className={`${styles.page} ${styles[skin]}`} data-skin={skin}>
+    <main className={`${styles.page} ${styles[skin]}`} data-skin={skin} data-template={skin}>
       <PublicTopMenu skin={skin} logoSrc={logoSrc} onSkinChange={setSkin} />
 
       <section className={styles.hero}>
@@ -393,7 +366,7 @@ export default function CollectiumFrontpageClient() {
           className={styles.heroVisual}
           aria-label="Collectium objektvisning"
         >
-          <div className={styles.deviceLaptop}>
+          <div className={`${styles.deviceLaptop} ct-signature-frame`}>
             <div className={styles.objectControls}>
               <div
                 className={styles.segmentMiniSwitch}
@@ -463,7 +436,7 @@ export default function CollectiumFrontpageClient() {
               </div>
             </div>
 
-            <article className={styles.objectDetailCard}>
+            <article className={`${styles.objectDetailCard} ct-signature-frame`}>
               <strong>{selectedObjectSegment.detailTitle}</strong>
               <p>{selectedObjectSegment.detailText}</p>
               <span>
@@ -479,18 +452,6 @@ export default function CollectiumFrontpageClient() {
             <span>128 450 kr</span>
             <small>247 objekter</small>
           </div>
-        </div>
-      </section>
-
-      <section className={styles.skinPanel} aria-label="Aktivt template skin">
-        <div>
-          <strong>
-            Aktiv template: {skins.find((item) => item.key === skin)?.label}
-          </strong>
-          <span>
-            {skins.find((item) => item.key === skin)?.note}. Byttes fra
-            Design-knappen i toppmenyen.
-          </span>
         </div>
       </section>
 
@@ -515,7 +476,7 @@ export default function CollectiumFrontpageClient() {
               </button>
             ))}
           </div>
-          <article className={styles.featureContentCard}>
+          <article className={`${styles.featureContentCard} ct-signature-frame`}>
             <span className={styles.featureContentIcon}>
               {selectedFeature.icon}
             </span>
@@ -542,7 +503,7 @@ export default function CollectiumFrontpageClient() {
         </ul>
       </section>
 
-      <section className={styles.membershipSection}>
+      <section id="medlemskap" className={styles.membershipSection}>
         <div className={styles.sectionHeaderRow}>
           <div>
             <p>Medlemskap</p>
@@ -570,7 +531,7 @@ export default function CollectiumFrontpageClient() {
           {plans.map((plan) => (
             <article
               key={plan.name}
-              className={`${styles.planCard} ${plan.popular ? styles.popularPlan : ""}`}
+              className={`${styles.planCard} ct-signature-frame ${plan.popular ? styles.popularPlan : ""}`}
             >
               {plan.popular && (
                 <span className={styles.badge}>Aktiv samler</span>
@@ -598,7 +559,7 @@ export default function CollectiumFrontpageClient() {
         </div>
         <div className={styles.activityGrid}>
           {activity.map((item) => (
-            <article key={item.title}>
+            <article key={item.title} className="ct-signature-frame">
               <span>{item.title}</span>
               <strong>{item.value}</strong>
               <p>{item.meta}</p>
@@ -608,7 +569,7 @@ export default function CollectiumFrontpageClient() {
         </div>
       </section>
 
-      <section className={styles.offerSection}>
+      <section className={`${styles.offerSection} ct-signature-frame`}>
         <div>
           <p>Registreringstilbud</p>
           <h2>Nye medlemmer får introduksjonsfordel</h2>

@@ -47,3 +47,13 @@
 - Lagt til felles AuthPageClient-komponent.
 - Silver rettet til både års- og månedsvisning.
 - Feature keys for login, registrering og katalog ligger som `data-feature-key`, men teknisk DB-info vises ikke offentlig.
+
+
+## v14
+
+- Utvidet Design-panel med sliders for skrift, overskrift, headline og luft.
+- Lagrer template og designvalg på tvers av public-sider.
+- Ny signaturmodell som indre ramme med fade og høyre hjørneføring.
+- Fjernet aktiv-template-feltet fra landingssiden.
+- Rettet Forhandlere-lenke og lagt inn aliasroute.
+- Lagt inn public root layout uten global sidemeny.

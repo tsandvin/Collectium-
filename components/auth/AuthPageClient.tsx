@@ -4,7 +4,7 @@
  * COLLECTIUM FILE HEADER
  *
  * Overskrift:
- * AuthPageClient v13
+ * AuthPageClient v14
  *
  * Definering / formål:
  * Felles klientkomponent for offentlig login- og registreringsside. Sidene bruker samme
@@ -36,7 +36,7 @@
  * log_action: public_auth_page.view
  */
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PublicTopMenu, { type PublicSkin } from "../layout/PublicTopMenu";
 import styles from "../landing/collectium-frontpage.module.css";
 
@@ -57,6 +57,17 @@ export default function AuthPageClient({ mode }: AuthPageClientProps) {
   const [skin, setSkin] = useState<PublicSkin>("collectium");
   const isRegister = mode === "register";
 
+  useEffect(() => {
+    try {
+      const savedSkin = window.localStorage.getItem("collectium.public.skin") as PublicSkin | null;
+      if (savedSkin && ["collectium", "enkel", "museum", "finans"].includes(savedSkin)) {
+        setSkin(savedSkin);
+      }
+    } catch {
+      // localStorage is optional.
+    }
+  }, []);
+
   const logoSrc = useMemo(() => {
     if (skin === "museum" || skin === "finans")
       return "/brand/collectium-logo-white.png";
@@ -65,7 +76,7 @@ export default function AuthPageClient({ mode }: AuthPageClientProps) {
   }, [skin]);
 
   return (
-    <main className={`${styles.page} ${styles[skin]}`} data-skin={skin}>
+    <main className={`${styles.page} ${styles[skin]}`} data-skin={skin} data-template={skin}>
       <PublicTopMenu skin={skin} logoSrc={logoSrc} onSkinChange={setSkin} />
 
       <section className={styles.authShell}>
@@ -87,7 +98,7 @@ export default function AuthPageClient({ mode }: AuthPageClientProps) {
         </div>
 
         <form
-          className={styles.authCard}
+          className={`${styles.authCard} ct-signature-frame`}
           data-feature-key={isRegister ? "auth.register" : "auth.login"}
         >
           <img src={logoSrc} alt="Collectium" className={styles.authLogo} />
