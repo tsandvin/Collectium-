@@ -156,7 +156,9 @@ export const demoUsers: AdminUser[] = [
   },
 ];
 
-const moreUsers: AdminUser[] = [
+type MoreUserSeed = [string, string, string, string, string, Membership, CustomerOriginType, number, number, Presence];
+
+const moreUsers: MoreUserSeed[] = [
   ["USR-000012","CT-NO-2026-000072","GS","Grete Strand","grete@example.no","Bronze","kampanje",18500,40,"Avlogget"],
   ["USR-000013","CT-NO-2026-000073","HP","Hans Petter","hans@example.no","Free","organisk",0,0,"Avlogget"],
   ["USR-000014","CT-NO-2026-000074","IR","Ingrid Rogn","ingrid@example.no","Silver","forhandler",93000,143,"Paalogget"],
@@ -166,12 +168,12 @@ const moreUsers: AdminUser[] = [
   ["USR-000018","CT-NO-2026-000076","AH","Ane Holm","ane@example.no","Silver","museum",64000,118,"Avlogget"],
   ["USR-000019","CT-NO-2026-000077","OS","Ola Solvik","ola.solvik@example.no","Bronze","organisk",128450,247,"Avlogget"],
   ["USR-000020","CT-NO-2026-000078","MR","Maja Ryen Ny","maja.ny@example.no","Free","admin_support",76400,112,"Paalogget"],
-] as unknown as AdminUser[];
+];
 
 export const allDemoUsers: AdminUser[] = [
   ...demoUsers,
-  ...moreUsers.map((raw, idx) => {
-    const r = raw as unknown as [string,string,string,string,string,Membership,CustomerOriginType,number,number,Presence];
+  ...moreUsers.map((raw, idx): AdminUser => {
+    const r = raw;
     const [id, customerNumber, initials, name, email, membership, originType, value, objects, presence] = r;
     const country = customerNumber.split("-")[1] || "NO";
     return {
@@ -181,7 +183,7 @@ export const allDemoUsers: AdminUser[] = [
       customerCountryCode: country,
       customerNumberYear: 2026,
       customerNumberSequence: Number(customerNumber.split("-").pop()) || idx + 72,
-      customerType: "customer",
+      customerType: "customer" as CustomerType,
       initials,
       name,
       email,
