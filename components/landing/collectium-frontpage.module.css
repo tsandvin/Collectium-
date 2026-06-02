@@ -3023,3 +3023,108 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
     padding-left: 16px;
   }
 }
+
+/* V20 demo users, deletion/ownership retention, and profile merge rules */
+.retentionRulePanel {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(360px, 1.5fr);
+  gap: 18px;
+  align-items: start;
+  padding: 18px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.88), rgba(240, 248, 255, 0.76));
+  border: 1px solid rgba(37, 92, 139, 0.18);
+}
+
+.retentionRulePanel h2 {
+  margin: 0 0 8px;
+  font-size: clamp(22px, 2.2vw, 34px);
+}
+
+.retentionRuleGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.retentionRuleGrid article {
+  min-height: 110px;
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.74);
+  border: 1px solid rgba(37, 92, 139, 0.16);
+}
+
+.retentionRuleGrid b,
+.retentionRuleGrid span,
+.retentionRuleGrid small {
+  display: block;
+}
+
+.retentionRuleGrid span {
+  font-weight: 900;
+  color: #0f2c42;
+}
+
+.retentionRuleGrid small {
+  color: #5a7185;
+  line-height: 1.45;
+}
+
+.expandedUserRowV20 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 14px;
+  padding: 16px 18px 18px 62px;
+  background: linear-gradient(180deg, rgba(255, 250, 230, 0.90), rgba(255, 255, 247, 0.78));
+  border-top: 1px solid rgba(170, 140, 60, 0.18);
+}
+
+.expandedUserRowV20 h3 {
+  margin: 0 0 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #5b6f63;
+}
+
+.expandedUserRowV20 p {
+  margin: 4px 0;
+  font-size: 12px;
+  color: #273a42;
+}
+
+.deleted_requested {
+  color: #8b1a1a !important;
+  background: rgba(255, 220, 220, 0.80) !important;
+  border-color: rgba(180, 20, 20, 0.22) !important;
+}
+
+.anonymized {
+  color: #4b5661 !important;
+  background: rgba(230, 235, 240, 0.90) !important;
+  border-color: rgba(80, 90, 100, 0.18) !important;
+}
+
+@media (max-width: 1280px) {
+  .retentionRulePanel,
+  .retentionRuleGrid,
+  .expandedUserRowV20 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .retentionRulePanel,
+  .retentionRuleGrid,
+  .expandedUserRowV20 {
+    grid-template-columns: 1fr;
+  }
+
+  .expandedUserRowV20 {
+    padding-left: 16px;
+  }
+}

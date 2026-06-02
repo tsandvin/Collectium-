@@ -4,11 +4,12 @@
  * COLLECTIUM FILE HEADER
  *
  * Overskrift:
- * CollectiumAppShell v17
+ * CollectiumAppShell v19
  *
  * Definering / formål:
  * Innlogget Collectium-appshell med låst sidemeny, toppmeny, designpanel, varselmeny,
- * admin-dashboard og ruting til adminmoduler. Dette er frontend-/previewlag som senere
+ * admin-dashboard og ruting til adminmoduler. Prosesser-knappen er fjernet fra topbar;
+ * prosesshendelser ligger i varselmenyen sammen med meldinger og aktiviteter. Dette er frontend-/previewlag som senere
  * kobles til DB 8.4, MariaDB og ekte API-kontrakter.
  *
  * Bruksområde:
@@ -142,7 +143,7 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
         <a href="/" className={styles.appBrandBlock}>
           <span>C</span>
           <strong>Collectium</strong>
-          <small>V17 låst sidemeny</small>
+          <small>V19 låst sidemeny</small>
         </a>
 
         <p className={styles.sidebarLabel}>Hovedmeny</p>
@@ -183,7 +184,6 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
               <button type="button" onClick={() => setDesignOpen((open) => !open)} data-feature-key="admin.design.control">Design</button>
               {designOpen ? <DesignOverlay /> : null}
             </div>
-            <button type="button">Prosesser <b>0</b></button>
             <div className={styles.topbarMenuWrap}>
               <button type="button" onClick={() => setNotificationsOpen((open) => !open)} data-feature-key="admin.notifications.view">🔔 Varsler <b>{notifications.length}</b></button>
               {notificationsOpen ? <NotificationOverlay /> : null}

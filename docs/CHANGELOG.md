@@ -79,3 +79,7 @@
 - Flyttet arkivfaner slik at medlemskap/forhandlere ligger til venstre og Admin/Påloggede/Avloggede til høyre.
 - Utvidet ekspanderte brukerrader med kontakt, kundenummer, kundekilde, første aktivitet, samlergrupper, status og support.
 - Utvidet kundepresentasjonen med kundekilde, nummerregel og supportverktøy.
+
+
+## v19
+- Fjernet egen Prosesser-knapp fra innlogget topbar. Prosesser vises under Varsler-menyen.
