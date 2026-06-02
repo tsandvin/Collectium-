@@ -1,12 +1,18 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import { CollectiumTemplate } from '@/components/template/CollectiumTemplate';
+import "./globals.css";
 
-export const metadata: Metadata = {
-  title: 'Collectium App',
-  description: 'Collectium Next.js app'
+export const metadata = {
+  title: "Collectium",
+  description: "Collectium app",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="no"><body><CollectiumTemplate>{children}</CollectiumTemplate></body></html>;
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="no">
+      <body>{children}</body>
+    </html>
+  );
 }
