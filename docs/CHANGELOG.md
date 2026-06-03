@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## CHANGE-2026-06-03-notification-top-layer-icons
+
+- Varsler-menyen rendres nå via portal som øverste lag med egen transparent klikkflate, Escape-lukking og skjermtilpasset bredde.
+- Varsel-megamenyen holder seg innenfor viewport på desktop og mobil med høy z-index over topbar/sidebar/sideinnhold.
+- Alle varsel-/aktivitetsrader har ikon basert på type: objekt, samling, support/KYC, marked/auksjon/forhandler, bruker og system.
+- V20 Min side-zipen er gjennomgått; relevant aktivitet-megameny-prinsipp er tatt inn uten å kopiere mockbasert `/min-side`-side eller eget skin.
+
 ## CHANGE-2026-06-03-collectium-archive-ui-icons
 
 - Collectium-skin har fått linjeikoner i global sidebar og topbar-handlinger uten nye pakker.

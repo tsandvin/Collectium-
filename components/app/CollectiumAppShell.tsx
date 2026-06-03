@@ -57,6 +57,7 @@ type Session = {
 
 type AppPage = "minside" | "admin" | "catalog";
 type AdminModule = "dashboard" | "users" | "settings" | "customer" | "dealers";
+type NotificationIconType = "object" | "collection" | "support" | "market" | "system" | "dealer" | "auction" | "user";
 
 type CollectiumAppShellProps = {
   page: AppPage;
@@ -105,9 +106,11 @@ function buildNotificationSections() {
     {
       key: "daily",
       title: "Demoaktivitet i dag",
+      iconType: "object" as NotificationIconType,
       metric: `${objectAdds.reduce((sum, item) => sum + item.count, 0)} nye objekter`,
       items: objectAdds.slice(0, 5).map(({ user, count }) => ({
         href: `/admin/kunde/${encodeURIComponent(user.id)}`,
+        iconType: "object" as NotificationIconType,
         title: user.name,
         text: `${count} nye objekter lagt til i dag - ${user.groups[0]?.name ?? user.originFirstObjectGroup}`,
         meta: user.customerNumber,
@@ -116,9 +119,11 @@ function buildNotificationSections() {
     {
       key: "objects",
       title: "Objekter og samling",
+      iconType: "collection" as NotificationIconType,
       metric: `${catalogUsers.reduce((sum, user) => sum + user.objects, 0).toLocaleString("nb-NO")} objekter`,
       items: catalogUsers.slice(0, 5).map((user) => ({
         href: `/admin/kunde/${encodeURIComponent(user.id)}`,
+        iconType: "collection" as NotificationIconType,
         title: user.name,
         text: `${user.objects.toLocaleString("nb-NO")} objekter - ${formatKr(user.collectionValue)}`,
         meta: user.groups.map((group) => `${group.name} ${group.count}`).slice(0, 2).join(" - ") || user.collector,
@@ -127,9 +132,11 @@ function buildNotificationSections() {
     {
       key: "support",
       title: "Support og KYC",
+      iconType: "support" as NotificationIconType,
       metric: `${supportUsers.length} saker`,
       items: supportUsers.slice(0, 5).map((user) => ({
         href: `/admin/kunde/${encodeURIComponent(user.id)}`,
+        iconType: "support" as NotificationIconType,
         title: user.name,
         text: user.supportFlag,
         meta: `KYC: ${user.kyc} - status: ${user.status}`,
@@ -138,9 +145,15 @@ function buildNotificationSections() {
     {
       key: "market",
       title: "Marked og forhandler",
+      iconType: "market" as NotificationIconType,
       metric: `${marketUsers.length} aktive`,
       items: marketUsers.slice(0, 5).map((user) => ({
         href: `/admin/kunde/${encodeURIComponent(user.id)}`,
+        iconType: (user.customerType === "dealer"
+          ? "dealer"
+          : user.auction !== "Ingen"
+            ? "auction"
+            : "market") as NotificationIconType,
         title: user.name,
         text: `${user.auction} - ${user.shop}`,
         meta: user.customerType === "dealer" ? "Forhandlerkonto" : user.originSource,
@@ -149,16 +162,19 @@ function buildNotificationSections() {
     {
       key: "system",
       title: "System og tilgang",
+      iconType: "system" as NotificationIconType,
       metric: `${onlineUsers.length} paalogget`,
       items: [
         ...onlineUsers.slice(0, 3).map((user) => ({
           href: `/admin/kunde/${encodeURIComponent(user.id)}`,
+          iconType: "user" as NotificationIconType,
           title: user.name,
           text: `${user.onlineTodayMin} min online i dag - ${user.lastOnline}`,
           meta: user.mostUsedPages.map((page) => page.page).slice(0, 3).join(" - "),
         })),
         {
           href: "/admin/kontroll",
+          iconType: "system" as NotificationIconType,
           title: "DB 8.4-kontroll",
           text: "Kontroller API-ruter, feature access og action-routes.",
           meta: "admin.control.view",
@@ -292,7 +308,9 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
         <DesignMenuPortal open={designOpen} onClose={() => setDesignOpen(false)}>
           <DesignOverlay />
         </DesignMenuPortal>
-        {notificationsOpen ? <NotificationOverlay /> : null}
+        <NotificationMenuPortal open={notificationsOpen} onClose={() => setNotificationsOpen(false)}>
+          <NotificationOverlay />
+        </NotificationMenuPortal>
 
         {isAdminPage ? <AdminContent module={adminModule} session={session} customerId={customerId} /> : page === "catalog" ? <CatalogWorkspaceClient /> : <MyPageContent session={session} />}
       </section>
@@ -350,6 +368,40 @@ function DesignMenuPortal({ open, onClose, children }: { open: boolean; onClose:
   );
 }
 
+function NotificationMenuPortal({ open, onClose, children }: { open: boolean; onClose: () => void; children: ReactNode }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") onClose();
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open, onClose]);
+
+  if (!mounted || !open) return null;
+
+  return createPortal(
+    <>
+      <button
+        type="button"
+        aria-label="Lukk varselmeny"
+        className={styles.notificationOverlayBackdrop}
+        onClick={onClose}
+      />
+      {children}
+    </>,
+    document.body,
+  );
+}
+
 function DesignOverlay() {
   return (
     <div className={`${styles.designOverlay} ct-card`}>
@@ -380,7 +432,7 @@ function DesignOverlay() {
 
 function NotificationOverlay() {
   return (
-    <div className={`${styles.notificationOverlay} ct-card`}>
+    <div className={`${styles.notificationOverlay} ct-card`} role="dialog" aria-modal="true" aria-label="Varsler og aktivitet">
       <div className={styles.notificationMegaHeader}>
         <div>
           <strong>Varsler og aktivitet</strong>
@@ -392,20 +444,92 @@ function NotificationOverlay() {
         {notificationSections.map((section) => (
           <section key={section.key} className={styles.notificationMegaSection}>
             <header>
+              <i className={styles.notificationSectionIcon} aria-hidden="true">
+                <NotificationActivityIcon type={section.iconType} />
+              </i>
               <span>{section.title}</span>
               <b>{section.metric}</b>
             </header>
             {section.items.map((item) => (
-              <a key={`${section.key}-${item.title}-${item.meta}`} href={item.href}>
-                <strong>{item.title}</strong>
-                <small>{item.text}</small>
-                <em>{item.meta}</em>
+              <a key={`${section.key}-${item.title}-${item.meta}`} href={item.href} data-activity-type={item.iconType}>
+                <i className={styles.notificationItemIcon} aria-hidden="true">
+                  <NotificationActivityIcon type={item.iconType} />
+                </i>
+                <span>
+                  <strong>{item.title}</strong>
+                  <small>{item.text}</small>
+                  <em>{item.meta}</em>
+                </span>
               </a>
             ))}
           </section>
         ))}
       </div>
     </div>
+  );
+}
+
+function NotificationActivityIcon({ type }: { type: NotificationIconType }) {
+  if (type === "object") {
+    return (
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M5 7h14v10H5z" />
+        <path d="M8 10h8M8 13h5" />
+      </svg>
+    );
+  }
+
+  if (type === "collection") {
+    return (
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M5 8l7-3 7 3-7 3-7-3z" />
+        <path d="M5 12l7 3 7-3M5 16l7 3 7-3" />
+      </svg>
+    );
+  }
+
+  if (type === "support") {
+    return (
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M12 4l7 3v5c0 4.2-2.8 7.2-7 8-4.2-.8-7-3.8-7-8V7l7-3z" />
+        <path d="M9 12l2 2 4-5" />
+      </svg>
+    );
+  }
+
+  if (type === "market" || type === "auction") {
+    return (
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M8 8l5 5M10 6l5 5M4 20h10" />
+        <path d="M6 10l4-4 7 7-4 4z" />
+      </svg>
+    );
+  }
+
+  if (type === "dealer") {
+    return (
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M7 18V9l5-3 5 3v9M5 18h14" />
+        <path d="M9 18v-5h6v5" />
+      </svg>
+    );
+  }
+
+  if (type === "user") {
+    return (
+      <svg viewBox="0 0 24 24" focusable="false">
+        <path d="M8 8a4 4 0 1 0 8 0 4 4 0 0 0-8 0z" />
+        <path d="M5 21a7 7 0 0 1 14 0" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" focusable="false">
+      <path d="M12 4v10" />
+      <path d="M12 18h.01" />
+      <path d="M5 20h14L12 4z" />
+    </svg>
   );
 }
 

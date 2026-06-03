@@ -2477,11 +2477,11 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 
 .notificationOverlay {
   position: fixed;
-  top: 74px;
-  right: clamp(12px, 2vw, 28px);
+  top: calc(var(--ct-topbar-height, 64px) + 12px);
+  right: max(12px, env(safe-area-inset-right));
   left: auto;
-  z-index: 5000;
-  width: min(1120px, calc(100vw - 24px));
+  z-index: 99999;
+  width: min(1180px, calc(100vw - 24px));
   max-height: calc(100vh - 96px);
   overflow: auto;
   padding: 18px;
@@ -2491,6 +2491,18 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
   box-shadow: 0 22px 60px rgba(17, 38, 58, 0.20);
   color: var(--ct-app-text, #102a43);
   backdrop-filter: blur(18px);
+}
+
+.notificationOverlayBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99990;
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: default;
 }
 
 .notificationMegaHeader {
@@ -2539,9 +2551,33 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 
 .notificationMegaSection header {
   display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   gap: 3px;
   padding-bottom: 8px;
   border-bottom: 1px solid color-mix(in srgb, var(--ct-panel-border, rgba(54, 91, 116, 0.18)) 76%, transparent);
+}
+
+.notificationSectionIcon {
+  grid-row: span 2;
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--ct-app-button-border, rgba(54, 91, 116, 0.22));
+  border-radius: 9px;
+  color: var(--ct-accent, #1e5a9a);
+  background: var(--ct-app-button-bg, rgba(238, 247, 255, 0.82));
+}
+
+.notificationSectionIcon svg,
+.notificationItemIcon svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .notificationMegaSection header span {
@@ -2559,13 +2595,42 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 
 .notificationMegaSection a {
   display: grid;
-  gap: 3px;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 9px;
+  align-items: start;
   padding: 9px;
   border: 1px solid var(--ct-app-button-border, rgba(54, 91, 116, 0.18));
   border-radius: 10px;
   color: var(--ct-app-text, #102a43);
   background: var(--ct-app-button-bg, rgba(238, 247, 255, 0.72));
   text-decoration: none;
+}
+
+.notificationItemIcon {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid color-mix(in srgb, var(--ct-app-button-border, rgba(54, 91, 116, 0.18)) 76%, transparent);
+  border-radius: 9px;
+  color: var(--ct-accent, #1e5a9a);
+  background: color-mix(in srgb, var(--ct-app-button-bg, rgba(238, 247, 255, 0.72)) 88%, transparent);
+}
+
+.notificationMegaSection a[data-activity-type="support"] .notificationItemIcon,
+.notificationMegaSection a[data-activity-type="system"] .notificationItemIcon {
+  color: #b43a47;
+}
+
+.notificationMegaSection a[data-activity-type="market"] .notificationItemIcon,
+.notificationMegaSection a[data-activity-type="auction"] .notificationItemIcon,
+.notificationMegaSection a[data-activity-type="dealer"] .notificationItemIcon {
+  color: #a06a00;
+}
+
+.notificationMegaSection a[data-activity-type="object"] .notificationItemIcon,
+.notificationMegaSection a[data-activity-type="collection"] .notificationItemIcon {
+  color: #16724a;
 }
 
 .notificationMegaSection a:hover {
