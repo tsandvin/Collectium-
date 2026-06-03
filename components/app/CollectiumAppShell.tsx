@@ -153,7 +153,7 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
   }
 
   return (
-    <main className={styles.appShell}>
+    <main className={styles.appShell} data-page={page}>
       <aside className={styles.appSidebar}>
         <a href="/" className={styles.appBrandBlock}>
           <img src="/brand/collectium-logo-white.png" alt="Collectium" />
@@ -195,16 +195,17 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
           </label>
           <div className={styles.appTopbarActions}>
             <div className={styles.topbarMenuWrap}>
-              <button type="button" onClick={() => setDesignOpen((open) => !open)} data-feature-key="admin.design.control">Design</button>
-              {designOpen ? <DesignOverlay /> : null}
+              <button type="button" onClick={() => { setDesignOpen((open) => !open); setNotificationsOpen(false); }} data-feature-key="admin.design.control">Design</button>
             </div>
             <div className={styles.topbarMenuWrap}>
-              <button type="button" onClick={() => setNotificationsOpen((open) => !open)} data-feature-key="admin.notifications.view">🔔 Varsler <b>{notifications.length}</b></button>
-              {notificationsOpen ? <NotificationOverlay /> : null}
+              <button type="button" onClick={() => { setNotificationsOpen((open) => !open); setDesignOpen(false); }} data-feature-key="admin.notifications.view">Varsler <b>{notifications.length}</b></button>
             </div>
             <button type="button" onClick={logout} data-feature-key="auth.logout">Logg ut</button>
           </div>
         </header>
+
+        {designOpen ? <DesignOverlay /> : null}
+        {notificationsOpen ? <NotificationOverlay /> : null}
 
         {isAdminPage ? <AdminContent module={adminModule} session={session} customerId={customerId} /> : page === "catalog" ? <CatalogWorkspaceClient /> : <MyPageContent session={session} />}
       </section>
