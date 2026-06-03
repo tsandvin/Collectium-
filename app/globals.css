@@ -631,20 +631,3 @@ body[data-vp="mobile"] .ct-mobile-nav,
   .ct-object-fields,.ct-object-detail-sections{grid-template-columns:1fr}
   .ct-banknote-preview{min-height:240px}
 }
-
-/* ----------------------------------------------------------------
-   15. TEMPLATE SWITCHER — test control for the four locked skins
----------------------------------------------------------------- */
-.ct-template-switcher{
-  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
-}
-.ct-template-chip{
-  min-height:34px;padding:0 10px;border-radius:999px;
-  border:1px solid var(--ct-app-button-border);
-  background:var(--ct-app-button-bg);color:var(--ct-app-button-text);
-  font-family:var(--ct-font-ui);font-size:11px;font-weight:700;
-  letter-spacing:.04em;text-transform:uppercase;
-}
-.ct-template-chip:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(0,0,0,.10)}
-.ct-template-chip.is-active{background:var(--ct-accent);border-color:var(--ct-accent-dark);color:#fff}
-@media(max-width:900px){.ct-template-switcher{display:none}}

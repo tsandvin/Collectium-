@@ -1,26 +1,21 @@
-Collectium theme v3.1 SHELL FIXED
+Collectium theme v3 - no double shell
 
-Denne pakken fikser hovedfeilen: app/layout.tsx wrapper nå alle sider i <AppShell>.
-Uten dette lastes globals.css, men siden bruker fortsatt gammelt sideskall/design.
+Denne pakken fikser feilen der siden fikk dobbel sidemeny og testknappene Collectium / Enkel / Museum / Finans.
 
-Kopier innholdet i denne mappen inn i prosjektroten.
+Innhold:
+- app/layout.tsx laster CSS, men wrapper IKKE med AppShell.
+- app/globals.css og app/collectium-brand-tokens.css ligger globalt.
+- public/collectium-logo-mask.png ligger riktig for CSS-url /collectium-logo-mask.png.
+- app/lib/theme.ts ligger igjen for fremtidig styrt skin-switch.
 
-Riktig struktur:
-app/layout.tsx
-app/globals.css
-app/collectium-brand-tokens.css
-app/components/AppShell.tsx
-app/components/TemplateSwitcher.tsx
-app/lib/theme.ts
-public/collectium-logo-mask.png
+Viktig:
+- Ikke bruk app/components/TemplateSwitcher.tsx i produksjon.
+- Ikke pakk eksisterende sider inn i test-AppShell hvis prosjektet allerede har egen sidebar/topbar.
+- Hvis gamle AppShell/TemplateSwitcher-filer ligger igjen, kan de stå ubrukt, men de skal ikke importeres i app/layout.tsx.
 
-Etter kopiering:
+Etter kopiering til prosjektroten, kjør:
+
 npm.cmd run build
 git add -A
-git commit -m "Fix Collectium theme shell and skin switcher"
+git commit -m "Fix Collectium theme without duplicate shell"
 git push origin main
-
-Etter Vercel deploy:
-Åpne siden og test knappene i topbaren: Collectium, Enkel, Museum, Finans.
-Hvis gammel skin ligger i nettleseren, kjør i browser console:
-localStorage.removeItem("ct-template"); location.reload();
