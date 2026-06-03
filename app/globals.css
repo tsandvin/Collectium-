@@ -87,26 +87,26 @@ html[data-template="museum"]{
 
 body[data-template="finans"],
 html[data-template="finans"]{
-  --ct-app-bg:linear-gradient(135deg,#061727,#0d2c48);
-  --ct-app-sidebar-bg:#07243e;
-  --ct-app-sidebar-bg-2:#04101f;
-  --ct-app-sidebar-bg-3:#0f3555;
-  --ct-app-sidebar-glow:#5aa4f1;
-  --ct-app-topbar-bg:rgba(5,20,35,.9);
-  --ct-app-topbar-text:#eef7ff;
-  --ct-app-topbar-border:rgba(90,150,220,.24);
-  --ct-app-button-bg:rgba(255,255,255,.09);
-  --ct-app-button-text:#eef7ff;
-  --ct-app-button-border:rgba(90,150,220,.28);
-  --ct-app-search-bg:rgba(255,255,255,.09);
-  --ct-app-text:#eef7ff;
-  --ct-text:#eef7ff;
-  --ct-panel-bg:rgba(8,32,54,.92);
-  --ct-panel-solid:#082036;
-  --ct-surface-solid:#061727;
-  --ct-card-bg:rgba(8,32,54,.92);
-  --ct-panel-border:rgba(90,150,220,.26);
-  --ct-border-strong:rgba(90,150,220,.42);
+  --ct-app-bg:linear-gradient(135deg,#0a1929,#1a3a5c);
+  --ct-app-sidebar-bg:#0d2137;
+  --ct-app-sidebar-bg-2:#071525;
+  --ct-app-sidebar-bg-3:#1e4976;
+  --ct-app-sidebar-glow:#4dabf5;
+  --ct-app-topbar-bg:rgba(13,33,55,.95);
+  --ct-app-topbar-text:#f0f7ff;
+  --ct-app-topbar-border:rgba(77,171,245,.32);
+  --ct-app-button-bg:rgba(255,255,255,.12);
+  --ct-app-button-text:#f0f7ff;
+  --ct-app-button-border:rgba(77,171,245,.38);
+  --ct-app-search-bg:rgba(255,255,255,.1);
+  --ct-app-text:#f0f7ff;
+  --ct-text:#f0f7ff;
+  --ct-panel-bg:rgba(16,42,68,.94);
+  --ct-panel-solid:#0f2a44;
+  --ct-surface-solid:#0a1929;
+  --ct-card-bg:rgba(20,50,80,.92);
+  --ct-panel-border:rgba(77,171,245,.28);
+  --ct-border-strong:rgba(77,171,245,.45);
 }
 
 /* CHANGE-2026-06-03-object-presentation-relations */
