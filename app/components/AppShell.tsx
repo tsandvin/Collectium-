@@ -7,6 +7,7 @@
 //   2. Content top center, just below topbar (.ct-page-watermark)
 
 import type { ReactNode } from "react";
+import TemplateSwitcher from "./TemplateSwitcher";
 
 type NavItem = {
   href: string;
@@ -72,6 +73,7 @@ export default function AppShell({
               aria-label="Søk"
             />
           </div>
+          <TemplateSwitcher />
           <div className="ct-topbar-actions">
             <button className="ct-topbar-pill" type="button">
               <i className="ti ti-bell" aria-hidden />

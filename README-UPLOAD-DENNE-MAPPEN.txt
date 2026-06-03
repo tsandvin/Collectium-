@@ -1,35 +1,26 @@
-COLLECTIUM THEME V3 - OPPLASTINGSPAKKE
+Collectium theme v3.1 SHELL FIXED
 
-Denne mappen er laget med riktig Next.js-plassering.
-Last opp/kopier innholdet i denne mappen til prosjektroten.
+Denne pakken fikser hovedfeilen: app/layout.tsx wrapper nå alle sider i <AppShell>.
+Uten dette lastes globals.css, men siden bruker fortsatt gammelt sideskall/design.
 
-Riktig plassering:
-- app/globals.css
-- app/collectium-brand-tokens.css
-- app/layout.tsx
-- app/page.tsx
-- app/error.tsx
-- app/not-found.tsx
-- app/components/AppShell.tsx
-- app/lib/theme.ts
-- public/collectium-logo-mask.png
-- docs/README-collectium-theme.md
-- docs/README-collectium-logo-identitet-kilder.md
+Kopier innholdet i denne mappen inn i prosjektroten.
 
-Viktig:
-- Ikke legg disse filene flatt i app-mappen.
-- AppShell.tsx skal ligge i app/components/.
-- theme.ts skal ligge i app/lib/.
-- collectium-logo-mask.png skal ligge i public/.
-- layout.tsx er allerede satt med:
-  import "./globals.css";
-  import "./collectium-brand-tokens.css";
-  data-template="collectium"
-  data-skin="signature-light"
+Riktig struktur:
+app/layout.tsx
+app/globals.css
+app/collectium-brand-tokens.css
+app/components/AppShell.tsx
+app/components/TemplateSwitcher.tsx
+app/lib/theme.ts
+public/collectium-logo-mask.png
 
-Etter at filene er kopiert inn i prosjektet, kjør i PowerShell:
-
+Etter kopiering:
 npm.cmd run build
 git add -A
-git commit -m "Install Collectium theme v3 upload package"
+git commit -m "Fix Collectium theme shell and skin switcher"
 git push origin main
+
+Etter Vercel deploy:
+Åpne siden og test knappene i topbaren: Collectium, Enkel, Museum, Finans.
+Hvis gammel skin ligger i nettleseren, kjør i browser console:
+localStorage.removeItem("ct-template"); location.reload();
