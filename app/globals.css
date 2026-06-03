@@ -91,22 +91,22 @@ html[data-template="finans"]{
   --ct-app-sidebar-bg:#0d2137;
   --ct-app-sidebar-bg-2:#071525;
   --ct-app-sidebar-bg-3:#1e4976;
-  --ct-app-sidebar-glow:#4dabf5;
+  --ct-app-sidebar-glow:#4a7a9e;
   --ct-app-topbar-bg:rgba(13,33,55,.95);
   --ct-app-topbar-text:#f0f7ff;
-  --ct-app-topbar-border:rgba(77,171,245,.32);
-  --ct-app-button-bg:rgba(255,255,255,.12);
+  --ct-app-topbar-border:rgba(74,122,158,.42);
+  --ct-app-button-bg:rgba(255,255,255,.1);
   --ct-app-button-text:#f0f7ff;
-  --ct-app-button-border:rgba(77,171,245,.38);
-  --ct-app-search-bg:rgba(255,255,255,.1);
+  --ct-app-button-border:rgba(74,122,158,.5);
+  --ct-app-search-bg:rgba(255,255,255,.08);
   --ct-app-text:#f0f7ff;
   --ct-text:#f0f7ff;
   --ct-panel-bg:rgba(16,42,68,.94);
   --ct-panel-solid:#0f2a44;
   --ct-surface-solid:#0a1929;
   --ct-card-bg:rgba(20,50,80,.92);
-  --ct-panel-border:rgba(77,171,245,.28);
-  --ct-border-strong:rgba(77,171,245,.45);
+  --ct-panel-border:rgba(74,122,158,.38);
+  --ct-border-strong:rgba(74,122,158,.55);
 }
 
 /* CHANGE-2026-06-03-object-presentation-relations */

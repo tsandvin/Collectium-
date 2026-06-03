@@ -3527,17 +3527,17 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
   --ct-app-sidebar-bg: #0d2137;
   --ct-app-sidebar-bg-2: #071525;
   --ct-app-sidebar-bg-3: #1e4976;
-  --ct-app-sidebar-glow: #4dabf5;
+  --ct-app-sidebar-glow: #4a7a9e;
   --ct-app-topbar-bg: rgba(13, 33, 55, 0.95);
   --ct-app-topbar-text: #f0f7ff;
-  --ct-app-topbar-border: rgba(77, 171, 245, 0.32);
-  --ct-app-button-bg: rgba(255, 255, 255, 0.12);
+  --ct-app-topbar-border: rgba(74, 122, 158, 0.42);
+  --ct-app-button-bg: rgba(255, 255, 255, 0.1);
   --ct-app-button-text: #f0f7ff;
-  --ct-app-button-border: rgba(77, 171, 245, 0.38);
-  --ct-app-search-bg: rgba(255, 255, 255, 0.1);
+  --ct-app-button-border: rgba(74, 122, 158, 0.5);
+  --ct-app-search-bg: rgba(255, 255, 255, 0.08);
   --ct-app-text: #f0f7ff;
   --ct-panel-bg: rgba(16, 42, 68, 0.94);
-  --ct-panel-border: rgba(77, 171, 245, 0.28);
+  --ct-panel-border: rgba(74, 122, 158, 0.38);
 }
 
 .appShell {
