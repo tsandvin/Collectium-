@@ -5003,6 +5003,186 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
   color: #145c38 !important;
 }
 
+/* CHANGE-2026-06-03-collectium-archive-ui-icons */
+:global(body[data-template="collectium"]) .appTopbar {
+  background:
+    linear-gradient(180deg, rgba(255, 252, 247, 0.96), rgba(255, 248, 237, 0.94)) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.92) inset,
+    0 10px 30px rgba(92, 61, 20, 0.07) !important;
+}
+
+:global(body[data-template="collectium"]) .topbarButton,
+:global(body[data-template="collectium"]) .appTopbarActions button,
+:global(body[data-template="collectium"]) .appSidebar nav a,
+:global(body[data-template="collectium"]) .sidebarGroup a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+:global(body[data-template="collectium"]) .topbarButton::before,
+:global(body[data-template="collectium"]) .appTopbarActions button::before,
+:global(body[data-template="collectium"]) .appSidebar nav a::before,
+:global(body[data-template="collectium"]) .sidebarGroup a::before {
+  content: "";
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
+  background: currentColor;
+  opacity: 0.9;
+  -webkit-mask: var(--ct-nav-icon) center / contain no-repeat;
+  mask: var(--ct-nav-icon) center / contain no-repeat;
+}
+
+:global(body[data-template="collectium"]) .topbarButton {
+  --ct-nav-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 3l7 3v5c0 5-3.2 8.5-7 10-3.8-1.5-7-5-7-10V6l7-3z' fill='none' stroke='black' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+:global(body[data-template="collectium"]) .appTopbarActions button[data-feature-key="admin.design.control"] {
+  --ct-nav-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 3l1.9 5.4 5.7.2-4.5 3.5 1.6 5.5-4.7-3.2-4.7 3.2 1.6-5.5-4.5-3.5 5.7-.2L12 3z' fill='none' stroke='black' stroke-width='1.7' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+:global(body[data-template="collectium"]) .appTopbarActions button[data-feature-key="admin.notifications.view"] {
+  --ct-nav-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10a5 5 0 0 1 10 0v4l2 3H5l2-3v-4zM10 20h4' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+:global(body[data-template="collectium"]) .appTopbarActions button[data-feature-key="auth.logout"] {
+  --ct-nav-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 5H6v14h4M13 8l4 4-4 4M9 12h8' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+:global(body[data-template="collectium"]) .appSidebar nav a:nth-child(1) {
+  --ct-nav-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1v-8z' fill='none' stroke='black' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+:global(body[data-template="collectium"]) .appSidebar nav a:nth-child(2) {
+  --ct-nav-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 6h14v12H5zM8 9h8M8 12h8M8 15h5' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+:global(body[data-template="collectium"]) .appSidebar nav a:nth-child(3) {
+  --ct-nav-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 8l7-3 7 3-7 3-7-3zM5 12l7 3 7-3M5 16l7 3 7-3' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+:global(body[data-template="collectium"]) .appSidebar nav a:nth-child(4) {
+  --ct-nav-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 9h10M9 7l6 6M15 7l-6 6M5 18h14' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+:global(body[data-template="collectium"]) .appSidebar nav a:nth-child(5) {
+  --ct-nav-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 18V9l5-3 5 3v9M5 18h14M9 18v-5h6v5' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+:global(body[data-template="collectium"]) .appSidebar nav a:nth-child(6),
+:global(body[data-template="collectium"]) .sidebarGroup a:nth-of-type(1) {
+  --ct-nav-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 3l7 3v5c0 5-3.2 8.5-7 10-3.8-1.5-7-5-7-10V6l7-3z' fill='none' stroke='black' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+:global(body[data-template="collectium"]) .sidebarGroup a:nth-of-type(2) {
+  --ct-nav-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 7a4 4 0 1 0 8 0M5 21a7 7 0 0 1 14 0M16 13l4 4M20 13l-4 4' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+:global(body[data-template="collectium"]) .sidebarGroup a:nth-of-type(3) {
+  --ct-nav-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 18V9l5-3 5 3v9M5 18h14M9 18v-5h6v5' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+:global(body[data-template="collectium"]) .sidebarGroup a:nth-of-type(4) {
+  --ct-nav-icon: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 8v8M8 12h8M5 5h14v14H5z' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+:global(body[data-template="collectium"]) .appSidebar nav a,
+:global(body[data-template="collectium"]) .sidebarGroup a {
+  min-height: 38px;
+  border-radius: 0;
+  padding: 10px 12px;
+}
+
+:global(body[data-template="collectium"]) .activeAppLink {
+  position: relative;
+}
+
+:global(body[data-template="collectium"]) .activeAppLink::after {
+  content: "";
+  position: absolute;
+  inset: 5px auto 5px 0;
+  width: 3px;
+  border-radius: 999px;
+  background: #d6a641;
+}
+
+:global(body[data-template="collectium"]) .catalogSegmentSwitch button,
+:global(body[data-template="collectium"]) .catalogViewSwitch button,
+:global(body[data-template="collectium"]) .archiveTabsLeft button,
+:global(body[data-template="collectium"]) .archiveTabsRight button {
+  position: relative;
+  min-height: 46px;
+  padding-inline: 26px;
+  border-radius: 10px 10px 0 0 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    0 -1px 0 rgba(161, 122, 58, 0.18) !important;
+}
+
+:global(body[data-template="collectium"]) .catalogSegmentSwitch button::after,
+:global(body[data-template="collectium"]) .catalogViewSwitch button::after,
+:global(body[data-template="collectium"]) .archiveTabsLeft button::after,
+:global(body[data-template="collectium"]) .archiveTabsRight button::after {
+  content: "";
+  position: absolute;
+  right: -16px;
+  top: -1px;
+  width: 30px;
+  height: 18px;
+  border: 1px solid rgba(161, 122, 58, 0.22);
+  border-left: 0;
+  border-bottom: 0;
+  border-radius: 0 10px 0 0;
+  background: inherit;
+  transform: skewX(28deg);
+  transform-origin: left bottom;
+  pointer-events: none;
+}
+
+:global(body[data-template="collectium"]) .catalogSegmentSwitch button.catalogSwitchActive::after,
+:global(body[data-template="collectium"]) .catalogViewSwitch button.catalogSwitchActive::after,
+:global(body[data-template="collectium"]) .archiveTabsLeft button[aria-selected="true"]::after,
+:global(body[data-template="collectium"]) .archiveTabsRight button[aria-selected="true"]::after {
+  border-color: #0f4f30;
+}
+
+:global(body[data-template="collectium"]) .adminControlCard,
+:global(body[data-template="collectium"]) .adminStatCard {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 237, 0.96), rgba(242, 228, 204, 0.88)) !important;
+  border-color: rgba(161, 122, 58, 0.32) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.84),
+    0 12px 26px rgba(92, 61, 20, 0.09) !important;
+}
+
+:global(body[data-template="collectium"]) .adminControlCard::before,
+:global(body[data-template="collectium"]) .adminStatCard::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: -1px;
+  width: 70px;
+  height: 15px;
+  border: 1px solid rgba(161, 122, 58, 0.26);
+  border-bottom: 0;
+  border-radius: 9px 9px 0 0;
+  background: linear-gradient(180deg, #f4ead8, #ead6b4);
+}
+
+:global(body[data-template="collectium"]) .adminControlGrid,
+:global(body[data-template="collectium"]) .adminUserListFull,
+:global(body[data-template="collectium"]) .dealerList,
+:global(body[data-template="collectium"]) .dealerDetail {
+  background:
+    radial-gradient(circle at 96% 8%, rgba(161, 122, 58, 0.10), transparent 12rem),
+    linear-gradient(180deg, rgba(255, 252, 247, 0.94), rgba(255, 248, 237, 0.9)) !important;
+}
+
 /* CHANGE-2026-06-03-samleren-minimal-skin */
 :global(body[data-template="enkel"]) .appShell,
 :global(html[data-template="enkel"]) .appShell {

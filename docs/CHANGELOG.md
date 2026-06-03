@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## CHANGE-2026-06-03-collectium-archive-ui-icons
+
+- Collectium-skin har fått linjeikoner i global sidebar og topbar-handlinger uten nye pakker.
+- Folder/tabs for katalog, visning og adminarkiv er justert mot Collectium-referansen med aktiv grønn fane og sand/blå arkivfaner.
+- Adminkort og adminflater i Collectium-skin har fått lys arkiv-/mappebehandling med varme sandborder og diskret papirpreg.
+- Endringen gjelder kun Collectium-skin; Samleren, Museum og Finans er ikke endret.
+
 ## CHANGE-2026-06-03-museum-text-contrast
 
 - Museum-skin har lysere teksttokens og sterkere kontrast i topbar, knapper, felt, sidebar og admininnhold.
