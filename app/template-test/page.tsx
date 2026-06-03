@@ -1,24 +1,3 @@
-/**
- * Collectium Template Test Page v1.0
- *
- * Definering/formal:
- * Kontrollside for a teste at globalt Collectium-template, skin, viewport og grunnleggende
- * frontend-uttrykk blir brukt automatisk pa nye sider.
- *
- * Bruksomrade:
- * Legges pa /template-test og viser aktivt html/body dataset, JSON-konfigurasjon,
- * kort, felt, knapper, signatur, responsive grid og API-status.
- *
- * Berorte DB-brytere/feature_keys:
- * - frontend.template.test.view
- * - frontend.theme.foundation.read
- * - frontend.template.json.read
- *
- * Berorte sider/routes:
- * - /template-test
- * - /api/template-test
- */
-
 import styles from "./template-test.module.css";
 
 type TemplateTestPayload = {
@@ -36,41 +15,40 @@ type TemplateTestPayload = {
   }>;
 };
 
-async function getTemplateTest(): Promise<TemplateTestPayload> {
-  const fallback: TemplateTestPayload = {
-    test_id: "collectium-template-frontend-json-test",
-    version: "1.0.0",
-    default_template: "collectium",
-    default_skin: "signature-light",
-    viewport_default: "pc",
-    required_datasets: [
-      "data-template=collectium",
-      "data-skin=signature-light",
-      "data-collectium-front=v4.1",
-      "data-vp=pc"
-    ],
-    checks: [
-      {
-        key: "css-foundation",
-        label: "Global foundation CSS",
-        expected: "app/collectium-front-foundation.css er lastet i app/layout.tsx",
-        status: "ok"
-      },
-      {
-        key: "brand-tokens",
-        label: "Brand tokens",
-        expected: "app/collectium-brand-tokens.css er lastet i app/layout.tsx",
-        status: "ok"
-      },
-      {
-        key: "new-page-inherits-theme",
-        label: "Nye sider arver design",
-        expected: "Denne siden bruker kun lokale innholdsklasser og globale --ct tokens",
-        status: "ok"
-      }
-    ]
-  };
+const fallback: TemplateTestPayload = {
+  test_id: "collectium-template-frontend-json-test",
+  version: "3.0.0-no-double-shell",
+  default_template: "collectium",
+  default_skin: "signature-light",
+  viewport_default: "pc",
+  required_datasets: [
+    "data-template=collectium",
+    "data-skin=signature-light",
+    "data-vp=pc"
+  ],
+  checks: [
+    {
+      key: "no-double-shell",
+      label: "Ingen ekstra global AppShell",
+      expected: "app/layout.tsx laster theme CSS uten a wrappe sider i AppShell",
+      status: "ok"
+    },
+    {
+      key: "brand-tokens",
+      label: "Brand tokens",
+      expected: "app/collectium-brand-tokens.css er lastet i app/layout.tsx",
+      status: "ok"
+    },
+    {
+      key: "new-page-inherits-theme",
+      label: "Nye sider arver design",
+      expected: "Denne siden bruker lokale innholdsklasser og globale --ct tokens",
+      status: "ok"
+    }
+  ]
+};
 
+async function getTemplateTest(): Promise<TemplateTestPayload> {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL;
     const url = baseUrl
@@ -91,10 +69,10 @@ export default async function TemplateTestPage() {
     <main className={styles.templateTestPage} data-feature-key="frontend.template.test.view">
       <section className={styles.hero}>
         <p className={styles.kicker}>Collectium frontend test</p>
-        <h1>Template, frontend og JSON-test</h1>
+        <h1>Template v3 uten dobbel shell</h1>
         <p>
-          Denne siden skal bekrefte at ny Collectium foundation styrer grunnuttrykket automatisk:
-          template, skin, viewport, kort, felt, knapper og signatur.
+          Denne siden bekrefter at Collectium theme v3 er globalt standardlag uten ekstra
+          AppShell rundt sidene. Admin bruker fortsatt egen innlogget arbeidsflate.
         </p>
       </section>
 
@@ -102,19 +80,19 @@ export default async function TemplateTestPage() {
         <article className="ct-card">
           <span className={styles.label}>Standard template</span>
           <strong>{data.default_template}</strong>
-          <p>Skal settes globalt i app/layout.tsx og holdes stabilt pa forste paint.</p>
+          <p>Settes globalt i app/layout.tsx pa forste paint.</p>
         </article>
 
         <article className="ct-card">
           <span className={styles.label}>Standard skin</span>
           <strong>{data.default_skin}</strong>
-          <p>Skal ikke hoppe tilbake til gammel V22 etter at siden er lastet.</p>
+          <p>Collectium er hovedskinnet for offentlige sider.</p>
         </article>
 
         <article className="ct-card">
           <span className={styles.label}>Viewport</span>
           <strong>{data.viewport_default}</strong>
-          <p>Skjermmodus skal arves og senere kunne styres globalt.</p>
+          <p>Skjermmodus kan fortsatt styres via data-vp.</p>
         </article>
       </section>
 
@@ -122,9 +100,7 @@ export default async function TemplateTestPage() {
         <div>
           <p className={styles.kicker}>JSON payload</p>
           <h2>API-test fra /api/template-test</h2>
-          <p>
-            JSON-data under viser hva fronten forventer av global template foundation.
-          </p>
+          <p>JSON-data under viser hva fronten forventer av no-double-shell-oppsettet.</p>
         </div>
         <pre>{JSON.stringify(data, null, 2)}</pre>
       </section>
