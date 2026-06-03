@@ -156,9 +156,8 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
     <main className={styles.appShell}>
       <aside className={styles.appSidebar}>
         <a href="/" className={styles.appBrandBlock}>
-          <span>C</span>
-          <strong>Collectium</strong>
-          <small>V22 katalog arbeidsflate</small>
+          <img src="/brand/collectium-logo-white.png" alt="Collectium" />
+          <small>Beta v22</small>
         </a>
 
         <p className={styles.sidebarLabel}>Hovedmeny</p>

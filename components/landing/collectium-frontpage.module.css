@@ -1694,8 +1694,11 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
   top: 0;
   height: 100vh;
   padding: 28px 18px;
-  background: #14283d;
+  background:
+    radial-gradient(circle at 20% 0%, color-mix(in srgb, var(--ct-app-sidebar-glow, #78b6df) 36%, transparent), transparent 32%),
+    linear-gradient(155deg, var(--ct-app-sidebar-bg, #14283d), var(--ct-app-sidebar-bg-2, #071827) 62%, var(--ct-app-sidebar-bg-3, #1b2e20));
   color: #fff;
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.1);
 }
 
 .appLogo {
@@ -1818,40 +1821,44 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 /* V16 admin workspace, topbar, users and settings */
 .appBrandBlock {
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 10px;
-  color: #163b2e;
+  gap: 12px;
+  color: #fff;
   text-decoration: none;
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(195, 185, 150, 0.48);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 14px;
-  padding: 10px;
+  padding: 12px;
   margin-bottom: 26px;
+  backdrop-filter: blur(16px);
 }
 
-.appBrandBlock span {
-  width: 40px;
-  height: 40px;
-  display: grid;
-  place-items: center;
-  border-radius: 10px;
-  border: 1px solid rgba(170, 135, 30, 0.42);
-  color: #9b7807;
-  font-family: Georgia, serif;
-  font-weight: 800;
-  font-size: 1.45rem;
-  background: rgba(255, 255, 255, 0.64);
+.appBrandBlock img {
+  width: min(148px, 100%);
+  height: 38px;
+  object-fit: contain;
+  object-position: left center;
+  min-width: 0;
 }
 
-.appBrandBlock strong,
 .appBrandBlock small {
   display: block;
 }
 
 .appBrandBlock small {
-  color: rgba(22, 59, 46, 0.68);
-  font-size: 0.74rem;
+  justify-self: end;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.68rem;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .sidebarLabel {
@@ -1985,12 +1992,24 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 }
 
 .adminHeaderActions {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(148px, max-content));
   gap: 10px;
-  flex-wrap: wrap;
   justify-content: flex-end;
+  align-items: start;
 }
 
+.adminHeaderActions > a,
+.adminHeaderActions > button {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.secondaryButton,
 .goldButton {
   border: 1px solid rgba(155, 120, 7, 0.45);
   border-radius: 10px;
@@ -1999,6 +2018,30 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
   font-weight: 900;
   padding: 10px 14px;
   cursor: pointer;
+}
+
+.secondaryButton {
+  border-color: rgba(37, 92, 139, 0.22);
+  background: rgba(255, 255, 255, 0.86);
+  color: #0f2c42;
+  text-decoration: none;
+}
+
+.demoAccessToggle {
+  border: 1px solid rgba(155, 120, 7, 0.45);
+  border-radius: 10px;
+  background: linear-gradient(135deg, #d69a0d, #b88406);
+  color: #1c1603;
+  font-weight: 900;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.demoAccessToggleActive {
+  border-color: rgba(170, 35, 35, 0.48);
+  background: linear-gradient(135deg, #d93f3f, #a91f1f);
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(169, 31, 31, 0.22);
 }
 
 .adminStatsGrid {
@@ -2393,24 +2436,27 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 }
 
 .topbarMenuWrap {
-  position: relative;
+  position: static;
   display: inline-flex;
 }
 
 .designOverlay,
 .notificationOverlay {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  z-index: 90;
-  width: 330px;
-  max-height: min(72vh, 620px);
+  position: fixed;
+  top: 74px;
+  right: clamp(12px, 2vw, 28px);
+  left: auto;
+  z-index: 500;
+  width: min(420px, calc(100vw - 24px));
+  max-height: calc(100vh - 96px);
   overflow: auto;
   padding: 16px;
   background: rgba(255, 255, 255, 0.96);
   border: 1px solid rgba(54, 91, 116, 0.24);
   border-radius: 12px;
   box-shadow: 0 22px 60px rgba(17, 38, 58, 0.20);
+  color: #102a43;
+  backdrop-filter: blur(18px);
 }
 
 .designOverlay strong,
@@ -3130,7 +3176,10 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 .templateCollectium,
 .templateCollectiumHtml {
   --ct-app-bg: linear-gradient(135deg, #eaf5fb, #ffffff);
-  --ct-app-sidebar-bg: #14283d;
+  --ct-app-sidebar-bg: #15334d;
+  --ct-app-sidebar-bg-2: #0a1d31;
+  --ct-app-sidebar-bg-3: #21391f;
+  --ct-app-sidebar-glow: #7fbde8;
   --ct-app-text: #09243b;
   --ct-panel-bg: rgba(255,255,255,0.88);
   --ct-panel-border: rgba(37, 92, 139, 0.22);
@@ -3139,7 +3188,10 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 .templateEnkel,
 .templateEnkelHtml {
   --ct-app-bg: linear-gradient(135deg, #f7fbff, #ffffff);
-  --ct-app-sidebar-bg: #20364e;
+  --ct-app-sidebar-bg: #284866;
+  --ct-app-sidebar-bg-2: #172d44;
+  --ct-app-sidebar-bg-3: #244155;
+  --ct-app-sidebar-glow: #b7ddf5;
   --ct-app-text: #102335;
   --ct-panel-bg: rgba(255,255,255,0.92);
   --ct-panel-border: rgba(35, 88, 155, 0.16);
@@ -3149,7 +3201,10 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 .templateMuseum,
 .templateMuseumHtml {
   --ct-app-bg: linear-gradient(135deg, #161616, #2b2b2b);
-  --ct-app-sidebar-bg: #080808;
+  --ct-app-sidebar-bg: #151515;
+  --ct-app-sidebar-bg-2: #080808;
+  --ct-app-sidebar-bg-3: #3a3221;
+  --ct-app-sidebar-glow: #b99a55;
   --ct-app-text: #f0f0f0;
   --ct-panel-bg: rgba(36,36,36,0.90);
   --ct-panel-border: rgba(210,210,210,0.16);
@@ -3158,7 +3213,58 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 .templateFinans,
 .templateFinansHtml {
   --ct-app-bg: linear-gradient(135deg, #061727, #0d2c48);
-  --ct-app-sidebar-bg: #04101f;
+  --ct-app-sidebar-bg: #07243e;
+  --ct-app-sidebar-bg-2: #04101f;
+  --ct-app-sidebar-bg-3: #0f3555;
+  --ct-app-sidebar-glow: #5aa4f1;
+  --ct-app-text: #eef7ff;
+  --ct-panel-bg: rgba(8, 32, 54, 0.92);
+  --ct-panel-border: rgba(90, 150, 220, 0.26);
+}
+
+:global(body[data-template="collectium"]) .appShell,
+:global(html[data-template="collectium"]) .appShell {
+  --ct-app-bg: linear-gradient(135deg, #eaf5fb, #ffffff);
+  --ct-app-sidebar-bg: #15334d;
+  --ct-app-sidebar-bg-2: #0a1d31;
+  --ct-app-sidebar-bg-3: #21391f;
+  --ct-app-sidebar-glow: #7fbde8;
+  --ct-app-text: #09243b;
+  --ct-panel-bg: rgba(255,255,255,0.88);
+  --ct-panel-border: rgba(37, 92, 139, 0.22);
+}
+
+:global(body[data-template="enkel"]) .appShell,
+:global(html[data-template="enkel"]) .appShell {
+  --ct-app-bg: linear-gradient(135deg, #f7fbff, #ffffff);
+  --ct-app-sidebar-bg: #284866;
+  --ct-app-sidebar-bg-2: #172d44;
+  --ct-app-sidebar-bg-3: #244155;
+  --ct-app-sidebar-glow: #b7ddf5;
+  --ct-app-text: #102335;
+  --ct-panel-bg: rgba(255,255,255,0.92);
+  --ct-panel-border: rgba(35, 88, 155, 0.16);
+}
+
+:global(body[data-template="museum"]) .appShell,
+:global(html[data-template="museum"]) .appShell {
+  --ct-app-bg: linear-gradient(135deg, #161616, #2b2b2b);
+  --ct-app-sidebar-bg: #151515;
+  --ct-app-sidebar-bg-2: #080808;
+  --ct-app-sidebar-bg-3: #3a3221;
+  --ct-app-sidebar-glow: #b99a55;
+  --ct-app-text: #f0f0f0;
+  --ct-panel-bg: rgba(36,36,36,0.90);
+  --ct-panel-border: rgba(210,210,210,0.16);
+}
+
+:global(body[data-template="finans"]) .appShell,
+:global(html[data-template="finans"]) .appShell {
+  --ct-app-bg: linear-gradient(135deg, #061727, #0d2c48);
+  --ct-app-sidebar-bg: #07243e;
+  --ct-app-sidebar-bg-2: #04101f;
+  --ct-app-sidebar-bg-3: #0f3555;
+  --ct-app-sidebar-glow: #5aa4f1;
   --ct-app-text: #eef7ff;
   --ct-panel-bg: rgba(8, 32, 54, 0.92);
   --ct-panel-border: rgba(90, 150, 220, 0.26);
@@ -3756,9 +3862,9 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 /* V22 final patch: demo access stop switch and DB env guidance */
 .demoAccessPanel {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 18px;
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
   margin: 18px 0;
   padding: 18px 20px;
   border: 1px solid rgba(57, 97, 130, 0.18);

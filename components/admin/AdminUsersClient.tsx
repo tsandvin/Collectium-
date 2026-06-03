@@ -347,29 +347,20 @@ export default function AdminUsersClient() {
           <button className={styles.goldButton} type="button" data-feature-key="admin.users.create" onClick={() => setCreateOpen((open) => !open)}>
             Opprett ny bruker
           </button>
+          <button
+            type="button"
+            className={`${styles.demoAccessToggle} ${demoAccessPaused ? styles.demoAccessToggleActive : ""}`}
+            data-feature-key="admin.demo_users.access.toggle"
+            title={demoAccessPaused ? "Demo-brukere er stoppet. Klikk for å åpne demo-tilgang igjen." : "Stopper alle demo-brukere fra å brukes som testtilgang. Admin/superadmin beholdes."}
+            aria-label={demoAccessPaused ? "Demo-brukere er stoppet. Åpne demo-tilgang igjen." : "Stopp demo-brukere fra testtilgang."}
+            onClick={() => updateDemoAccessPaused(!demoAccessPaused)}
+          >
+            {demoAccessPaused ? "Åpne demo-tilgang" : "Stopp demo-brukere"}
+          </button>
         </div>
       </section>
 
       {createOpen ? <CreateUserPanel value={newUser} onChange={setNewUser} onCreate={createUser} onCancel={() => setCreateOpen(false)} /> : null}
-
-      <section className={`${styles.demoAccessPanel} ct-panel`} data-demo-paused={demoAccessPaused ? "true" : "false"}>
-        <div>
-          <p className={styles.kicker}>Demo-tilgang</p>
-          <h2>{demoAccessPaused ? "Demo-brukere er stoppet" : "Demo-brukere er åpne"}</h2>
-          <p>
-            Denne bryteren stopper alle demo-brukere fra å brukes som testtilgang. Admin/superadmin beholdes,
-            og historikk, kundekilde, eierhistorikk og aktivitetsdata vises fortsatt for kontroll.
-          </p>
-        </div>
-        <button
-          type="button"
-          className={demoAccessPaused ? styles.secondaryButton : styles.goldButton}
-          data-feature-key="admin.demo_users.access.toggle"
-          onClick={() => updateDemoAccessPaused(!demoAccessPaused)}
-        >
-          {demoAccessPaused ? "Åpne demo-tilgang" : "Stopp demo-brukere"}
-        </button>
-      </section>
 
       <section className={styles.adminStatsGrid}>
         <StatCard value={String(resultSummary.totalUsers)} label="Brukere i resultatet" note={membership === "Alle" ? "Total i valgt arkiv/status" : `Kun ${membership}`} tone="green" />
