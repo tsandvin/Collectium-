@@ -27,6 +27,13 @@
 - Samleren har minimal blå/hvit palett, blå aktiv fane/knapp og lyse arkivkort.
 - Museum og Finans er ikke endret.
 
+## CHANGE-2026-06-03-notification-mega-menu-demo-activity
+
+- Varsler er endret fra liten liste til mega-meny med fem grupper: demoaktivitet, objekter/samling, support/KYC, marked/forhandler og system/tilgang.
+- Varselinnhold hentes fra eksisterende demo-brukerdata i adminlaget.
+- Demo-brukere får deterministisk 2-4 nye objekter per dag, lagret som `dailyObjectAdds` og lagt til i objektantall/aktivitetslogg.
+- Varselbadge viser fem innholdsgrupper.
+
 ## v9
 
 - Beholder offentlig forside uten lokal sidemeny.

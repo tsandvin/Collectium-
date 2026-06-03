@@ -42,6 +42,7 @@ import { createPortal } from "react-dom";
 import AdminDealersClient from "../admin/AdminDealersClient";
 import AdminSettingsClient from "../admin/AdminSettingsClient";
 import AdminUsersClient from "../admin/AdminUsersClient";
+import { allDemoUsers, formatKr } from "../admin/collectiumDemoUsers";
 import CustomerPresentationClient from "../admin/CustomerPresentationClient";
 import CatalogWorkspaceClient from "../catalog/CatalogWorkspaceClient";
 import styles from "../landing/collectium-frontpage.module.css";
@@ -85,6 +86,89 @@ const notifications = [
   { type: "Aktivitet", title: "Kunde trenger hjelp", text: "Ola Berg har høy feilmengde i katalogfilter siste døgn." },
 ];
 
+function buildNotificationSections() {
+  const activeDemoUsers = allDemoUsers.filter((user) => user.presence !== "Admin" && user.status !== "anonymized");
+  const objectAdds = activeDemoUsers
+    .map((user) => ({ user, count: user.dailyObjectAdds ?? 0 }))
+    .filter((item) => item.count > 0)
+    .sort((a, b) => b.count - a.count || b.user.objects - a.user.objects);
+  const supportUsers = activeDemoUsers
+    .filter((user) => user.supportOpenCases > 0 || user.kyc !== "verified" || user.status === "deleted_requested" || user.status === "pending")
+    .sort((a, b) => b.supportOpenCases - a.supportOpenCases);
+  const catalogUsers = activeDemoUsers.filter((user) => user.objects > 0).sort((a, b) => b.objects - a.objects);
+  const marketUsers = activeDemoUsers
+    .filter((user) => user.auction !== "Ingen" || user.shop !== "Ingen" || user.customerType === "dealer")
+    .sort((a, b) => b.collectionValue - a.collectionValue);
+  const onlineUsers = activeDemoUsers.filter((user) => user.presence === "Paalogget").sort((a, b) => b.onlineTodayMin - a.onlineTodayMin);
+
+  return [
+    {
+      key: "daily",
+      title: "Demoaktivitet i dag",
+      metric: `${objectAdds.reduce((sum, item) => sum + item.count, 0)} nye objekter`,
+      items: objectAdds.slice(0, 5).map(({ user, count }) => ({
+        href: `/admin/kunde/${encodeURIComponent(user.id)}`,
+        title: user.name,
+        text: `${count} nye objekter lagt til i dag - ${user.groups[0]?.name ?? user.originFirstObjectGroup}`,
+        meta: user.customerNumber,
+      })),
+    },
+    {
+      key: "objects",
+      title: "Objekter og samling",
+      metric: `${catalogUsers.reduce((sum, user) => sum + user.objects, 0).toLocaleString("nb-NO")} objekter`,
+      items: catalogUsers.slice(0, 5).map((user) => ({
+        href: `/admin/kunde/${encodeURIComponent(user.id)}`,
+        title: user.name,
+        text: `${user.objects.toLocaleString("nb-NO")} objekter - ${formatKr(user.collectionValue)}`,
+        meta: user.groups.map((group) => `${group.name} ${group.count}`).slice(0, 2).join(" - ") || user.collector,
+      })),
+    },
+    {
+      key: "support",
+      title: "Support og KYC",
+      metric: `${supportUsers.length} saker`,
+      items: supportUsers.slice(0, 5).map((user) => ({
+        href: `/admin/kunde/${encodeURIComponent(user.id)}`,
+        title: user.name,
+        text: user.supportFlag,
+        meta: `KYC: ${user.kyc} - status: ${user.status}`,
+      })),
+    },
+    {
+      key: "market",
+      title: "Marked og forhandler",
+      metric: `${marketUsers.length} aktive`,
+      items: marketUsers.slice(0, 5).map((user) => ({
+        href: `/admin/kunde/${encodeURIComponent(user.id)}`,
+        title: user.name,
+        text: `${user.auction} - ${user.shop}`,
+        meta: user.customerType === "dealer" ? "Forhandlerkonto" : user.originSource,
+      })),
+    },
+    {
+      key: "system",
+      title: "System og tilgang",
+      metric: `${onlineUsers.length} paalogget`,
+      items: [
+        ...onlineUsers.slice(0, 3).map((user) => ({
+          href: `/admin/kunde/${encodeURIComponent(user.id)}`,
+          title: user.name,
+          text: `${user.onlineTodayMin} min online i dag - ${user.lastOnline}`,
+          meta: user.mostUsedPages.map((page) => page.page).slice(0, 3).join(" - "),
+        })),
+        {
+          href: "/admin/kontroll",
+          title: "DB 8.4-kontroll",
+          text: "Kontroller API-ruter, feature access og action-routes.",
+          meta: "admin.control.view",
+        },
+      ],
+    },
+  ];
+}
+
+const notificationSections = buildNotificationSections();
 
 function applyCollectiumDesign(template: string) {
   if (typeof document === "undefined") return;
@@ -199,7 +283,7 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
               <button type="button" onClick={() => { setDesignOpen((open) => !open); setNotificationsOpen(false); }} data-feature-key="admin.design.control">Design</button>
             </div>
             <div className={styles.topbarMenuWrap}>
-              <button type="button" onClick={() => { setNotificationsOpen((open) => !open); setDesignOpen(false); }} data-feature-key="admin.notifications.view">Varsler <b>{notifications.length}</b></button>
+              <button type="button" onClick={() => { setNotificationsOpen((open) => !open); setDesignOpen(false); }} data-feature-key="admin.notifications.view">Varsler <b>{notificationSections.length}</b></button>
             </div>
             <button type="button" onClick={logout} data-feature-key="auth.logout">Logg ut</button>
           </div>
@@ -297,15 +381,30 @@ function DesignOverlay() {
 function NotificationOverlay() {
   return (
     <div className={`${styles.notificationOverlay} ct-card`}>
-      <strong>Varsler og aktivitet</strong>
-      <p>Meldinger, prosesser og brukeraktivitet.</p>
-      {notifications.map((item) => (
-        <article key={`${item.type}-${item.title}`}>
-          <span>{item.type}</span>
-          <b>{item.title}</b>
-          <small>{item.text}</small>
-        </article>
-      ))}
+      <div className={styles.notificationMegaHeader}>
+        <div>
+          <strong>Varsler og aktivitet</strong>
+          <p>Reell demoaktivitet, samling, support, marked og systemstatus.</p>
+        </div>
+        <span>{notificationSections.length} grupper</span>
+      </div>
+      <div className={styles.notificationMegaGrid}>
+        {notificationSections.map((section) => (
+          <section key={section.key} className={styles.notificationMegaSection}>
+            <header>
+              <span>{section.title}</span>
+              <b>{section.metric}</b>
+            </header>
+            {section.items.map((item) => (
+              <a key={`${section.key}-${item.title}-${item.meta}`} href={item.href}>
+                <strong>{item.title}</strong>
+                <small>{item.text}</small>
+                <em>{item.meta}</em>
+              </a>
+            ))}
+          </section>
+        ))}
+      </div>
     </div>
   );
 }

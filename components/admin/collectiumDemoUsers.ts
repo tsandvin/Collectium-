@@ -78,6 +78,7 @@ export type AdminUser = {
   supportFlag: string;
   supportOpenCases: number;
   activityLog: string[];
+  dailyObjectAdds?: number;
   deletionMode: DeletionMode;
   deletionPreference: "bevar_konto" | "slett_persondata_bevar_eierhistorikk" | "anonymiser_bevar_eierhistorikk";
   ownershipHistoryPolicy: string;
@@ -169,7 +170,38 @@ const moreUsers: Array<[string,string,string,string,string,Membership,CustomerOr
   ["USR-000020","CT-NO-2026-000078","MR","Maja Ryen Ny","maja.ny@example.no","Free","admin_support",76400,112,"Paalogget"],
 ];
 
-export const allDemoUsers = [
+function getDaySeed() {
+  const now = new Date();
+  return Number(`${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}`);
+}
+
+export function getDailyDemoObjectCount(user: Pick<AdminUser, "id" | "customerNumber" | "presence">, index = 0) {
+  if (user.presence === "Admin") return 0;
+  const textSeed = `${user.id}${user.customerNumber}`.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0);
+  return 2 + ((textSeed + getDaySeed() + index) % 3);
+}
+
+function applyDailyDemoObjectAdds(users: AdminUser[]) {
+  return users.map((user, index) => {
+    const dailyAdds = getDailyDemoObjectCount(user, index);
+    if (dailyAdds <= 0 || user.status === "anonymized") return { ...user, dailyObjectAdds: 0 };
+
+    const primaryGroup = user.groups[0]?.name ?? user.originFirstObjectGroup ?? "Objekter";
+    const updatedGroups = user.groups.length
+      ? user.groups.map((group, groupIndex) => groupIndex === 0 ? { ...group, count: group.count + dailyAdds } : group)
+      : [{ name: primaryGroup, count: dailyAdds, value: 0 }];
+
+    return {
+      ...user,
+      dailyObjectAdds: dailyAdds,
+      objects: user.objects + dailyAdds,
+      groups: updatedGroups,
+      activityLog: [`i dag la til ${dailyAdds} objekter i ${primaryGroup}`, ...user.activityLog],
+    };
+  });
+}
+
+const baseDemoUsers: AdminUser[] = [
   ...demoUsers,
   ...moreUsers.map((raw, idx) => {
     const r = raw as unknown as [string,string,string,string,string,Membership,CustomerOriginType,number,number,Presence];
@@ -190,10 +222,10 @@ export const allDemoUsers = [
       phone: `9${String(6000000 + idx * 3137).slice(0,7)}`,
       country: country === "SE" ? "Sverige" : country === "DK" ? "Danmark" : "Norge",
       address: idx % 2 ? "Samlerveien 8" : "Arkivgata 14",
-      status: idx === 8 ? "deleted_requested" : "active",
+      status: (idx === 8 ? "deleted_requested" : "active") as UserStatus,
       presence,
       membership,
-      kyc: idx % 3 === 0 ? "pending" : "verified",
+      kyc: (idx % 3 === 0 ? "pending" : "verified") as KycStatus,
       collectionValue: value,
       objects,
       groups: objects ? [{name:"Sedler",count:Math.round(objects*0.55),value:Math.round(value*0.65)},{name:"Mynter",count:Math.round(objects*0.45),value:Math.round(value*0.35)}] : [],
@@ -217,13 +249,15 @@ export const allDemoUsers = [
       supportFlag: idx % 5 === 0 ? "Support bør kontrollere siste filterfeil" : "Ingen aktiv sak",
       supportOpenCases: idx % 5 === 0 ? 1 : 0,
       activityLog: ["aapnet katalog", "viste objektpresentasjon", "oppdaterte samlingsstatus"],
-      deletionMode: idx === 8 ? "delete_personal_keep_ownership" : "active",
-      deletionPreference: idx === 8 ? "slett_persondata_bevar_eierhistorikk" : "bevar_konto",
+      deletionMode: (idx === 8 ? "delete_personal_keep_ownership" : "active") as DeletionMode,
+      deletionPreference: (idx === 8 ? "slett_persondata_bevar_eierhistorikk" : "bevar_konto") as AdminUser["deletionPreference"],
       ownershipHistoryPolicy: idx === 8 ? "Slett persondata, men behold eierhistorikk og proveniens." : "Eierhistorikk beholdes med aktiv profil.",
       mergeCandidates: id === "USR-000019" ? [{userId:"92121216",reason:"Samme bosted og samme eiendel",confidence:86}] : id === "USR-000020" ? [{userId:"USR-000007",reason:"Samme bosted og tidligere slettet profil",confidence:79}] : [],
     };
   }),
 ];
+
+export const allDemoUsers = applyDailyDemoObjectAdds(baseDemoUsers);
 
 export function formatKr(value: number) {
   return `${new Intl.NumberFormat("nb-NO").format(value)} kr`;
@@ -243,5 +277,5 @@ export const adminUserSearchSummary = {
   totalUsers: allDemoUsers.length,
   activeUsers: allDemoUsers.filter((user) => user.status === "active").length,
   demoUsers: allDemoUsers.filter((user) => Boolean((user as any).isDemoUser)).length,
-  blockedUsers: allDemoUsers.filter((user) => user.status === "blocked" || user.status === "disabled").length,
+  blockedUsers: allDemoUsers.filter((user) => user.status === "suspended" || user.status === "deleted_requested" || user.status === "anonymized").length,
 };

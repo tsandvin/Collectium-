@@ -2481,16 +2481,137 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
   right: clamp(12px, 2vw, 28px);
   left: auto;
   z-index: 5000;
-  width: min(420px, calc(100vw - 24px));
+  width: min(1120px, calc(100vw - 24px));
   max-height: calc(100vh - 96px);
   overflow: auto;
-  padding: 16px;
+  padding: 18px;
   background: color-mix(in srgb, var(--ct-panel-bg, rgba(255, 255, 255, 0.96)) 96%, transparent);
   border: 1px solid var(--ct-panel-border, rgba(54, 91, 116, 0.24));
   border-radius: 12px;
   box-shadow: 0 22px 60px rgba(17, 38, 58, 0.20);
   color: var(--ct-app-text, #102a43);
   backdrop-filter: blur(18px);
+}
+
+.notificationMegaHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.notificationMegaHeader strong {
+  margin: 0 0 5px;
+}
+
+.notificationMegaHeader p {
+  margin: 0;
+}
+
+.notificationMegaHeader > span {
+  flex: 0 0 auto;
+  border: 1px solid var(--ct-app-button-border, rgba(54, 91, 116, 0.22));
+  border-radius: 999px;
+  padding: 7px 10px;
+  color: var(--ct-app-button-text, inherit);
+  background: var(--ct-app-button-bg, rgba(238, 247, 255, 0.82));
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.notificationMegaGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(170px, 1fr));
+  gap: 12px;
+}
+
+.notificationMegaSection {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--ct-panel-border, rgba(54, 91, 116, 0.18));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--ct-panel-bg, rgba(255, 255, 255, 0.96)) 82%, transparent);
+}
+
+.notificationMegaSection header {
+  display: grid;
+  gap: 3px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid color-mix(in srgb, var(--ct-panel-border, rgba(54, 91, 116, 0.18)) 76%, transparent);
+}
+
+.notificationMegaSection header span {
+  color: color-mix(in srgb, var(--ct-app-text, #102a43) 66%, transparent);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.notificationMegaSection header b {
+  color: var(--ct-app-text, #102a43);
+  font-size: 16px;
+}
+
+.notificationMegaSection a {
+  display: grid;
+  gap: 3px;
+  padding: 9px;
+  border: 1px solid var(--ct-app-button-border, rgba(54, 91, 116, 0.18));
+  border-radius: 10px;
+  color: var(--ct-app-text, #102a43);
+  background: var(--ct-app-button-bg, rgba(238, 247, 255, 0.72));
+  text-decoration: none;
+}
+
+.notificationMegaSection a:hover {
+  border-color: var(--ct-accent, #1e5a9a);
+  transform: translateY(-1px);
+}
+
+.notificationMegaSection a strong {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.notificationMegaSection a small {
+  color: color-mix(in srgb, var(--ct-app-text, #102a43) 68%, transparent);
+  line-height: 1.35;
+}
+
+.notificationMegaSection a em {
+  color: color-mix(in srgb, var(--ct-app-text, #102a43) 56%, transparent);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+@media (max-width: 1180px) {
+  .notificationMegaGrid {
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .notificationOverlay {
+    top: calc(var(--ct-topbar-height, 64px) + 10px);
+    right: 12px;
+    width: calc(100vw - 24px);
+    padding: 14px;
+  }
+
+  .notificationMegaHeader {
+    flex-direction: column;
+  }
+
+  .notificationMegaGrid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .designOverlayBackdrop {
