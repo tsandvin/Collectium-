@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## CHANGE-2026-06-03-catalog-api-mobile-overlay
+
+- Katalogen henter objekter og filterverdier via `/api/catalog/search` og `/api/catalog/filter` i stedet for hardkodede React-arrays.
+- Katalogsok og objektlenker bruker `source_key + object_group + object_id`.
+- Filterkall sender `source_key + object_group + filter_field + filter_value` videre til API/query-laget.
+- Mobilfilteret er gjort til fast, ugjennomsiktig topplag.
+- Horisontal, staende og listevisning har storre objektbilder og bedre responsiv oppforsel.
+- Objektkort har knapp til unik objektpresentasjon.
+- Objektpresentasjonen viser Samler/Historie/Finans-seksjoner og direkte relasjonslenker.
+- `/api/catalog/object` bruker katalogquery mot API/bridge og returnerer ikke mockdata.
+- `catalog-filter.php` bruker gyldig SQL-streng og `/api/catalog/filter` henter filter direkte fra bridge-view.
+- Offentlig mobil toppmeny/designmeny er justert som topplag innenfor skjermbredden.
+
 ## v9
 
 - Beholder offentlig forside uten lokal sidemeny.

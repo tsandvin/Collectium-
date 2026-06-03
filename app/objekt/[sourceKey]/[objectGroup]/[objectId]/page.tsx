@@ -121,6 +121,34 @@ function getValueLabel(object: unknown) {
   return "Ikke vurdert";
 }
 
+function getRelationLinks(object: unknown, sourceKey: string, objectGroup: string) {
+  const fields = [
+    ["country", "Samme land"],
+    ["producer", "Samme produsent"],
+    ["issuer", "Samme utsteder"],
+    ["denomination", "Samme valor"],
+    ["year_label", "Samme ar/periode"],
+    ["litra", "Samme litra"],
+    ["denomination_issue", "Samme utgave/serie"],
+    ["variant", "Samme variant"],
+    ["signature", "Samme signatur"],
+    ["ruler", "Samme regent"],
+    ["historical_period", "Samme historiske periode"],
+    ["material", "Samme materiale"],
+  ];
+
+  return fields
+    .map(([field, label]) => {
+      const value = getObjectField(object, field, "");
+      return value ? { field, label, value } : null;
+    })
+    .filter((item): item is { field: string; label: string; value: string } => Boolean(item))
+    .map((item) => ({
+      ...item,
+      href: `/relasjon/${encodeURIComponent(item.field)}/${encodeURIComponent(item.value)}?source_key=${encodeURIComponent(sourceKey)}&object_group=${encodeURIComponent(objectGroup)}`,
+    }));
+}
+
 export default async function ObjektPage({ params }: ObjektPageProps) {
   const { sourceKey, objectGroup, objectId } = await params;
 
@@ -133,6 +161,21 @@ export default async function ObjektPage({ params }: ObjektPageProps) {
   const title = getObjectTitle(object);
   const meta = getObjectField(object, "meta", `ID ${objectId}`);
   const value = getValueLabel(object);
+  const relationLinks = getRelationLinks(object, sourceKey, objectGroup);
+  const detailSections = [
+    {
+      title: "Samler",
+      text: `Kilde ${sourceKey}, objektgruppe ${objectGroup}, katalognummer ${meta}. Samlingsstatus, onskeliste, favoritt og eierhistorikk kobles pa samme tekniske nokkel nar API returnerer brukerdata.`,
+    },
+    {
+      title: "Historie",
+      text: `Historisk periode: ${getObjectField(object, "historical_period")}. Regent/person: ${getObjectField(object, "ruler")}. Produsent/utsteder: ${getObjectField(object, "producer")}.`,
+    },
+    {
+      title: "Finans",
+      text: `Estimert verdi: ${value}. Marked, auksjon, prisobservasjoner og indeks skal hentes fra kilde-scopede API-visninger.`,
+    },
+  ];
 
   return (
     <main className="ct-object-page">
@@ -215,6 +258,28 @@ export default async function ObjektPage({ params }: ObjektPageProps) {
               <dd>{getObjectField(object, "rarity")}</dd>
             </div>
           </dl>
+
+          <div className="ct-object-detail-sections">
+            {detailSections.map((section) => (
+              <article key={section.title}>
+                <h3>{section.title}</h3>
+                <p>{section.text}</p>
+              </article>
+            ))}
+          </div>
+
+          <section className="ct-object-relations">
+            <h2>Relasjoner</h2>
+            <p>Alle lenker er scopt med source_key + object_group og peker tilbake til relasjonskatalogen.</p>
+            <div>
+              {relationLinks.map((relation) => (
+                <Link key={`${relation.field}:${relation.value}`} href={relation.href}>
+                  <span>{relation.label}</span>
+                  <strong>{relation.value}</strong>
+                </Link>
+              ))}
+            </div>
+          </section>
         </section>
 
         <aside className="ct-object-side-panel">

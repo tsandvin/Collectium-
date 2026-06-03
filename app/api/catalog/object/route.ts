@@ -1,12 +1,27 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getResolvedObject, getResolvedObjects, getSources } from "@/lib/data/collectiumMockData";
-import { objectFilterOrder } from "@/lib/specs/collectiumSpecs";
+import { ctOk, ctFail } from "@/lib/response";
+import { ctLogError } from "@/lib/logger";
+import { getCatalogObject } from "@/db/queries/catalog";
 
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
   const source_key = searchParams.get("source_key") ?? "norske_sedler";
   const object_group = searchParams.get("object_group") ?? "banknote";
-  const object_id = searchParams.get("object_id") ?? "NO-BN-1949-10-A";
-  const object = getResolvedObject(source_key, object_group, object_id);
-  return NextResponse.json({ sources: getSources(), object, objects: getResolvedObjects(), filterOrder: objectFilterOrder });
+  const object_id = searchParams.get("object_id");
+
+  if (!object_id) {
+    return ctFail("CATALOG_OBJECT_ID_REQUIRED", "object_id mangler.", 400);
+  }
+
+  try {
+    const object = await getCatalogObject(source_key, object_group, object_id);
+
+    if (!object) {
+      return ctFail("CATALOG_OBJECT_NOT_FOUND", "Fant ikke katalogobjektet.", 404);
+    }
+
+    return ctOk(object, { source_key, object_group, object_id });
+  } catch (error) {
+    ctLogError("api.catalog.object", error);
+    return ctFail("CATALOG_OBJECT_FAILED", "Kunne ikke hente katalogobjekt.", 500);
+  }
 }

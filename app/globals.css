@@ -98,3 +98,200 @@ html[data-template="finans"]{
   --ct-panel-border:rgba(90,150,220,.26);
   --ct-border-strong:rgba(90,150,220,.42);
 }
+
+/* CHANGE-2026-06-03-object-presentation-relations */
+.ct-object-page{
+  min-height:100vh;
+  padding:32px;
+  color:var(--ct-text,#eef6ff);
+  background:var(--ct-app-bg,linear-gradient(135deg,#061621,#082238));
+}
+.ct-object-hero{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:20px;
+  align-items:start;
+  max-width:1480px;
+  margin:0 auto 22px;
+  padding:22px;
+  border:1px solid var(--ct-border-strong,rgba(90,145,190,.55));
+  border-radius:10px;
+  background:var(--ct-panel-solid,#082238);
+}
+.ct-eyebrow{
+  margin:0 0 8px;
+  color:#d6a641;
+  font-size:12px;
+  font-weight:850;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.ct-object-hero h1{
+  margin:0;
+  font-size:clamp(32px,4vw,60px);
+  line-height:1;
+}
+.ct-object-hero p{
+  margin:10px 0 0;
+  color:color-mix(in srgb,var(--ct-text,#eef6ff) 72%,transparent);
+}
+.ct-object-back,
+.ct-object-actions button,
+.ct-object-segments button,
+.ct-object-relations a{
+  min-height:38px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--ct-border-strong,rgba(90,145,190,.55));
+  border-radius:999px;
+  padding:0 14px;
+  color:var(--ct-text,#eef6ff);
+  background:rgba(255,255,255,.08);
+  text-decoration:none;
+  font-weight:800;
+}
+.ct-object-layout{
+  max-width:1480px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:minmax(280px,.75fr) minmax(0,1.35fr) minmax(260px,.55fr);
+  gap:18px;
+}
+.ct-object-image-panel,
+.ct-object-info-panel,
+.ct-object-side-panel{
+  border:1px solid var(--ct-border-strong,rgba(90,145,190,.55));
+  border-radius:10px;
+  padding:18px;
+  background:var(--ct-card-bg,rgba(8,34,56,.92));
+}
+.ct-banknote-preview{
+  min-height:320px;
+  border-radius:8px;
+  display:grid;
+  place-items:center;
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg,#8faaba,#d8e2ea);
+  color:#082238;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.4);
+}
+.ct-banknote-number,.ct-banknote-center{
+  font-size:clamp(42px,8vw,92px);
+  font-weight:900;
+}
+.ct-banknote-title{
+  position:absolute;
+  top:20px;
+  left:20px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+.ct-banknote-year{
+  position:absolute;
+  right:20px;
+  bottom:20px;
+  font-weight:850;
+}
+.ct-banknote-line{
+  position:absolute;
+  inset:auto 18px 18px;
+  height:1px;
+  background:rgba(8,34,56,.32);
+}
+.ct-object-fields{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin:0;
+}
+.ct-object-fields div,
+.ct-object-detail-sections article,
+.ct-object-market-box{
+  border:1px solid var(--ct-panel-border,rgba(90,145,190,.38));
+  border-radius:8px;
+  padding:12px;
+  background:color-mix(in srgb,var(--ct-panel-solid,#082238) 76%,transparent);
+}
+.ct-object-fields dt{
+  color:color-mix(in srgb,var(--ct-text,#eef6ff) 62%,transparent);
+  font-size:11px;
+  font-weight:850;
+  text-transform:uppercase;
+}
+.ct-object-fields dd{
+  margin:5px 0 0;
+  font-weight:800;
+}
+.ct-object-detail-sections{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:14px;
+}
+.ct-object-detail-sections h3{
+  margin:0 0 8px;
+}
+.ct-object-detail-sections p,
+.ct-object-relations p{
+  color:color-mix(in srgb,var(--ct-text,#eef6ff) 72%,transparent);
+  line-height:1.55;
+}
+.ct-object-relations{
+  margin-top:16px;
+}
+.ct-object-relations div{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.ct-object-relations a{
+  flex-direction:column;
+  align-items:flex-start;
+  height:auto;
+  padding:9px 12px;
+}
+.ct-object-relations span{
+  opacity:.68;
+  font-size:11px;
+}
+.ct-object-side-panel{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.ct-object-actions,
+.ct-object-segments{
+  display:grid;
+  gap:8px;
+}
+.ct-object-market-box{
+  display:grid;
+  gap:5px;
+}
+.ct-object-market-box strong{
+  font-size:24px;
+}
+@media(max-width:1100px){
+  .ct-object-layout,
+  .ct-object-hero{
+    grid-template-columns:1fr;
+  }
+  .ct-object-fields,
+  .ct-object-detail-sections{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media(max-width:680px){
+  .ct-object-page{
+    padding:14px;
+  }
+  .ct-object-fields,
+  .ct-object-detail-sections{
+    grid-template-columns:1fr;
+  }
+  .ct-banknote-preview{
+    min-height:240px;
+  }
+}

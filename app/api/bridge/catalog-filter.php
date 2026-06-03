@@ -17,15 +17,14 @@ $objectGroup = $_GET['object_group'] ?? 'banknote';
 
 try {
     $pdo = ct_bridge_pdo($ctConfig);
-    $stmt = $pdo->prepare(""
+    $stmt = $pdo->prepare("
         SELECT source_key, object_group, filter_field, filter_value, filter_label, object_count
         FROM ct_v_catalog_filter_values
         WHERE source_key = :source_key
           AND object_group = :object_group
         ORDER BY filter_field, filter_label
         LIMIT 500
-    ""
-    );
+    ");
     $stmt->execute(['source_key' => $sourceKey, 'object_group' => $objectGroup]);
 
     ct_bridge_json([
