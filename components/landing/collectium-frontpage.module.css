@@ -3376,6 +3376,154 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
   border-color: var(--ct-panel-border, rgba(37, 92, 139, 0.22));
 }
 
+:global(body[data-template="museum"]) .appShell,
+:global(body[data-template="finans"]) .appShell {
+  --ct-dark-field-bg: rgba(255, 255, 255, 0.08);
+  --ct-dark-field-bg-strong: rgba(255, 255, 255, 0.12);
+  --ct-dark-field-text: var(--ct-app-text, #f5faff);
+  --ct-dark-muted: color-mix(in srgb, var(--ct-app-text, #f5faff) 68%, transparent);
+  --ct-dark-panel-soft: color-mix(in srgb, var(--ct-panel-bg, rgba(12, 31, 52, 0.92)) 86%, transparent);
+}
+
+:global(body[data-template="museum"]) .appShell input,
+:global(body[data-template="museum"]) .appShell select,
+:global(body[data-template="museum"]) .appShell textarea,
+:global(body[data-template="finans"]) .appShell input,
+:global(body[data-template="finans"]) .appShell select,
+:global(body[data-template="finans"]) .appShell textarea {
+  color: var(--ct-dark-field-text) !important;
+  background: var(--ct-dark-field-bg) !important;
+  border-color: var(--ct-app-button-border, rgba(255, 255, 255, 0.18)) !important;
+}
+
+:global(body[data-template="museum"]) .appShell input::placeholder,
+:global(body[data-template="museum"]) .appShell textarea::placeholder,
+:global(body[data-template="finans"]) .appShell input::placeholder,
+:global(body[data-template="finans"]) .appShell textarea::placeholder {
+  color: color-mix(in srgb, var(--ct-dark-field-text) 58%, transparent);
+}
+
+:global(body[data-template="museum"]) .appShell option,
+:global(body[data-template="finans"]) .appShell option {
+  color: #f5faff;
+  background: #101820;
+}
+
+:global(body[data-template="museum"]) .appHeader,
+:global(body[data-template="museum"]) .appCard,
+:global(body[data-template="museum"]) .adminStatCard,
+:global(body[data-template="museum"]) .adminFilterBar,
+:global(body[data-template="museum"]) .adminFilterBarV18,
+:global(body[data-template="museum"]) .adminUserListFull,
+:global(body[data-template="museum"]) .adminUserWorkspace,
+:global(body[data-template="museum"]) .retentionRulePanel,
+:global(body[data-template="museum"]) .retentionRuleGrid article,
+:global(body[data-template="museum"]) .createUserPanel,
+:global(body[data-template="museum"]) .catalogHero,
+:global(body[data-template="museum"]) .catalogDesktopFilter,
+:global(body[data-template="museum"]) .catalogToolbar,
+:global(body[data-template="museum"]) .catalogFilterSheet,
+:global(body[data-template="museum"]) .catalogStatusGrid span,
+:global(body[data-template="finans"]) .appHeader,
+:global(body[data-template="finans"]) .appCard,
+:global(body[data-template="finans"]) .adminStatCard,
+:global(body[data-template="finans"]) .adminFilterBar,
+:global(body[data-template="finans"]) .adminFilterBarV18,
+:global(body[data-template="finans"]) .adminUserListFull,
+:global(body[data-template="finans"]) .adminUserWorkspace,
+:global(body[data-template="finans"]) .retentionRulePanel,
+:global(body[data-template="finans"]) .retentionRuleGrid article,
+:global(body[data-template="finans"]) .createUserPanel,
+:global(body[data-template="finans"]) .catalogHero,
+:global(body[data-template="finans"]) .catalogDesktopFilter,
+:global(body[data-template="finans"]) .catalogToolbar,
+:global(body[data-template="finans"]) .catalogFilterSheet,
+:global(body[data-template="finans"]) .catalogStatusGrid span {
+  color: var(--ct-app-text) !important;
+  background: var(--ct-dark-panel-soft) !important;
+  border-color: var(--ct-panel-border) !important;
+}
+
+:global(body[data-template="museum"]) .adminFilterBar label,
+:global(body[data-template="museum"]) .adminFilterBarV18 label,
+:global(body[data-template="museum"]) .createUserPanel label,
+:global(body[data-template="museum"]) .catalogFilterHeader small,
+:global(body[data-template="museum"]) .catalogObjectTitleRow p,
+:global(body[data-template="museum"]) .catalogFilterGroup small,
+:global(body[data-template="finans"]) .adminFilterBar label,
+:global(body[data-template="finans"]) .adminFilterBarV18 label,
+:global(body[data-template="finans"]) .createUserPanel label,
+:global(body[data-template="finans"]) .catalogFilterHeader small,
+:global(body[data-template="finans"]) .catalogObjectTitleRow p,
+:global(body[data-template="finans"]) .catalogFilterGroup small {
+  color: var(--ct-dark-muted) !important;
+}
+
+:global(body[data-template="museum"]) .secondaryButton,
+:global(body[data-template="museum"]) .appTopbarActions button,
+:global(body[data-template="museum"]) .topbarButton,
+:global(body[data-template="museum"]) .catalogSegmentSwitch button,
+:global(body[data-template="museum"]) .catalogViewSwitch button,
+:global(body[data-template="museum"]) .catalogFilterHeader button,
+:global(body[data-template="museum"]) .catalogFilterChips button,
+:global(body[data-template="museum"]) .catalogFilterSheetTop button,
+:global(body[data-template="finans"]) .secondaryButton,
+:global(body[data-template="finans"]) .appTopbarActions button,
+:global(body[data-template="finans"]) .topbarButton,
+:global(body[data-template="finans"]) .catalogSegmentSwitch button,
+:global(body[data-template="finans"]) .catalogViewSwitch button,
+:global(body[data-template="finans"]) .catalogFilterHeader button,
+:global(body[data-template="finans"]) .catalogFilterChips button,
+:global(body[data-template="finans"]) .catalogFilterSheetTop button {
+  color: var(--ct-app-button-text) !important;
+  background: var(--ct-app-button-bg) !important;
+  border-color: var(--ct-app-button-border) !important;
+}
+
+:global(body[data-template="museum"]) .catalogSwitchActive,
+:global(body[data-template="finans"]) .catalogSwitchActive {
+  color: #fff !important;
+  background: color-mix(in srgb, var(--ct-app-sidebar-glow, #5aa4f1) 72%, #061621) !important;
+  border-color: color-mix(in srgb, var(--ct-app-sidebar-glow, #5aa4f1) 64%, #fff) !important;
+}
+
+:global(body[data-template="museum"]) .catalogFilterGroup,
+:global(body[data-template="museum"]) .catalogSearchField,
+:global(body[data-template="museum"]) .catalogSegmentSwitch,
+:global(body[data-template="museum"]) .catalogViewSwitch,
+:global(body[data-template="museum"]) .catalogObjectMetaGrid span,
+:global(body[data-template="museum"]) .adminUserRowV18,
+:global(body[data-template="museum"]) .expandedUserRowV18,
+:global(body[data-template="museum"]) .expandedUserRowV20,
+:global(body[data-template="museum"]) .archiveTabsLeft button,
+:global(body[data-template="museum"]) .archiveTabsRight button,
+:global(body[data-template="finans"]) .catalogFilterGroup,
+:global(body[data-template="finans"]) .catalogSearchField,
+:global(body[data-template="finans"]) .catalogSegmentSwitch,
+:global(body[data-template="finans"]) .catalogViewSwitch,
+:global(body[data-template="finans"]) .catalogObjectMetaGrid span,
+:global(body[data-template="finans"]) .adminUserRowV18,
+:global(body[data-template="finans"]) .expandedUserRowV18,
+:global(body[data-template="finans"]) .expandedUserRowV20,
+:global(body[data-template="finans"]) .archiveTabsLeft button,
+:global(body[data-template="finans"]) .archiveTabsRight button {
+  color: var(--ct-app-text) !important;
+  background: var(--ct-dark-field-bg) !important;
+  border-color: var(--ct-panel-border) !important;
+}
+
+:global(body[data-template="museum"]) .adminUserRowV18:hover,
+:global(body[data-template="finans"]) .adminUserRowV18:hover {
+  background: var(--ct-dark-field-bg-strong) !important;
+}
+
+:global(body[data-template="museum"]) .sidebarUserCard,
+:global(body[data-template="finans"]) .sidebarUserCard {
+  color: var(--ct-app-text);
+  background: var(--ct-dark-field-bg-strong);
+  border-color: var(--ct-app-button-border);
+}
+
 .adminUserTableHeaderV18 button {
   border: 0;
   background: transparent;
