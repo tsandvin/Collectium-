@@ -188,12 +188,17 @@ const defaultNewUser: NewUserForm = {
 
 export default function AdminUsersClient() {
   const [users, setUsers] = useState<AdminUser[]>(allDemoUsers as AdminUser[]);
+  const [mounted, setMounted] = useState(false);
   const [demoAccessPaused, setDemoAccessPaused] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    setDemoAccessPaused(window.localStorage.getItem("collectium-demo-users-paused") === "true");
+    setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    setDemoAccessPaused(window.localStorage.getItem("collectium-demo-users-paused") === "true");
+  }, [mounted]);
 
   function updateDemoAccessPaused(next: boolean) {
     setDemoAccessPaused(next);

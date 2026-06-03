@@ -156,6 +156,7 @@ export default function PublicTopMenu({
   }, [mounted, onSkinChange]);
 
   useEffect(() => {
+    if (!mounted) return;
     document.body.dataset.template = skin;
     document.documentElement.dataset.template = skin;
     try {
@@ -163,9 +164,10 @@ export default function PublicTopMenu({
     } catch {
       // localStorage is optional.
     }
-  }, [skin]);
+  }, [mounted, skin]);
 
   useEffect(() => {
+    if (!mounted) return;
     const root = document.documentElement;
     root.style.setProperty("--ct-body-size", `${design.bodySize}px`);
     root.style.setProperty("--ct-title-size", `${design.titleSize}px`);
@@ -177,7 +179,7 @@ export default function PublicTopMenu({
     } catch {
       // localStorage is optional.
     }
-  }, [design]);
+  }, [mounted, design]);
 
   const updateDesign = (key: keyof DesignState, value: number | PublicViewportMode) => {
     setDesign((current) => ({ ...current, [key]: value }));

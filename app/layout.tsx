@@ -1,4 +1,5 @@
 import "./globals.css";
+import Script from "next/script";
 
 export const metadata = {
   title: "Collectium",
@@ -17,7 +18,7 @@ export default function RootLayout({
       </head>
       <body>
         {children}
-        <script src="/assets/collectium-signature.js" defer />
+        <Script src="/assets/collectium-signature.js" strategy="afterInteractive" />
       </body>
     </html>
   );

@@ -56,6 +56,7 @@ const planOptions = [
 ];
 
 export default function AuthPageClient({ mode }: AuthPageClientProps) {
+  const [mounted, setMounted] = useState(false);
   const [skin, setSkin] = useState<PublicSkin>("collectium");
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -63,6 +64,11 @@ export default function AuthPageClient({ mode }: AuthPageClientProps) {
   const isRegister = mode === "register";
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     try {
       const savedSkin = window.localStorage.getItem("collectium.public.skin") as PublicSkin | null;
       if (savedSkin && ["collectium", "enkel", "museum", "finans"].includes(savedSkin)) {
@@ -71,7 +77,7 @@ export default function AuthPageClient({ mode }: AuthPageClientProps) {
     } catch {
       // localStorage is optional.
     }
-  }, []);
+  }, [mounted]);
 
   const logoSrc = useMemo(() => {
     if (skin === "museum" || skin === "finans") return "/brand/collectium-logo-white.png";
