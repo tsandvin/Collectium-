@@ -85,8 +85,8 @@ export type AdminUser = {
 };
 
 export const customerNumberRule = {
-  customer: "CT-[LANDSKODE]-[AAR]-[LOEPENUMMER]",
-  dealer: "CTD-[LANDSKODE]-[AAR]-[LOEPENUMMER]",
+  customer: "CT-[LANDSKODE]-[Ã…R]-[LÃ˜PENUMMER]",
+  dealer: "CTD-[LANDSKODE]-[Ã…R]-[LÃ˜PENUMMER]",
   exampleCustomer: "CT-NO-2026-000001",
   exampleDealer: "CTD-NO-2026-000001",
   note: "user_id er intern teknisk DB-ID. Kundenummer vises paa medlem, faktura, support, avtaler, forhandlerflyt og admin.",
@@ -214,7 +214,7 @@ export const allDemoUsers = [
       originRegisteredChannel: "app.collectium.no",
       mostUsedPages: [{page:"Katalog",percent:40 + idx},{page:"Min samling",percent:30},{page:"Auksjon",percent:30 - idx % 10}],
       activityByDay: daySets[idx % daySets.length],
-      supportFlag: idx % 5 === 0 ? "Support bÃƒÂ¸r kontrollere siste filterfeil" : "Ingen aktiv sak",
+      supportFlag: idx % 5 === 0 ? "Support bør kontrollere siste filterfeil" : "Ingen aktiv sak",
       supportOpenCases: idx % 5 === 0 ? 1 : 0,
       activityLog: ["aapnet katalog", "viste objektpresentasjon", "oppdaterte samlingsstatus"],
       deletionMode: idx === 8 ? "delete_personal_keep_ownership" : "active",

@@ -27,11 +27,11 @@ const filterFields = [
   // Hovedinnganger etter land
   { field: "ruler", title: "Konge / regent / dynasti" },
   { field: "denomination", title: "Type objekt / objektbetegnelse" },
-  { field: "year_label", title: "Ã…rstall" },
+  { field: "year_label", title: "Årstall" },
 
   // Underfilter hentes videre fra DB/API
   { field: "litra", title: "Litra / nummer / detalj" },
-  { field: "denomination_issue", title: "ValÃ¸rutgave / serie" },
+  { field: "denomination_issue", title: "Valørutgave / serie" },
   { field: "variant", title: "Variant / type" },
   { field: "signature", title: "Signatur / personer" },
   { field: "producer", title: "Produsent" },

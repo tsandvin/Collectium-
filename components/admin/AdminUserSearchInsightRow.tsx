@@ -4,17 +4,17 @@
  * Overskrift:
  * AdminUserSearchInsightRow
  *
- * Definering / formÃ¥l:
- * Ekstra boksrad for admin/brukere som viser sÃ¸k, sortering, samling, type,
- * medlemsfordeling og utvikling fra forrige mÃ¥ned.
+ * Definering / formål:
+ * Ekstra boksrad for admin/brukere som viser søk, sortering, samling, type,
+ * medlemsfordeling og utvikling fra forrige måned.
  *
- * BruksomrÃ¥de:
+ * Bruksområde:
  * Importeres i components/admin/AdminUsersClient.tsx eller app/admin/brukere/page.tsx.
  *
- * BerÃ¸rte sider / routes:
+ * Berørte sider / routes:
  * - /admin/brukere
  *
- * BerÃ¸rte DB-brytere / feature_keys:
+ * Berørte DB-brytere / feature_keys:
  * - admin.users.view
  * - admin.users.activity.view
  *
@@ -34,12 +34,12 @@ export function AdminUserSearchInsightRow() {
   const summary = adminUserSearchSummary as any;
 
   return (
-    <section className="ct-admin-user-insight-row" aria-label="BrukersÃ¸k og medlemsutvikling">
+    <section className="ct-admin-user-insight-row" aria-label="Brukersøk og medlemsutvikling">
       <article className="ct-admin-user-insight-card ct-admin-user-insight-card--wide">
-        <span className="ct-admin-user-insight-label">SÃ¸k / sortering</span>
+        <span className="ct-admin-user-insight-label">Søk / sortering</span>
         <strong>{summary.visibleUsers} synlige</strong>
         <p>
-          {summary.totalUsers} profiler totalt Â· {summary.totalObjects} objekter Â·{" "}
+          {summary.totalUsers} profiler totalt · {summary.totalObjects} objekter ·{" "}
           {summary.totalGroups} samlingsgrupper
         </p>
       </article>
@@ -84,8 +84,8 @@ export function AdminUserSearchInsightRow() {
         <span className="ct-admin-user-insight-label">Utvikling fra forrige mnd</span>
         <strong>+{summary.monthDevelopment.percentChange}%</strong>
         <p>
-          {summary.monthDevelopment.newMembersThisMonth} nye nÃ¥ mot{" "}
-          {summary.monthDevelopment.newMembersPreviousMonth} forrige mÃ¥ned
+          {summary.monthDevelopment.newMembersThisMonth} nye nå mot{" "}
+          {summary.monthDevelopment.newMembersPreviousMonth} forrige måned
         </p>
       </article>
     </section>
