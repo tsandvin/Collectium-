@@ -1,21 +1,14 @@
-Collectium theme v3 - no double shell
+Collectium Front Foundation v4.1
 
-Denne pakken fikser feilen der siden fikk dobbel sidemeny og testknappene Collectium / Enkel / Museum / Finans.
+Kopier innholdet i denne pakken inn i prosjektroten.
+Svar JA på å overskrive filer.
 
-Innhold:
-- app/layout.tsx laster CSS, men wrapper IKKE med AppShell.
-- app/globals.css og app/collectium-brand-tokens.css ligger globalt.
-- public/collectium-logo-mask.png ligger riktig for CSS-url /collectium-logo-mask.png.
-- app/lib/theme.ts ligger igjen for fremtidig styrt skin-switch.
-
-Viktig:
-- Ikke bruk app/components/TemplateSwitcher.tsx i produksjon.
-- Ikke pakk eksisterende sider inn i test-AppShell hvis prosjektet allerede har egen sidebar/topbar.
-- Hvis gamle AppShell/TemplateSwitcher-filer ligger igjen, kan de stå ubrukt, men de skal ikke importeres i app/layout.tsx.
-
-Etter kopiering til prosjektroten, kjør:
+Kjør deretter i PowerShell:
 
 npm.cmd run build
 git add -A
-git commit -m "Fix Collectium theme without duplicate shell"
+git commit -m "Install Collectium front foundation v4.1"
 git push origin main
+
+Pakken legger nytt design i layout/globalt grunnlag, ikke bare i en enkeltside.
+Alle nye sider under app/ skal dermed arve nytt Collectium-design automatisk.

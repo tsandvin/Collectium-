@@ -4,7 +4,7 @@
  * COLLECTIUM FILE HEADER
  *
  * Overskrift:
- * CollectiumAppShell v20 theme repair
+ * CollectiumAppShell v19.1
  *
  * Definering / formål:
  * Innlogget Collectium-appshell med låst sidemeny, toppmeny, designpanel, varselmeny,
@@ -57,31 +57,6 @@ type Session = {
 
 type AppPage = "minside" | "admin" | "catalog";
 type AdminModule = "dashboard" | "users" | "settings" | "customer" | "dealers";
-type CollectiumSkin = "signature-light" | "signature-dark" | "minimal-light" | "minimal-dark";
-
-const DEFAULT_COLLECTIUM_SKIN: CollectiumSkin = "signature-light";
-
-const templateBySkin: Record<CollectiumSkin, string> = {
-  "signature-light": "collectium",
-  "signature-dark": "museum",
-  "minimal-light": "enkel",
-  "minimal-dark": "finans",
-};
-
-const legacySkinMap: Record<string, CollectiumSkin> = {
-  collectium: "signature-light",
-  enkel: "minimal-light",
-  museum: "signature-dark",
-  finans: "minimal-dark",
-  "signature-light": "signature-light",
-  "signature-dark": "signature-dark",
-  "minimal-light": "minimal-light",
-  "minimal-dark": "minimal-dark",
-};
-
-function normalizeCollectiumSkin(value: string | null): CollectiumSkin {
-  return value && legacySkinMap[value] ? legacySkinMap[value] : DEFAULT_COLLECTIUM_SKIN;
-}
 type NotificationIconType = "object" | "collection" | "support" | "market" | "system" | "dealer" | "auction" | "user";
 
 type CollectiumAppShellProps = {
@@ -211,19 +186,41 @@ function buildNotificationSections() {
 
 const notificationSections = buildNotificationSections();
 
-function applyCollectiumDesign(value: string) {
+type CollectiumSkin = "signature-light" | "signature-dark" | "minimal-light" | "minimal-dark";
+
+const LOCKED_DEFAULT_SKIN: CollectiumSkin = "signature-light";
+
+function normalizeSkin(value: string | null | undefined): CollectiumSkin {
+  if (value === "signature-dark" || value === "museum") return "signature-dark";
+  if (value === "minimal-light" || value === "enkel") return "minimal-light";
+  if (value === "minimal-dark" || value === "finans") return "minimal-dark";
+  return "signature-light";
+}
+
+function applyCollectiumFront(skinValue: string | null | undefined) {
   if (typeof document === "undefined") return;
-
-  const skin = normalizeCollectiumSkin(value);
-  const template = templateBySkin[skin];
-
-  document.body.setAttribute("data-skin", skin);
-  document.documentElement.setAttribute("data-skin", skin);
-  document.body.setAttribute("data-template", template);
+  const skin = normalizeSkin(skinValue);
+  const template = skin.startsWith("minimal") ? "enkel" : "collectium";
   document.documentElement.setAttribute("data-template", template);
+  document.body.setAttribute("data-template", template);
+  document.documentElement.setAttribute("data-skin", skin);
+  document.body.setAttribute("data-skin", skin);
+  document.documentElement.setAttribute("data-collectium-front", "v4.1");
+  document.body.setAttribute("data-collectium-front", "v4.1");
+  document.documentElement.setAttribute("data-vp", document.documentElement.getAttribute("data-vp") || "pc");
+  try {
+    window.localStorage.setItem("collectium-skin", skin);
+    window.localStorage.setItem("collectium-template", template);
+    window.localStorage.setItem("ct-skin", skin);
+    window.localStorage.setItem("ct-template", template);
+    window.localStorage.removeItem("collectium.public.design");
+  } catch {
+    // ignore private mode / storage errors
+  }
+}
 
-  window.localStorage.setItem("collectium-skin", skin);
-  window.localStorage.setItem("collectium-template", template);
+function applyCollectiumDesign(template: string) {
+  applyCollectiumFront(template);
 }
 
 
@@ -234,9 +231,13 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
   const [notificationsOpen, setNotificationsOpen] = useState(false);
 
   useEffect(() => {
-    const savedSkin = window.localStorage.getItem("collectium-skin");
-    const savedTemplate = window.localStorage.getItem("collectium-template");
-    applyCollectiumDesign(savedSkin || savedTemplate || DEFAULT_COLLECTIUM_SKIN);
+    const savedSkin = window.localStorage.getItem("collectium-skin") || window.localStorage.getItem("ct-skin") || LOCKED_DEFAULT_SKIN;
+    applyCollectiumFront(savedSkin);
+    const guard = window.setInterval(() => {
+      const current = document.body.getAttribute("data-skin");
+      if (!current || document.body.getAttribute("data-collectium-front") !== "v4.1") applyCollectiumFront(window.localStorage.getItem("collectium-skin") || savedSkin);
+    }, 800);
+    return () => window.clearInterval(guard);
   }, []);
 
   useEffect(() => {
@@ -288,11 +289,11 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
   }
 
   return (
-    <main className={styles.appShell} data-page={page} data-collectium-shell="v3.2">
+    <main className={styles.appShell} data-page={page}>
       <aside className={styles.appSidebar}>
         <a href="/" className={styles.appBrandBlock}>
           <img src="/brand/collectium-logo-white.png" alt="Collectium" />
-          <small>DB 8.4</small>
+          <small>Collectium</small>
         </a>
 
         <p className={styles.sidebarLabel}>Hovedmeny</p>
@@ -443,10 +444,10 @@ function DesignOverlay() {
       <p>Styrer innlogget arbeidsflate globalt.</p>
       <div className={styles.designButtonGrid}>
         {[
-          ["collectium", "Collectium"],
-          ["enkel", "Samleren"],
-          ["museum", "Museum"],
-          ["finans", "Finans"],
+          ["signature-light", "Signature lys"],
+          ["signature-dark", "Signature mørk"],
+          ["minimal-light", "Minimal lys"],
+          ["minimal-dark", "Minimal mørk"],
         ].map(([key, label]) => (
           <button key={key} type="button" onClick={() => applyCollectiumDesign(key)}>{label}</button>
         ))}
@@ -456,9 +457,9 @@ function DesignOverlay() {
       <label>Headline <input type="range" min="18" max="42" defaultValue="32" onChange={(event) => setDesignVars("--ct-headline-size", `${event.target.value}px`)} /></label>
       <label>Luft i bokser <input type="range" min="8" max="28" defaultValue="16" onChange={(event) => setDesignVars("--ct-card-pad", `${event.target.value}px`)} /></label>
       <div className={styles.designButtonGrid}>
-        <button type="button" onClick={() => document.body.setAttribute("data-screen", "normal")}>Normal</button>
-        <button type="button" onClick={() => document.body.setAttribute("data-screen", "wide")}>Bred</button>
-        <button type="button" onClick={() => document.body.setAttribute("data-screen", "tv")}>TV</button>
+        <button type="button" onClick={() => { document.documentElement.setAttribute("data-vp", "pc"); document.body.setAttribute("data-vp", "pc"); }}>Normal</button>
+        <button type="button" onClick={() => { document.documentElement.setAttribute("data-vp", "wide"); document.body.setAttribute("data-vp", "wide"); }}>Bred</button>
+        <button type="button" onClick={() => { document.documentElement.setAttribute("data-vp", "tv"); document.body.setAttribute("data-vp", "tv"); }}>TV</button>
       </div>
     </div>
   );

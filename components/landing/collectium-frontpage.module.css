@@ -5497,259 +5497,122 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
   color: #fffdf7 !important;
 }
 
-
 /* ================================================================
-   COLLECTIUM SHELL REPAIR v3.2
-   Formaal: Existing CollectiumAppShell skal bruke nye globale skin tokens.
-   Dette stopper gammel V22-look uten å lage ny/dobbel shell.
-   ================================================================ */
-
-:global(html[data-skin="signature-light"]),
-:global(body[data-skin="signature-light"]) {
-  --ct-shell-bg: linear-gradient(135deg, #f8f1e6, #fffaf2 58%, #f3e2c8);
-  --ct-shell-sidebar-bg: linear-gradient(180deg, #fff8ed 0%, #f7ecd9 58%, #efe0c8 100%);
-  --ct-shell-topbar-bg: rgba(255, 250, 242, 0.94);
-  --ct-shell-panel-bg: rgba(255, 250, 242, 0.94);
-  --ct-shell-panel-solid: #fff8ed;
-  --ct-shell-text: #143327;
-  --ct-shell-muted: rgba(20, 51, 39, 0.66);
-  --ct-shell-border: rgba(161, 122, 58, 0.24);
-  --ct-shell-accent: #145c38;
-  --ct-shell-accent-2: #d6a641;
-  --ct-shell-button-bg: rgba(255, 250, 242, 0.9);
-  --ct-shell-shadow: 0 18px 54px rgba(92, 61, 20, 0.09);
+   CHANGE-2026-06-04-collectium-front-foundation-v4
+   Purpose: final local CSS-module lock so old V22 rules cannot revert
+   the new foundation after hydration or localStorage restore.
+================================================================ */
+:global(body[data-collectium-front="v4"]) .appShell {
+  background: var(--ct-page-bg) !important;
+  color: var(--ct-text) !important;
+  grid-template-columns: var(--ct-sidebar-width, 260px) minmax(0, 1fr) !important;
 }
 
-:global(html[data-skin="signature-dark"]),
-:global(body[data-skin="signature-dark"]) {
-  --ct-shell-bg: radial-gradient(ellipse at 30% 0%, rgba(216, 180, 90, 0.10), transparent 50%), linear-gradient(180deg, #061621, #0d1117);
-  --ct-shell-sidebar-bg: linear-gradient(180deg, #081923 0%, #061621 60%, #11100c 100%);
-  --ct-shell-topbar-bg: rgba(6, 22, 33, 0.92);
-  --ct-shell-panel-bg: rgba(18, 31, 40, 0.92);
-  --ct-shell-panel-solid: #0b1d28;
-  --ct-shell-text: #fffaf0;
-  --ct-shell-muted: rgba(255, 250, 240, 0.72);
-  --ct-shell-border: rgba(216, 180, 90, 0.26);
-  --ct-shell-accent: #d8b45a;
-  --ct-shell-accent-2: #d8b45a;
-  --ct-shell-button-bg: rgba(255, 255, 255, 0.08);
-  --ct-shell-shadow: 0 24px 82px rgba(0, 0, 0, 0.38);
+:global(body[data-collectium-front="v4"]) .appSidebar {
+  background: var(--ct-sidebar-bg) !important;
+  color: var(--ct-sidebar-text) !important;
+  border-right: 1px solid var(--ct-border) !important;
+  box-shadow: inset -1px 0 0 rgba(255,255,255,.12), 10px 0 34px rgba(0,0,0,.05) !important;
 }
 
-:global(html[data-skin="minimal-light"]),
-:global(body[data-skin="minimal-light"]) {
-  --ct-shell-bg: linear-gradient(135deg, #f8fbff, #ffffff 58%, #eef5fc);
-  --ct-shell-sidebar-bg: linear-gradient(180deg, #ffffff 0%, #f7fbff 58%, #edf5fc 100%);
-  --ct-shell-topbar-bg: rgba(255, 255, 255, 0.96);
-  --ct-shell-panel-bg: rgba(255, 255, 255, 0.94);
-  --ct-shell-panel-solid: #ffffff;
-  --ct-shell-text: #0b2a4a;
-  --ct-shell-muted: rgba(11, 42, 74, 0.64);
-  --ct-shell-border: rgba(30, 90, 154, 0.16);
-  --ct-shell-accent: #1e5a9a;
-  --ct-shell-accent-2: #9fcdb2;
-  --ct-shell-button-bg: rgba(255, 255, 255, 0.96);
-  --ct-shell-shadow: 0 16px 46px rgba(16, 54, 94, 0.08);
+:global(body[data-collectium-front="v4"]) .appTopbar {
+  background: var(--ct-topbar-bg) !important;
+  color: var(--ct-text) !important;
+  border-bottom: 1px solid var(--ct-border) !important;
+  box-shadow: 0 1px 0 rgba(255,255,255,.35) inset, 0 10px 30px rgba(0,0,0,.05) !important;
 }
 
-:global(html[data-skin="minimal-dark"]),
-:global(body[data-skin="minimal-dark"]) {
-  --ct-shell-bg: radial-gradient(ellipse at 80% 0%, rgba(39, 167, 119, 0.06), transparent 50%), linear-gradient(180deg, #061621, #111a21);
-  --ct-shell-sidebar-bg: linear-gradient(180deg, #0c1419 0%, #162028 58%, #0c1419 100%);
-  --ct-shell-topbar-bg: rgba(22, 32, 40, 0.92);
-  --ct-shell-panel-bg: rgba(28, 40, 50, 0.92);
-  --ct-shell-panel-solid: #1c2832;
-  --ct-shell-text: #dde6ed;
-  --ct-shell-muted: rgba(221, 230, 237, 0.66);
-  --ct-shell-border: rgba(160, 185, 200, 0.14);
-  --ct-shell-accent: #27a777;
-  --ct-shell-accent-2: #b08a3e;
-  --ct-shell-button-bg: rgba(255, 255, 255, 0.06);
-  --ct-shell-shadow: 0 24px 82px rgba(0, 0, 0, 0.34);
+:global(body[data-collectium-front="v4"]) .appHeader,
+:global(body[data-collectium-front="v4"]) .appCard,
+:global(body[data-collectium-front="v4"]) .adminStatCard,
+:global(body[data-collectium-front="v4"]) .adminFilterBar,
+:global(body[data-collectium-front="v4"]) .adminFilterBarV18,
+:global(body[data-collectium-front="v4"]) .adminUserListFull,
+:global(body[data-collectium-front="v4"]) .adminUserWorkspace,
+:global(body[data-collectium-front="v4"]) .retentionRulePanel,
+:global(body[data-collectium-front="v4"]) .retentionRuleGrid article,
+:global(body[data-collectium-front="v4"]) .createUserPanel,
+:global(body[data-collectium-front="v4"]) .dealerList,
+:global(body[data-collectium-front="v4"]) .dealerDetail,
+:global(body[data-collectium-front="v4"]) .infoBox,
+:global(body[data-collectium-front="v4"]) .catalogHero,
+:global(body[data-collectium-front="v4"]) .catalogDesktopFilter,
+:global(body[data-collectium-front="v4"]) .catalogToolbar,
+:global(body[data-collectium-front="v4"]) .catalogFilterSheet,
+:global(body[data-collectium-front="v4"]) .catalogStatusGrid span,
+:global(body[data-collectium-front="v4"]) .catalogObjectCard,
+:global(body[data-collectium-front="v4"]) .sidebarUserCard,
+:global(body[data-collectium-front="v4"]) .appBrandBlock {
+  color: var(--ct-text) !important;
+  background: var(--ct-card-bg) !important;
+  border-color: var(--ct-border) !important;
+  box-shadow: var(--ct-shadow) !important;
 }
 
-.appShell {
-  background: var(--ct-shell-bg, var(--ct-app-bg)) !important;
-  color: var(--ct-shell-text, var(--ct-text)) !important;
-  font-family: var(--ct-font-ui, Inter, ui-sans-serif, system-ui, sans-serif) !important;
-}
-
-.appSidebar {
-  color: var(--ct-shell-text, var(--ct-text)) !important;
-  background: var(--ct-shell-sidebar-bg, var(--ct-app-sidebar-bg)) !important;
-  border-right: 1px solid var(--ct-shell-border, var(--ct-panel-border)) !important;
-  box-shadow: 10px 0 34px color-mix(in srgb, var(--ct-shell-accent, #145c38) 7%, transparent) !important;
-}
-
-.appBrandBlock,
-.sidebarUserCard {
-  color: var(--ct-shell-text, var(--ct-text)) !important;
-  background: color-mix(in srgb, var(--ct-shell-panel-bg, var(--ct-panel-bg)) 88%, transparent) !important;
-  border-color: var(--ct-shell-border, var(--ct-panel-border)) !important;
-  box-shadow: none !important;
-}
-
-.appBrandBlock small {
-  color: var(--ct-shell-muted, var(--ct-text-muted)) !important;
-  background: color-mix(in srgb, var(--ct-shell-accent, var(--ct-accent)) 8%, transparent) !important;
-  border-color: color-mix(in srgb, var(--ct-shell-accent, var(--ct-accent)) 22%, transparent) !important;
-}
-
-.appBrandBlock img {
-  filter: none !important;
-}
-
-:global(body[data-skin="signature-light"]) .appBrandBlock img,
-:global(body[data-skin="minimal-light"]) .appBrandBlock img {
-  filter: invert(17%) sepia(25%) saturate(850%) hue-rotate(100deg) brightness(88%) contrast(92%) !important;
-}
-
-.sidebarLabel,
-.appHeader p,
-.sessionBox,
-.adminPageHeader p,
-.infoBox p,
-.infoBox span,
-.catalogObjectTitleRow p,
-.catalogFilterGroup small,
-.catalogFilterHeader small,
-.dealerRow small,
-.dealerDetail p {
-  color: var(--ct-shell-muted, var(--ct-text-muted)) !important;
-}
-
-.appSidebar nav a,
-.sidebarGroup a {
-  color: var(--ct-shell-text, var(--ct-text)) !important;
+:global(body[data-collectium-front="v4"]) .appSidebar nav a,
+:global(body[data-collectium-front="v4"]) .sidebarGroup a {
+  color: var(--ct-sidebar-text) !important;
+  background: transparent !important;
   border: 1px solid transparent !important;
   border-radius: 10px !important;
-  background: transparent !important;
 }
 
-.appSidebar nav a:hover,
-.sidebarGroup a:hover,
-.activeAppLink {
-  color: #fff !important;
-  background: linear-gradient(180deg, var(--ct-shell-accent, var(--ct-accent)), color-mix(in srgb, var(--ct-shell-accent, var(--ct-accent)) 76%, #000)) !important;
-  border-color: color-mix(in srgb, var(--ct-shell-accent, var(--ct-accent)) 34%, transparent) !important;
-  box-shadow: 0 10px 22px color-mix(in srgb, var(--ct-shell-accent, var(--ct-accent)) 18%, transparent) !important;
+:global(body[data-collectium-front="v4"]) .appSidebar nav a:hover,
+:global(body[data-collectium-front="v4"]) .sidebarGroup a:hover,
+:global(body[data-collectium-front="v4"]) .activeAppLink {
+  color: var(--ct-active-text) !important;
+  background: var(--ct-active-bg) !important;
+  border-color: var(--ct-border-strong) !important;
 }
 
-.appTopbar {
-  color: var(--ct-shell-text, var(--ct-text)) !important;
-  background: var(--ct-shell-topbar-bg, var(--ct-app-topbar-bg)) !important;
-  border-bottom-color: var(--ct-shell-border, var(--ct-panel-border)) !important;
-  box-shadow: 0 10px 30px color-mix(in srgb, var(--ct-shell-accent, #145c38) 7%, transparent) !important;
+:global(body[data-collectium-front="v4"]) .topbarButton,
+:global(body[data-collectium-front="v4"]) .appTopbarActions button,
+:global(body[data-collectium-front="v4"]) .secondaryButton,
+:global(body[data-collectium-front="v4"]) .goldButton,
+:global(body[data-collectium-front="v4"]) .demoAccessToggle,
+:global(body[data-collectium-front="v4"]) .designButtonGrid button {
+  color: var(--ct-button-text) !important;
+  background: var(--ct-button-bg) !important;
+  border-color: var(--ct-button-border) !important;
 }
 
-.appHeader,
-.appCard,
-.adminStatCard,
-.adminFilterBar,
-.adminFilterBarV18,
-.adminUserListFull,
-.adminUserWorkspace,
-.retentionRulePanel,
-.retentionRuleGrid article,
-.createUserPanel,
-.dealerList,
-.dealerDetail,
-.infoBox,
-.catalogHero,
-.catalogDesktopFilter,
-.catalogToolbar,
-.catalogFilterSheet,
-.catalogStatusGrid span,
-.catalogObjectCard,
-.userArchiveCard,
-.settingsMenu,
-.settingsContent,
-.adminControlCard,
-.customerHero,
-.customerMetricGrid article,
-.customerPanel,
-.demoAccessPanel,
-.demoSettingsRow {
-  color: var(--ct-shell-text, var(--ct-text)) !important;
-  background: var(--ct-shell-panel-bg, var(--ct-panel-bg)) !important;
-  border-color: var(--ct-shell-border, var(--ct-panel-border)) !important;
-  box-shadow: var(--ct-shell-shadow, var(--ct-shadow)) !important;
+:global(body[data-collectium-front="v4"]) .appSearch,
+:global(body[data-collectium-front="v4"]) .appShell input,
+:global(body[data-collectium-front="v4"]) .appShell select,
+:global(body[data-collectium-front="v4"]) .appShell textarea,
+:global(body[data-collectium-front="v4"]) .catalogSearchField,
+:global(body[data-collectium-front="v4"]) .catalogFilterGroup,
+:global(body[data-collectium-front="v4"]) .catalogObjectMetaGrid span,
+:global(body[data-collectium-front="v4"]) .adminUserRowV18,
+:global(body[data-collectium-front="v4"]) .expandedUserRowV18,
+:global(body[data-collectium-front="v4"]) .expandedUserRowV20,
+:global(body[data-collectium-front="v4"]) .dealerRow {
+  color: var(--ct-text) !important;
+  background: color-mix(in srgb, var(--ct-panel-solid) 82%, transparent) !important;
+  border-color: var(--ct-border) !important;
 }
 
-.appSearch,
-.appShell input,
-.appShell select,
-.appShell textarea,
-.catalogSearchField,
-.catalogFilterGroup,
-.catalogObjectMetaGrid span,
-.adminUserRow,
-.adminUserRowV18,
-.expandedUserRow,
-.expandedUserRowV18,
-.expandedUserRowV20,
-.dealerRow,
-.archiveTabsLeft button,
-.archiveTabsRight button,
-.catalogSegmentSwitch button,
-.catalogViewSwitch button {
-  color: var(--ct-shell-text, var(--ct-text)) !important;
-  background: color-mix(in srgb, var(--ct-shell-panel-bg, var(--ct-panel-bg)) 86%, transparent) !important;
-  border-color: var(--ct-shell-border, var(--ct-panel-border)) !important;
+:global(body[data-collectium-front="v4"]) .catalogSwitchActive,
+:global(body[data-collectium-front="v4"]) .catalogSegmentSwitch .catalogSwitchActive,
+:global(body[data-collectium-front="v4"]) .catalogViewSwitch .catalogSwitchActive,
+:global(body[data-collectium-front="v4"]) .archiveTabsLeft button[aria-selected="true"],
+:global(body[data-collectium-front="v4"]) .archiveTabsRight button[aria-selected="true"] {
+  color: var(--ct-active-text) !important;
+  background: var(--ct-active-bg) !important;
+  border-color: var(--ct-border-strong) !important;
 }
 
-.appShell option {
-  color: var(--ct-shell-text, var(--ct-text)) !important;
-  background: var(--ct-shell-panel-solid, var(--ct-panel-solid)) !important;
+:global(body[data-collectium-front="v4"]) .appBrandBlock small {
+  color: var(--ct-brand-primary) !important;
+  background: color-mix(in srgb, var(--ct-brand-primary) 10%, transparent) !important;
+  border-color: color-mix(in srgb, var(--ct-brand-primary) 24%, transparent) !important;
 }
 
-.topbarButton,
-.appTopbarActions button,
-.secondaryButton,
-.goldButton,
-.demoAccessToggle,
-.catalogFilterHeader button,
-.catalogFilterChips button,
-.catalogFilterSheetTop button,
-.infoBox button,
-.catalogObjectActions a,
-.catalogRelationLinks a,
-.catalogObjectMarket em {
-  color: var(--ct-shell-text, var(--ct-text)) !important;
-  background: var(--ct-shell-button-bg, var(--ct-app-button-bg)) !important;
-  border-color: var(--ct-shell-border, var(--ct-panel-border)) !important;
+:global(body[data-collectium-front="v4"]) .appBrandBlock img + img {
+  display: none !important;
 }
 
-.goldButton,
-.demoAccessToggle,
-.catalogSwitchActive,
-.catalogSegmentSwitch .catalogSwitchActive,
-.catalogViewSwitch .catalogSwitchActive,
-.archiveTabsLeft button[aria-selected="true"],
-.archiveTabsRight button[aria-selected="true"] {
-  color: #fff !important;
-  background: linear-gradient(180deg, var(--ct-shell-accent, var(--ct-accent)), color-mix(in srgb, var(--ct-shell-accent, var(--ct-accent)) 76%, #000)) !important;
-  border-color: color-mix(in srgb, var(--ct-shell-accent, var(--ct-accent)) 74%, #000) !important;
-}
-
-.designOverlayPanel,
-.notificationOverlay {
-  color: var(--ct-shell-text, var(--ct-text)) !important;
-  background: var(--ct-shell-panel-solid, var(--ct-panel-solid)) !important;
-  border-color: var(--ct-shell-border, var(--ct-panel-border)) !important;
-}
-
-.designButtonGrid button,
-.notificationOverlay article,
-.notificationMegaSection,
-.notificationMegaSection a {
-  color: var(--ct-shell-text, var(--ct-text)) !important;
-  background: color-mix(in srgb, var(--ct-shell-panel-bg, var(--ct-panel-bg)) 84%, transparent) !important;
-  border-color: var(--ct-shell-border, var(--ct-panel-border)) !important;
-}
-
-/* Fjern gammel visuell V22-stempling uten å fjerne funksjonalitet. */
-.appBrandBlock small {
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+@media (max-width: 1180px) {
+  :global(body[data-collectium-front="v4"]) .appShell { grid-template-columns: 1fr !important; }
+  :global(body[data-collectium-front="v4"]) .appSidebar { position: relative !important; height: auto !important; }
 }
