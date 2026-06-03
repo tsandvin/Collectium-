@@ -1,1 +1,100 @@
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;font-family:Segoe UI,system-ui,sans-serif;background:#eef3f8;color:#102A43}button,input,textarea,select{font:inherit}button{cursor:pointer}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;font-family:Segoe UI,system-ui,sans-serif;background:#eef3f8;color:#102A43}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+
+body[data-template="collectium"],
+html[data-template="collectium"]{
+  --ct-app-bg:linear-gradient(135deg,#061621,#082238 58%,#0c3048);
+  --ct-app-sidebar-bg:#082238;
+  --ct-app-sidebar-bg-2:#04131f;
+  --ct-app-sidebar-bg-3:#0d2c3f;
+  --ct-app-sidebar-glow:#6fb7e6;
+  --ct-app-topbar-bg:rgba(6,22,33,.94);
+  --ct-app-topbar-text:#eef6ff;
+  --ct-app-topbar-border:rgba(90,145,190,.34);
+  --ct-app-button-bg:rgba(255,255,255,.08);
+  --ct-app-button-text:#eef6ff;
+  --ct-app-button-border:rgba(90,145,190,.36);
+  --ct-app-search-bg:rgba(255,255,255,.08);
+  --ct-app-text:#eef6ff;
+  --ct-text:#eef6ff;
+  --ct-panel-bg:rgba(8,34,56,.94);
+  --ct-panel-solid:#082238;
+  --ct-surface-solid:#061621;
+  --ct-card-bg:rgba(8,34,56,.92);
+  --ct-panel-border:rgba(90,145,190,.38);
+  --ct-border-strong:rgba(90,145,190,.55);
+}
+
+body[data-template="enkel"],
+html[data-template="enkel"]{
+  --ct-app-bg:linear-gradient(135deg,#f7fbff,#fff);
+  --ct-app-sidebar-bg:#284866;
+  --ct-app-sidebar-bg-2:#172d44;
+  --ct-app-sidebar-bg-3:#244155;
+  --ct-app-sidebar-glow:#b7ddf5;
+  --ct-app-topbar-bg:rgba(255,255,255,.92);
+  --ct-app-topbar-text:#102335;
+  --ct-app-topbar-border:rgba(35,88,155,.14);
+  --ct-app-button-bg:rgba(255,255,255,.94);
+  --ct-app-button-text:#102335;
+  --ct-app-button-border:rgba(35,88,155,.18);
+  --ct-app-search-bg:rgba(255,255,255,.98);
+  --ct-app-text:#102335;
+  --ct-text:#102335;
+  --ct-panel-bg:rgba(255,255,255,.92);
+  --ct-panel-solid:#fff;
+  --ct-surface-solid:#f7fbff;
+  --ct-card-bg:rgba(255,255,255,.92);
+  --ct-panel-border:rgba(35,88,155,.16);
+  --ct-border-strong:rgba(35,88,155,.26);
+}
+
+body[data-template="museum"],
+html[data-template="museum"]{
+  --ct-app-bg:linear-gradient(135deg,#161616,#2b2b2b);
+  --ct-app-sidebar-bg:#151515;
+  --ct-app-sidebar-bg-2:#080808;
+  --ct-app-sidebar-bg-3:#3a3221;
+  --ct-app-sidebar-glow:#b99a55;
+  --ct-app-topbar-bg:rgba(18,18,18,.9);
+  --ct-app-topbar-text:#f0f0ea;
+  --ct-app-topbar-border:rgba(210,210,210,.16);
+  --ct-app-button-bg:rgba(255,255,255,.08);
+  --ct-app-button-text:#f0f0ea;
+  --ct-app-button-border:rgba(220,220,210,.18);
+  --ct-app-search-bg:rgba(255,255,255,.08);
+  --ct-app-text:#f0f0f0;
+  --ct-text:#f0f0f0;
+  --ct-panel-bg:rgba(36,36,36,.9);
+  --ct-panel-solid:#181818;
+  --ct-surface-solid:#101010;
+  --ct-card-bg:rgba(36,36,36,.9);
+  --ct-panel-border:rgba(210,210,210,.16);
+  --ct-border-strong:rgba(210,210,210,.26);
+}
+
+body[data-template="finans"],
+html[data-template="finans"]{
+  --ct-app-bg:linear-gradient(135deg,#061727,#0d2c48);
+  --ct-app-sidebar-bg:#07243e;
+  --ct-app-sidebar-bg-2:#04101f;
+  --ct-app-sidebar-bg-3:#0f3555;
+  --ct-app-sidebar-glow:#5aa4f1;
+  --ct-app-topbar-bg:rgba(5,20,35,.9);
+  --ct-app-topbar-text:#eef7ff;
+  --ct-app-topbar-border:rgba(90,150,220,.24);
+  --ct-app-button-bg:rgba(255,255,255,.09);
+  --ct-app-button-text:#eef7ff;
+  --ct-app-button-border:rgba(90,150,220,.28);
+  --ct-app-search-bg:rgba(255,255,255,.09);
+  --ct-app-text:#eef7ff;
+  --ct-text:#eef7ff;
+  --ct-panel-bg:rgba(8,32,54,.92);
+  --ct-panel-solid:#082036;
+  --ct-surface-solid:#061727;
+  --ct-card-bg:rgba(8,32,54,.92);
+  --ct-panel-border:rgba(90,150,220,.26);
+  --ct-border-strong:rgba(90,150,220,.42);
+}

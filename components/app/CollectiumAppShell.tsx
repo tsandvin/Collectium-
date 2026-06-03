@@ -37,7 +37,8 @@
  * - auth.logout
  */
 
-import { useEffect, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import AdminDealersClient from "../admin/AdminDealersClient";
 import AdminSettingsClient from "../admin/AdminSettingsClient";
 import AdminUsersClient from "../admin/AdminUsersClient";
@@ -204,7 +205,9 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
           </div>
         </header>
 
-        {designOpen ? <DesignOverlay /> : null}
+        <DesignMenuPortal open={designOpen} onClose={() => setDesignOpen(false)}>
+          <DesignOverlay />
+        </DesignMenuPortal>
         {notificationsOpen ? <NotificationOverlay /> : null}
 
         {isAdminPage ? <AdminContent module={adminModule} session={session} customerId={customerId} /> : page === "catalog" ? <CatalogWorkspaceClient /> : <MyPageContent session={session} />}
@@ -225,6 +228,42 @@ function setDesignVars(key: string, value: string) {
   document.documentElement.style.setProperty(key, value);
   document.body.style.setProperty(key, value);
   window.localStorage.setItem(`collectium-design-${key}`, value);
+}
+
+function DesignMenuPortal({ open, onClose, children }: { open: boolean; onClose: () => void; children: ReactNode }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") onClose();
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open, onClose]);
+
+  if (!mounted || !open) return null;
+
+  return createPortal(
+    <>
+      <button
+        type="button"
+        aria-label="Lukk designmeny"
+        className={styles.designOverlayBackdrop}
+        onClick={onClose}
+      />
+      <div className={styles.designOverlayPanel} role="dialog" aria-modal="true" aria-label="Design">
+        {children}
+      </div>
+    </>,
+    document.body
+  );
 }
 
 function DesignOverlay() {

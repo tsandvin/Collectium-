@@ -95,3 +95,10 @@
 - Lagt til bryter for å stoppe demo-brukere fra testtilgang.
 - Lagt til dokumentasjon for `COLLECTIUM_API_BASE_URL` og katalog/API-bridge.
 - Beholder kundekilde, kundenummer, demoaktivitet, sletteregel, profilfletting og katalogarbeidsflate.
+
+## CHANGE-2026-06-03-design-overlay-admin-colors
+
+- Flyttet innlogget Design-panel til global React portal fra `CollectiumAppShell`, slik at det rendres over admininnhold i stedet for inne i topbar/layoutflyt.
+- La inn transparent klikkflate, Escape-lukking og fixed overlay med toppnivå z-index.
+- Oppdaterte Collectium admin-skin til solide mørke panel-/kort-/felt-tokens, mens lys skin beholdes i Enkel.
+- Berørte filer: `components/app/CollectiumAppShell.tsx`, `components/landing/collectium-frontpage.module.css`, `app/globals.css`.

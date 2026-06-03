@@ -2471,7 +2471,6 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
   display: inline-flex;
 }
 
-.designOverlay,
 .notificationOverlay {
   position: fixed;
   top: 74px;
@@ -2488,6 +2487,46 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
   box-shadow: 0 22px 60px rgba(17, 38, 58, 0.20);
   color: var(--ct-app-text, #102a43);
   backdrop-filter: blur(18px);
+}
+
+.designOverlayBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99990;
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: default;
+}
+
+.designOverlayPanel {
+  position: fixed;
+  top: calc(var(--ct-topbar-height, 64px) + 12px);
+  right: 24px;
+  z-index: 99999;
+  width: min(420px, calc(100vw - 32px));
+  max-height: calc(100vh - 96px);
+  overflow: auto;
+  pointer-events: auto;
+  padding: 16px;
+  border-radius: 12px;
+  color: var(--ct-text, #eef6ff);
+  background: var(--ct-panel-solid, #082238);
+  border: 1px solid var(--ct-border-strong, rgba(90, 145, 190, 0.55));
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+}
+
+.designOverlay {
+  position: static;
+  display: grid;
+  gap: 10px;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 .designOverlay strong,
@@ -3207,21 +3246,26 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 /* V21 admin user sorting, create user, result totals and working global design button */
 .templateCollectium,
 .templateCollectiumHtml {
-  --ct-app-bg: linear-gradient(135deg, #eaf5fb, #ffffff);
-  --ct-app-sidebar-bg: #15334d;
-  --ct-app-sidebar-bg-2: #0a1d31;
-  --ct-app-sidebar-bg-3: #21391f;
-  --ct-app-sidebar-glow: #7fbde8;
-  --ct-app-topbar-bg: rgba(255, 255, 255, 0.86);
-  --ct-app-topbar-text: #0f2c42;
-  --ct-app-topbar-border: rgba(37, 92, 139, 0.16);
-  --ct-app-button-bg: rgba(255, 255, 255, 0.9);
-  --ct-app-button-text: #0f2c42;
-  --ct-app-button-border: rgba(37, 92, 139, 0.22);
-  --ct-app-search-bg: rgba(255, 255, 255, 0.96);
-  --ct-app-text: #09243b;
-  --ct-panel-bg: rgba(255,255,255,0.88);
-  --ct-panel-border: rgba(37, 92, 139, 0.22);
+  --ct-app-bg: linear-gradient(135deg, #061621, #082238 58%, #0c3048);
+  --ct-app-sidebar-bg: #082238;
+  --ct-app-sidebar-bg-2: #04131f;
+  --ct-app-sidebar-bg-3: #0d2c3f;
+  --ct-app-sidebar-glow: #6fb7e6;
+  --ct-app-topbar-bg: rgba(6, 22, 33, 0.94);
+  --ct-app-topbar-text: #eef6ff;
+  --ct-app-topbar-border: rgba(90, 145, 190, 0.34);
+  --ct-app-button-bg: rgba(255, 255, 255, 0.08);
+  --ct-app-button-text: #eef6ff;
+  --ct-app-button-border: rgba(90, 145, 190, 0.36);
+  --ct-app-search-bg: rgba(255, 255, 255, 0.08);
+  --ct-app-text: #eef6ff;
+  --ct-text: #eef6ff;
+  --ct-panel-bg: rgba(8, 34, 56, 0.94);
+  --ct-panel-solid: #082238;
+  --ct-surface-solid: #061621;
+  --ct-card-bg: rgba(8, 34, 56, 0.92);
+  --ct-panel-border: rgba(90, 145, 190, 0.38);
+  --ct-border-strong: rgba(90, 145, 190, 0.55);
 }
 
 .templateEnkel,
@@ -3284,21 +3328,25 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 
 :global(body[data-template="collectium"]) .appShell,
 :global(html[data-template="collectium"]) .appShell {
-  --ct-app-bg: linear-gradient(135deg, #eaf5fb, #ffffff);
-  --ct-app-sidebar-bg: #15334d;
-  --ct-app-sidebar-bg-2: #0a1d31;
-  --ct-app-sidebar-bg-3: #21391f;
-  --ct-app-sidebar-glow: #7fbde8;
-  --ct-app-topbar-bg: rgba(255, 255, 255, 0.86);
-  --ct-app-topbar-text: #0f2c42;
-  --ct-app-topbar-border: rgba(37, 92, 139, 0.16);
-  --ct-app-button-bg: rgba(255, 255, 255, 0.9);
-  --ct-app-button-text: #0f2c42;
-  --ct-app-button-border: rgba(37, 92, 139, 0.22);
-  --ct-app-search-bg: rgba(255, 255, 255, 0.96);
-  --ct-app-text: #09243b;
-  --ct-panel-bg: rgba(255,255,255,0.88);
-  --ct-panel-border: rgba(37, 92, 139, 0.22);
+  --ct-app-bg: linear-gradient(135deg, #061621, #082238 58%, #0c3048);
+  --ct-app-sidebar-bg: #082238;
+  --ct-app-sidebar-bg-2: #04131f;
+  --ct-app-sidebar-bg-3: #0d2c3f;
+  --ct-app-sidebar-glow: #6fb7e6;
+  --ct-app-topbar-bg: rgba(6, 22, 33, 0.94);
+  --ct-app-topbar-text: #eef6ff;
+  --ct-app-topbar-border: rgba(90, 145, 190, 0.34);
+  --ct-app-button-bg: rgba(255, 255, 255, 0.08);
+  --ct-app-button-text: #eef6ff;
+  --ct-app-button-border: rgba(90, 145, 190, 0.36);
+  --ct-app-search-bg: rgba(255, 255, 255, 0.08);
+  --ct-app-text: #eef6ff;
+  --ct-panel-bg: rgba(8, 34, 56, 0.94);
+  --ct-panel-solid: #082238;
+  --ct-surface-solid: #061621;
+  --ct-card-bg: rgba(8, 34, 56, 0.92);
+  --ct-panel-border: rgba(90, 145, 190, 0.38);
+  --ct-border-strong: rgba(90, 145, 190, 0.55);
 }
 
 :global(body[data-template="enkel"]) .appShell,
@@ -3383,6 +3431,122 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
   --ct-dark-field-text: var(--ct-app-text, #f5faff);
   --ct-dark-muted: color-mix(in srgb, var(--ct-app-text, #f5faff) 68%, transparent);
   --ct-dark-panel-soft: color-mix(in srgb, var(--ct-panel-bg, rgba(12, 31, 52, 0.92)) 86%, transparent);
+}
+
+:global(body[data-template="collectium"]) .appShell {
+  --ct-dark-field-bg: rgba(255, 255, 255, 0.08);
+  --ct-dark-field-bg-strong: rgba(255, 255, 255, 0.12);
+  --ct-dark-field-text: var(--ct-app-text, #eef6ff);
+  --ct-dark-muted: color-mix(in srgb, var(--ct-app-text, #eef6ff) 68%, transparent);
+  --ct-dark-panel-soft: color-mix(in srgb, var(--ct-panel-bg, rgba(8, 34, 56, 0.94)) 88%, transparent);
+}
+
+:global(body[data-template="collectium"]) .appShell input,
+:global(body[data-template="collectium"]) .appShell select,
+:global(body[data-template="collectium"]) .appShell textarea {
+  color: var(--ct-dark-field-text) !important;
+  background: var(--ct-dark-field-bg) !important;
+  border-color: var(--ct-app-button-border, rgba(90, 145, 190, 0.36)) !important;
+}
+
+:global(body[data-template="collectium"]) .appShell input::placeholder,
+:global(body[data-template="collectium"]) .appShell textarea::placeholder {
+  color: color-mix(in srgb, var(--ct-dark-field-text) 58%, transparent);
+}
+
+:global(body[data-template="collectium"]) .appShell option {
+  color: #eef6ff;
+  background: #061621;
+}
+
+:global(body[data-template="collectium"]) .appHeader,
+:global(body[data-template="collectium"]) .appCard,
+:global(body[data-template="collectium"]) .adminStatCard,
+:global(body[data-template="collectium"]) .adminFilterBar,
+:global(body[data-template="collectium"]) .adminFilterBarV18,
+:global(body[data-template="collectium"]) .adminUserListFull,
+:global(body[data-template="collectium"]) .adminUserWorkspace,
+:global(body[data-template="collectium"]) .retentionRulePanel,
+:global(body[data-template="collectium"]) .retentionRuleGrid article,
+:global(body[data-template="collectium"]) .createUserPanel,
+:global(body[data-template="collectium"]) .dealerList,
+:global(body[data-template="collectium"]) .dealerDetail,
+:global(body[data-template="collectium"]) .infoBox,
+:global(body[data-template="collectium"]) .catalogHero,
+:global(body[data-template="collectium"]) .catalogDesktopFilter,
+:global(body[data-template="collectium"]) .catalogToolbar,
+:global(body[data-template="collectium"]) .catalogFilterSheet,
+:global(body[data-template="collectium"]) .catalogStatusGrid span {
+  color: var(--ct-app-text) !important;
+  background: var(--ct-dark-panel-soft) !important;
+  border-color: var(--ct-panel-border) !important;
+}
+
+:global(body[data-template="collectium"]) .adminFilterBar label,
+:global(body[data-template="collectium"]) .adminFilterBarV18 label,
+:global(body[data-template="collectium"]) .createUserPanel label,
+:global(body[data-template="collectium"]) .catalogFilterHeader small,
+:global(body[data-template="collectium"]) .catalogObjectTitleRow p,
+:global(body[data-template="collectium"]) .catalogFilterGroup small,
+:global(body[data-template="collectium"]) .dealerRow small,
+:global(body[data-template="collectium"]) .dealerDetail p,
+:global(body[data-template="collectium"]) .infoBox span,
+:global(body[data-template="collectium"]) .infoBox p {
+  color: var(--ct-dark-muted) !important;
+}
+
+:global(body[data-template="collectium"]) .secondaryButton,
+:global(body[data-template="collectium"]) .appTopbarActions button,
+:global(body[data-template="collectium"]) .topbarButton,
+:global(body[data-template="collectium"]) .catalogSegmentSwitch button,
+:global(body[data-template="collectium"]) .catalogViewSwitch button,
+:global(body[data-template="collectium"]) .catalogFilterHeader button,
+:global(body[data-template="collectium"]) .catalogFilterChips button,
+:global(body[data-template="collectium"]) .catalogFilterSheetTop button,
+:global(body[data-template="collectium"]) .archiveTabs button,
+:global(body[data-template="collectium"]) .infoBox button {
+  color: var(--ct-app-button-text) !important;
+  background: var(--ct-app-button-bg) !important;
+  border-color: var(--ct-app-button-border) !important;
+}
+
+:global(body[data-template="collectium"]) .catalogFilterGroup,
+:global(body[data-template="collectium"]) .catalogSearchField,
+:global(body[data-template="collectium"]) .catalogSegmentSwitch,
+:global(body[data-template="collectium"]) .catalogViewSwitch,
+:global(body[data-template="collectium"]) .catalogObjectMetaGrid span,
+:global(body[data-template="collectium"]) .adminUserRowV18,
+:global(body[data-template="collectium"]) .expandedUserRowV18,
+:global(body[data-template="collectium"]) .expandedUserRowV20,
+:global(body[data-template="collectium"]) .archiveTabsLeft button,
+:global(body[data-template="collectium"]) .archiveTabsRight button,
+:global(body[data-template="collectium"]) .dealerRow {
+  color: var(--ct-app-text) !important;
+  background: var(--ct-dark-field-bg) !important;
+  border-color: var(--ct-panel-border) !important;
+}
+
+:global(body[data-template="collectium"]) .adminUserRowV18:hover,
+:global(body[data-template="collectium"]) .dealerRow:hover,
+:global(body[data-template="collectium"]) .adminUserRowActive {
+  background: var(--ct-dark-field-bg-strong) !important;
+}
+
+:global(body[data-template="collectium"]) .dealerDetail h2,
+:global(body[data-template="collectium"]) .infoBox strong {
+  color: var(--ct-app-text) !important;
+}
+
+:global(body[data-template="collectium"]) .dealerRow em {
+  color: #dff3ff !important;
+  background: color-mix(in srgb, var(--ct-app-sidebar-glow, #6fb7e6) 22%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--ct-app-sidebar-glow, #6fb7e6) 34%, transparent) !important;
+}
+
+:global(body[data-template="collectium"]) .sidebarUserCard {
+  color: var(--ct-app-text);
+  background: var(--ct-dark-field-bg-strong);
+  border-color: var(--ct-app-button-border);
 }
 
 .reasonList li::before,
