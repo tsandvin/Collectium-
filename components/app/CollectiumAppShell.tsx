@@ -274,7 +274,7 @@ function DesignOverlay() {
       <div className={styles.designButtonGrid}>
         {[
           ["collectium", "Collectium"],
-          ["enkel", "Enkel"],
+          ["enkel", "Samleren"],
           ["museum", "Museum"],
           ["finans", "Finans"],
         ].map(([key, label]) => (

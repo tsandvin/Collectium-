@@ -70,28 +70,32 @@
 }
 
 .enkel {
-  --ct-bg: #fbfcfe;
-  --ct-bg-2: #f4f9ff;
-  --ct-panel: rgba(255, 255, 255, 0.9);
+  --ct-bg: #f8fbff;
+  --ct-bg-2: #ffffff;
+  --ct-panel: rgba(255, 255, 255, 0.94);
   --ct-panel-strong: rgba(255, 255, 255, 1);
-  --ct-border: rgba(32, 98, 157, 0.2);
-  --ct-line: rgba(32, 98, 157, 0.14);
-  --ct-text: #102942;
-  --ct-muted: #60778d;
-  --ct-accent: #2c74ad;
-  --ct-accent-2: #73a7cf;
-  --ct-accent-soft: rgba(44, 116, 173, 0.09);
-  --ct-shadow: 0 16px 46px rgba(22, 70, 112, 0.09);
-  --ct-radius: 12px;
-  --ct-card-radius: 12px;
+  --ct-border: rgba(30, 90, 154, 0.16);
+  --ct-line: rgba(30, 90, 154, 0.1);
+  --ct-text: #0b2a4a;
+  --ct-muted: #5a7088;
+  --ct-accent: #1e5a9a;
+  --ct-accent-2: #9fcdb2;
+  --ct-accent-soft: rgba(30, 90, 154, 0.08);
+  --ct-shadow: 0 16px 46px rgba(16, 54, 94, 0.08);
+  --ct-radius: 8px;
+  --ct-card-radius: 8px;
   --ct-card-bg: var(--ct-panel);
-  --ct-card-border: rgba(40, 88, 140, 0.2);
+  --ct-card-border: rgba(30, 90, 154, 0.14);
   --ct-inner-border: rgba(255, 255, 255, 0.7);
-  --ct-signature-line: rgba(90, 100, 110, 0.24);
-  --ct-signature-line-soft: rgba(90, 100, 110, 0.06);
-  --ct-signature-text: rgba(90, 100, 110, 0.42);
-  --ct-font: Comfortaa, "Trebuchet MS", Arial, sans-serif;
-  --ct-heading-font: Comfortaa, "Trebuchet MS", Arial, sans-serif;
+  --ct-signature-line: rgba(30, 90, 154, 0.18);
+  --ct-signature-line-soft: rgba(30, 90, 154, 0.05);
+  --ct-signature-text: rgba(30, 90, 154, 0.3);
+  --ct-font:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --ct-heading-font:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
 }
 
 .museum {
@@ -3270,22 +3274,27 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 
 .templateEnkel,
 .templateEnkelHtml {
-  --ct-app-bg: linear-gradient(135deg, #f7fbff, #ffffff);
-  --ct-app-sidebar-bg: #284866;
-  --ct-app-sidebar-bg-2: #172d44;
-  --ct-app-sidebar-bg-3: #244155;
-  --ct-app-sidebar-glow: #b7ddf5;
-  --ct-app-topbar-bg: rgba(255, 255, 255, 0.92);
-  --ct-app-topbar-text: #102335;
-  --ct-app-topbar-border: rgba(35, 88, 155, 0.14);
-  --ct-app-button-bg: rgba(255, 255, 255, 0.94);
-  --ct-app-button-text: #102335;
-  --ct-app-button-border: rgba(35, 88, 155, 0.18);
+  --ct-app-bg: linear-gradient(135deg, #f8fbff, #ffffff 58%, #eef5fc);
+  --ct-app-sidebar-bg: #ffffff;
+  --ct-app-sidebar-bg-2: #f7fbff;
+  --ct-app-sidebar-bg-3: #edf5fc;
+  --ct-app-sidebar-glow: #1e5a9a;
+  --ct-app-topbar-bg: rgba(255, 255, 255, 0.96);
+  --ct-app-topbar-text: #0b2a4a;
+  --ct-app-topbar-border: rgba(30, 90, 154, 0.16);
+  --ct-app-button-bg: rgba(255, 255, 255, 0.96);
+  --ct-app-button-text: #0b2a4a;
+  --ct-app-button-border: rgba(30, 90, 154, 0.18);
   --ct-app-search-bg: rgba(255, 255, 255, 0.98);
-  --ct-app-text: #102335;
-  --ct-panel-bg: rgba(255,255,255,0.92);
-  --ct-panel-border: rgba(35, 88, 155, 0.16);
-  font-family: Comfortaa, Inter, system-ui, sans-serif;
+  --ct-app-text: #0b2a4a;
+  --ct-text: #0b2a4a;
+  --ct-panel-bg: rgba(255, 255, 255, 0.94);
+  --ct-panel-solid: #ffffff;
+  --ct-surface-solid: #f8fbff;
+  --ct-card-bg: rgba(255, 255, 255, 0.96);
+  --ct-panel-border: rgba(30, 90, 154, 0.14);
+  --ct-border-strong: rgba(30, 90, 154, 0.24);
+  font-family: Inter, system-ui, sans-serif;
 }
 
 .templateMuseum,
@@ -3351,21 +3360,25 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 
 :global(body[data-template="enkel"]) .appShell,
 :global(html[data-template="enkel"]) .appShell {
-  --ct-app-bg: linear-gradient(135deg, #f7fbff, #ffffff);
-  --ct-app-sidebar-bg: #284866;
-  --ct-app-sidebar-bg-2: #172d44;
-  --ct-app-sidebar-bg-3: #244155;
-  --ct-app-sidebar-glow: #b7ddf5;
-  --ct-app-topbar-bg: rgba(255, 255, 255, 0.92);
-  --ct-app-topbar-text: #102335;
-  --ct-app-topbar-border: rgba(35, 88, 155, 0.14);
-  --ct-app-button-bg: rgba(255, 255, 255, 0.94);
-  --ct-app-button-text: #102335;
-  --ct-app-button-border: rgba(35, 88, 155, 0.18);
+  --ct-app-bg: linear-gradient(135deg, #f8fbff, #ffffff 58%, #eef5fc);
+  --ct-app-sidebar-bg: #ffffff;
+  --ct-app-sidebar-bg-2: #f7fbff;
+  --ct-app-sidebar-bg-3: #edf5fc;
+  --ct-app-sidebar-glow: #1e5a9a;
+  --ct-app-topbar-bg: rgba(255, 255, 255, 0.96);
+  --ct-app-topbar-text: #0b2a4a;
+  --ct-app-topbar-border: rgba(30, 90, 154, 0.16);
+  --ct-app-button-bg: rgba(255, 255, 255, 0.96);
+  --ct-app-button-text: #0b2a4a;
+  --ct-app-button-border: rgba(30, 90, 154, 0.18);
   --ct-app-search-bg: rgba(255, 255, 255, 0.98);
-  --ct-app-text: #102335;
-  --ct-panel-bg: rgba(255,255,255,0.92);
-  --ct-panel-border: rgba(35, 88, 155, 0.16);
+  --ct-app-text: #0b2a4a;
+  --ct-panel-bg: rgba(255, 255, 255, 0.94);
+  --ct-panel-solid: #ffffff;
+  --ct-surface-solid: #f8fbff;
+  --ct-card-bg: rgba(255, 255, 255, 0.96);
+  --ct-panel-border: rgba(30, 90, 154, 0.14);
+  --ct-border-strong: rgba(30, 90, 154, 0.24);
 }
 
 :global(body[data-template="museum"]) .appShell,
@@ -3568,7 +3581,7 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 
 .enkel .featureContentCard::before,
 .enkel .authCard::before {
-  content: "Signature";
+  content: "Samleren";
 }
 
 :global(body[data-template="museum"]) .appShell input,
@@ -4867,4 +4880,207 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 :global(body[data-template="collectium"]) .catalogObjectMarket strong,
 :global(body[data-template="collectium"]) .dealerRow em {
   color: #145c38 !important;
+}
+
+/* CHANGE-2026-06-03-samleren-minimal-skin */
+:global(body[data-template="enkel"]) .appShell,
+:global(html[data-template="enkel"]) .appShell {
+  --ct-app-bg: linear-gradient(135deg, #f8fbff, #ffffff 58%, #eef5fc);
+  --ct-app-sidebar-bg: #ffffff;
+  --ct-app-sidebar-bg-2: #f7fbff;
+  --ct-app-sidebar-bg-3: #edf5fc;
+  --ct-app-sidebar-glow: #1e5a9a;
+  --ct-app-topbar-bg: rgba(255, 255, 255, 0.96);
+  --ct-app-topbar-text: #0b2a4a;
+  --ct-app-topbar-border: rgba(30, 90, 154, 0.16);
+  --ct-app-button-bg: rgba(255, 255, 255, 0.96);
+  --ct-app-button-text: #0b2a4a;
+  --ct-app-button-border: rgba(30, 90, 154, 0.18);
+  --ct-app-search-bg: rgba(255, 255, 255, 0.98);
+  --ct-app-text: #0b2a4a;
+  --ct-text: #0b2a4a;
+  --ct-muted: #5a7088;
+  --ct-accent: #1e5a9a;
+  --ct-accent-2: #9fcdb2;
+  --ct-panel-bg: rgba(255, 255, 255, 0.94);
+  --ct-panel-solid: #ffffff;
+  --ct-surface-solid: #f8fbff;
+  --ct-card-bg: rgba(255, 255, 255, 0.96);
+  --ct-panel-border: rgba(30, 90, 154, 0.14);
+  --ct-border-strong: rgba(30, 90, 154, 0.24);
+  background:
+    radial-gradient(circle at 14% 0%, rgba(30, 90, 154, 0.08), transparent 26rem),
+    radial-gradient(circle at 86% 8%, rgba(159, 205, 178, 0.16), transparent 24rem),
+    var(--ct-app-bg) !important;
+  color: #0b2a4a !important;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+:global(body[data-template="enkel"]) .appSidebar {
+  color: #0b2a4a !important;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(30, 90, 154, 0.1), transparent 40%),
+    linear-gradient(180deg, #ffffff, #f7fbff 70%, #edf5fc) !important;
+  box-shadow:
+    inset -1px 0 0 rgba(30, 90, 154, 0.14),
+    10px 0 34px rgba(16, 54, 94, 0.05) !important;
+}
+
+:global(body[data-template="enkel"]) .appBrandBlock,
+:global(body[data-template="enkel"]) .sidebarUserCard {
+  color: #0b2a4a !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  border-color: rgba(30, 90, 154, 0.16) !important;
+  box-shadow: 0 10px 24px rgba(16, 54, 94, 0.06);
+}
+
+:global(body[data-template="enkel"]) .appBrandBlock small {
+  color: #1e5a9a !important;
+  background: rgba(30, 90, 154, 0.06) !important;
+  border-color: rgba(30, 90, 154, 0.14) !important;
+}
+
+:global(body[data-template="enkel"]) .sidebarLabel {
+  color: rgba(11, 42, 74, 0.56) !important;
+}
+
+:global(body[data-template="enkel"]) .appSidebar nav a,
+:global(body[data-template="enkel"]) .sidebarGroup a {
+  color: #0b2a4a !important;
+  border: 1px solid transparent;
+  border-radius: 6px !important;
+}
+
+:global(body[data-template="enkel"]) .appSidebar nav a:hover,
+:global(body[data-template="enkel"]) .sidebarGroup a:hover,
+:global(body[data-template="enkel"]) .activeAppLink {
+  color: #ffffff !important;
+  background: linear-gradient(180deg, #246fb5, #1e5a9a) !important;
+  border-color: rgba(30, 90, 154, 0.24) !important;
+  box-shadow: 0 10px 22px rgba(30, 90, 154, 0.14);
+}
+
+:global(body[data-template="enkel"]) .appTopbar,
+:global(body[data-template="enkel"]) .appHeader,
+:global(body[data-template="enkel"]) .appCard,
+:global(body[data-template="enkel"]) .adminStatCard,
+:global(body[data-template="enkel"]) .adminFilterBar,
+:global(body[data-template="enkel"]) .adminFilterBarV18,
+:global(body[data-template="enkel"]) .adminUserListFull,
+:global(body[data-template="enkel"]) .adminUserWorkspace,
+:global(body[data-template="enkel"]) .retentionRulePanel,
+:global(body[data-template="enkel"]) .retentionRuleGrid article,
+:global(body[data-template="enkel"]) .createUserPanel,
+:global(body[data-template="enkel"]) .dealerList,
+:global(body[data-template="enkel"]) .dealerDetail,
+:global(body[data-template="enkel"]) .infoBox,
+:global(body[data-template="enkel"]) .catalogHero,
+:global(body[data-template="enkel"]) .catalogDesktopFilter,
+:global(body[data-template="enkel"]) .catalogToolbar,
+:global(body[data-template="enkel"]) .catalogFilterSheet,
+:global(body[data-template="enkel"]) .catalogStatusGrid span,
+:global(body[data-template="enkel"]) .catalogObjectCard {
+  color: #0b2a4a !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  border-color: rgba(30, 90, 154, 0.14) !important;
+  box-shadow: 0 16px 46px rgba(16, 54, 94, 0.08) !important;
+}
+
+:global(body[data-template="enkel"]) .appSearch,
+:global(body[data-template="enkel"]) .appShell input,
+:global(body[data-template="enkel"]) .appShell select,
+:global(body[data-template="enkel"]) .appShell textarea,
+:global(body[data-template="enkel"]) .catalogSearchField,
+:global(body[data-template="enkel"]) .catalogFilterGroup,
+:global(body[data-template="enkel"]) .catalogObjectMetaGrid span,
+:global(body[data-template="enkel"]) .adminUserRowV18,
+:global(body[data-template="enkel"]) .expandedUserRowV18,
+:global(body[data-template="enkel"]) .expandedUserRowV20,
+:global(body[data-template="enkel"]) .dealerRow {
+  color: #0b2a4a !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(30, 90, 154, 0.13) !important;
+}
+
+:global(body[data-template="enkel"]) .appShell option {
+  color: #0b2a4a !important;
+  background: #ffffff !important;
+}
+
+:global(body[data-template="enkel"]) .topbarButton,
+:global(body[data-template="enkel"]) .appTopbarActions button,
+:global(body[data-template="enkel"]) .catalogFilterHeader button,
+:global(body[data-template="enkel"]) .catalogFilterChips button,
+:global(body[data-template="enkel"]) .catalogFilterSheetTop button,
+:global(body[data-template="enkel"]) .infoBox button {
+  color: #0b2a4a !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-color: rgba(30, 90, 154, 0.18) !important;
+}
+
+:global(body[data-template="enkel"]) .catalogSegmentSwitch,
+:global(body[data-template="enkel"]) .catalogViewSwitch,
+:global(body[data-template="enkel"]) .archiveTabsLeft,
+:global(body[data-template="enkel"]) .archiveTabsRight {
+  align-items: end;
+  gap: 0;
+  padding: 0;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(30, 90, 154, 0.16) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+:global(body[data-template="enkel"]) .catalogSegmentSwitch button,
+:global(body[data-template="enkel"]) .catalogViewSwitch button,
+:global(body[data-template="enkel"]) .archiveTabsLeft button,
+:global(body[data-template="enkel"]) .archiveTabsRight button {
+  min-height: 42px;
+  margin-bottom: -1px;
+  border: 1px solid rgba(30, 90, 154, 0.16) !important;
+  border-radius: 8px 8px 0 0 !important;
+  color: #0b2a4a !important;
+  background: linear-gradient(180deg, #ffffff, #f2f8ff) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+:global(body[data-template="enkel"]) .catalogSegmentSwitch button:nth-child(2),
+:global(body[data-template="enkel"]) .catalogViewSwitch button:nth-child(2) {
+  background: linear-gradient(180deg, #fffaf2, #f4ead8) !important;
+}
+
+:global(body[data-template="enkel"]) .catalogSegmentSwitch button:nth-child(3),
+:global(body[data-template="enkel"]) .catalogViewSwitch button:nth-child(3) {
+  background: linear-gradient(180deg, #eaf4ff, #dfeefb) !important;
+}
+
+:global(body[data-template="enkel"]) .catalogSegmentSwitch button.catalogSwitchActive,
+:global(body[data-template="enkel"]) .catalogViewSwitch button.catalogSwitchActive,
+:global(body[data-template="enkel"]) .archiveTabsLeft button[aria-selected="true"],
+:global(body[data-template="enkel"]) .archiveTabsRight button[aria-selected="true"],
+:global(body[data-template="enkel"]) .catalogSwitchActive {
+  color: #ffffff !important;
+  background: linear-gradient(180deg, #246fb5, #1e5a9a) !important;
+  border-color: #1e5a9a !important;
+  box-shadow: 0 12px 22px rgba(30, 90, 154, 0.16);
+}
+
+:global(body[data-template="enkel"]) .catalogObjectImage {
+  background:
+    radial-gradient(circle at 25% 18%, rgba(255, 255, 255, 0.58), transparent 26%),
+    linear-gradient(135deg, #f1dcc0, #b48956 52%, #6f4f35) !important;
+  border: 1px solid rgba(30, 90, 154, 0.14);
+}
+
+:global(body[data-template="enkel"]) .catalogRelationLinks a,
+:global(body[data-template="enkel"]) .catalogObjectActions a,
+:global(body[data-template="enkel"]) .catalogObjectMarket em {
+  color: #0b2a4a !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  border-color: rgba(30, 90, 154, 0.16) !important;
+}
+
+:global(body[data-template="enkel"]) .catalogObjectMarket strong,
+:global(body[data-template="enkel"]) .dealerRow em {
+  color: #1e5a9a !important;
 }

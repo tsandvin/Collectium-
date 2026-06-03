@@ -16,9 +16,16 @@
 ## CHANGE-2026-06-03-collectium-signature-skin
 
 - Collectium-skin er skilt fra Finans og satt til lys Signature-palett: ivory/sand, royal green og gold.
-- Kun Collectium-tokenene er endret; Enkel, Museum og Finans er ikke rørt.
+- Kun Collectium-tokenene er endret; Samleren/Enkel, Museum og Finans er ikke rørt.
 - Innlogget sidebar, topbar, paneler, felt og katalogkort bruker Collectium Signature-farger.
 - Katalogens segmentknapper og admin-/arkivtabs får folder/tab-form med grønn aktiv fane og sand/blå inaktive faner.
+
+## CHANGE-2026-06-03-samleren-minimal-skin
+
+- Skinet som tidligere het Enkel vises nå som Samleren i designmenyene.
+- Intern skin-nøkkel `enkel` beholdes for kompatibilitet med lagrede valg.
+- Samleren har minimal blå/hvit palett, blå aktiv fane/knapp og lyse arkivkort.
+- Museum og Finans er ikke endret.
 
 ## v9
 

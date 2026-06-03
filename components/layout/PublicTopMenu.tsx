@@ -62,8 +62,8 @@ const skins: Array<{ key: PublicSkin; label: string; note: string }> = [
   },
   {
     key: "enkel",
-    label: "Enkel",
-    note: "12px hjørne, Comfortaa og enkel signatur",
+    label: "Samleren",
+    note: "minimal blå/hvit objekt- og relasjonspresentasjon",
   },
   { key: "museum", label: "Museum", note: "grå/svart museumsflate" },
   { key: "finans", label: "Finans", note: "mørk blå finansflate" },

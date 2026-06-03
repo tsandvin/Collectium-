@@ -34,26 +34,31 @@ html[data-template="collectium"]{
 
 body[data-template="enkel"],
 html[data-template="enkel"]{
-  --ct-app-bg:linear-gradient(135deg,#f7fbff,#fff);
-  --ct-app-sidebar-bg:#284866;
-  --ct-app-sidebar-bg-2:#172d44;
-  --ct-app-sidebar-bg-3:#244155;
-  --ct-app-sidebar-glow:#b7ddf5;
-  --ct-app-topbar-bg:rgba(255,255,255,.92);
-  --ct-app-topbar-text:#102335;
-  --ct-app-topbar-border:rgba(35,88,155,.14);
-  --ct-app-button-bg:rgba(255,255,255,.94);
-  --ct-app-button-text:#102335;
-  --ct-app-button-border:rgba(35,88,155,.18);
+  --ct-app-bg:linear-gradient(135deg,#f8fbff,#ffffff 58%,#eef5fc);
+  --ct-app-sidebar-bg:#ffffff;
+  --ct-app-sidebar-bg-2:#f7fbff;
+  --ct-app-sidebar-bg-3:#edf5fc;
+  --ct-app-sidebar-glow:#1e5a9a;
+  --ct-app-topbar-bg:rgba(255,255,255,.96);
+  --ct-app-topbar-text:#0b2a4a;
+  --ct-app-topbar-border:rgba(30,90,154,.16);
+  --ct-app-button-bg:rgba(255,255,255,.96);
+  --ct-app-button-text:#0b2a4a;
+  --ct-app-button-border:rgba(30,90,154,.18);
   --ct-app-search-bg:rgba(255,255,255,.98);
-  --ct-app-text:#102335;
-  --ct-text:#102335;
-  --ct-panel-bg:rgba(255,255,255,.92);
-  --ct-panel-solid:#fff;
-  --ct-surface-solid:#f7fbff;
-  --ct-card-bg:rgba(255,255,255,.92);
-  --ct-panel-border:rgba(35,88,155,.16);
-  --ct-border-strong:rgba(35,88,155,.26);
+  --ct-app-text:#0b2a4a;
+  --ct-text:#0b2a4a;
+  --ct-panel-bg:rgba(255,255,255,.94);
+  --ct-panel-solid:#ffffff;
+  --ct-surface-solid:#f8fbff;
+  --ct-card-bg:rgba(255,255,255,.96);
+  --ct-panel-border:rgba(30,90,154,.14);
+  --ct-border-strong:rgba(30,90,154,.24);
+  --ct-samleren-blue:#1e5a9a;
+  --ct-samleren-blue-dark:#0b2a4a;
+  --ct-samleren-blue-soft:#dfeefb;
+  --ct-samleren-sky:#f2f8ff;
+  --ct-samleren-sage:#9fcdb2;
 }
 
 body[data-template="museum"],
