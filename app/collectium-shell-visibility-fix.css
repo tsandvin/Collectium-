@@ -1,0 +1,104 @@
+/*
+  Collectium shell visibility fix v4.3
+  Formål: Sikrer at innlogget app-shell/minside alltid er synlig etter front-foundation.
+  Berører: /minside, /admin, /katalog og andre sider som bruker components/app/CollectiumAppShell.tsx.
+  DB-brytere: ingen. Kun frontend/layout/CSS.
+*/
+
+body[data-collectium-front="v4.1"] {
+  min-height: 100vh !important;
+  overflow-x: hidden !important;
+}
+
+body[data-collectium-front="v4.1"] :is(main[class*="appShell"], [class*="appShell"]) {
+  display: grid !important;
+  grid-template-columns: 248px minmax(0, 1fr) !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 100vh !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: relative !important;
+  z-index: 1 !important;
+  transform: none !important;
+  pointer-events: auto !important;
+}
+
+body[data-collectium-front="v4.1"] :is(aside[class*="appSidebar"], [class*="appSidebar"]) {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  width: 248px !important;
+  min-width: 248px !important;
+  max-width: 248px !important;
+  min-height: 100vh !important;
+  height: 100vh !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 20 !important;
+  overflow: auto !important;
+  pointer-events: auto !important;
+}
+
+body[data-collectium-front="v4.1"] :is(section[class*="appMain"], [class*="appMain"]) {
+  display: block !important;
+  min-width: 0 !important;
+  min-height: 100vh !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: relative !important;
+  z-index: 2 !important;
+  overflow: visible !important;
+  pointer-events: auto !important;
+}
+
+body[data-collectium-front="v4.1"] :is(header[class*="appTopbar"], [class*="appTopbar"]) {
+  display: grid !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 30 !important;
+  pointer-events: auto !important;
+}
+
+body[data-collectium-front="v4.1"] :is([class*="appHeader"], [class*="appGrid"], [class*="appCard"], [class*="sessionBox"], [class*="sidebarUserCard"], [class*="appBrandBlock"]) {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+body[data-collectium-front="v4.1"] :is([class*="appSidebar"] nav, [class*="appSidebar"] a, [class*="sidebarGroup"], [class*="sidebarGroup"] a) {
+  display: grid !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+body[data-collectium-front="v4.1"] :is([class*="appSidebar"] a, [class*="sidebarGroup"] a) {
+  display: flex !important;
+  align-items: center !important;
+}
+
+body[data-collectium-front="v4.1"] :is([class*="designOverlayBackdrop"], [class*="notificationOverlayBackdrop"]) {
+  background: transparent !important;
+}
+
+@media (max-width: 900px) {
+  body[data-collectium-front="v4.1"] :is(main[class*="appShell"], [class*="appShell"]) {
+    grid-template-columns: 1fr !important;
+  }
+
+  body[data-collectium-front="v4.1"] :is(aside[class*="appSidebar"], [class*="appSidebar"]) {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: auto !important;
+    position: relative !important;
+  }
+
+  body[data-collectium-front="v4.1"] :is(section[class*="appMain"], [class*="appMain"]) {
+    min-height: auto !important;
+  }
+}
