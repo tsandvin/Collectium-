@@ -5,6 +5,7 @@
 
 import type { Metadata } from "next";
 import "./globals.css";
+import "./collectium-brand-tokens.css";
 
 export const metadata: Metadata = {
   title: "Collectium · Arkiv",
@@ -36,6 +37,7 @@ export default function RootLayout({
     <html
       lang="no"
       data-template={COLLECTIUM_LOCKED_DEFAULT}
+      data-skin="signature-light"
       data-vp="pc"
       suppressHydrationWarning
     >
