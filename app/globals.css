@@ -107,6 +107,7 @@ html[data-template="finans"]{
   --ct-card-bg:rgba(20,50,80,.92);
   --ct-panel-border:rgba(74,122,158,.38);
   --ct-border-strong:rgba(74,122,158,.55);
+  --ct-accent:#2a6d99;
 }
 
 /* CHANGE-2026-06-03-object-presentation-relations */
