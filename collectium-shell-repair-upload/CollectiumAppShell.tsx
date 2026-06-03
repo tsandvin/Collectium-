@@ -4,7 +4,7 @@
  * COLLECTIUM FILE HEADER
  *
  * Overskrift:
- * CollectiumAppShell v20 theme repair
+ * CollectiumAppShell v19
  *
  * Definering / formål:
  * Innlogget Collectium-appshell med låst sidemeny, toppmeny, designpanel, varselmeny,
@@ -57,31 +57,6 @@ type Session = {
 
 type AppPage = "minside" | "admin" | "catalog";
 type AdminModule = "dashboard" | "users" | "settings" | "customer" | "dealers";
-type CollectiumSkin = "signature-light" | "signature-dark" | "minimal-light" | "minimal-dark";
-
-const DEFAULT_COLLECTIUM_SKIN: CollectiumSkin = "signature-light";
-
-const templateBySkin: Record<CollectiumSkin, string> = {
-  "signature-light": "collectium",
-  "signature-dark": "museum",
-  "minimal-light": "enkel",
-  "minimal-dark": "finans",
-};
-
-const legacySkinMap: Record<string, CollectiumSkin> = {
-  collectium: "signature-light",
-  enkel: "minimal-light",
-  museum: "signature-dark",
-  finans: "minimal-dark",
-  "signature-light": "signature-light",
-  "signature-dark": "signature-dark",
-  "minimal-light": "minimal-light",
-  "minimal-dark": "minimal-dark",
-};
-
-function normalizeCollectiumSkin(value: string | null): CollectiumSkin {
-  return value && legacySkinMap[value] ? legacySkinMap[value] : DEFAULT_COLLECTIUM_SKIN;
-}
 type NotificationIconType = "object" | "collection" | "support" | "market" | "system" | "dealer" | "auction" | "user";
 
 type CollectiumAppShellProps = {
@@ -211,18 +186,10 @@ function buildNotificationSections() {
 
 const notificationSections = buildNotificationSections();
 
-function applyCollectiumDesign(value: string) {
+function applyCollectiumDesign(template: string) {
   if (typeof document === "undefined") return;
-
-  const skin = normalizeCollectiumSkin(value);
-  const template = templateBySkin[skin];
-
-  document.body.setAttribute("data-skin", skin);
-  document.documentElement.setAttribute("data-skin", skin);
   document.body.setAttribute("data-template", template);
   document.documentElement.setAttribute("data-template", template);
-
-  window.localStorage.setItem("collectium-skin", skin);
   window.localStorage.setItem("collectium-template", template);
 }
 
@@ -234,9 +201,8 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
   const [notificationsOpen, setNotificationsOpen] = useState(false);
 
   useEffect(() => {
-    const savedSkin = window.localStorage.getItem("collectium-skin");
-    const savedTemplate = window.localStorage.getItem("collectium-template");
-    applyCollectiumDesign(savedSkin || savedTemplate || DEFAULT_COLLECTIUM_SKIN);
+    const savedTemplate = window.localStorage.getItem("collectium-template") || "collectium";
+    applyCollectiumDesign(savedTemplate);
   }, []);
 
   useEffect(() => {
@@ -288,11 +254,11 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
   }
 
   return (
-    <main className={styles.appShell} data-page={page} data-collectium-shell="v3.2">
+    <main className={styles.appShell} data-page={page}>
       <aside className={styles.appSidebar}>
         <a href="/" className={styles.appBrandBlock}>
           <img src="/brand/collectium-logo-white.png" alt="Collectium" />
-          <small>DB 8.4</small>
+          <small>Beta v22</small>
         </a>
 
         <p className={styles.sidebarLabel}>Hovedmeny</p>
