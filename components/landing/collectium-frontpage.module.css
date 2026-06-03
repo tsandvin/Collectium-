@@ -105,8 +105,8 @@
   --ct-panel-strong: rgba(38, 40, 41, 0.96);
   --ct-border: rgba(222, 222, 218, 0.18);
   --ct-line: rgba(222, 222, 218, 0.12);
-  --ct-text: #f1f0ea;
-  --ct-muted: #b9b7af;
+  --ct-text: #fffaf0;
+  --ct-muted: #d8d1c4;
   --ct-accent: #b99a55;
   --ct-accent-2: #dad7cb;
   --ct-accent-soft: rgba(185, 154, 85, 0.14);
@@ -3426,13 +3426,13 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
   --ct-app-sidebar-bg-3: #3a3221;
   --ct-app-sidebar-glow: #b99a55;
   --ct-app-topbar-bg: rgba(18, 18, 18, 0.9);
-  --ct-app-topbar-text: #f0f0ea;
+  --ct-app-topbar-text: #fffaf0;
   --ct-app-topbar-border: rgba(210, 210, 210, 0.16);
   --ct-app-button-bg: rgba(255, 255, 255, 0.08);
-  --ct-app-button-text: #f0f0ea;
+  --ct-app-button-text: #fffaf0;
   --ct-app-button-border: rgba(220, 220, 210, 0.18);
   --ct-app-search-bg: rgba(255, 255, 255, 0.08);
-  --ct-app-text: #f0f0f0;
+  --ct-app-text: #fffaf0;
   --ct-panel-bg: rgba(36,36,36,0.90);
   --ct-panel-border: rgba(210,210,210,0.16);
 }
@@ -3510,13 +3510,13 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
   --ct-app-sidebar-bg-3: #3a3221;
   --ct-app-sidebar-glow: #b99a55;
   --ct-app-topbar-bg: rgba(18, 18, 18, 0.9);
-  --ct-app-topbar-text: #f0f0ea;
+  --ct-app-topbar-text: #fffaf0;
   --ct-app-topbar-border: rgba(210, 210, 210, 0.16);
   --ct-app-button-bg: rgba(255, 255, 255, 0.08);
-  --ct-app-button-text: #f0f0ea;
+  --ct-app-button-text: #fffaf0;
   --ct-app-button-border: rgba(220, 220, 210, 0.18);
   --ct-app-search-bg: rgba(255, 255, 255, 0.08);
-  --ct-app-text: #f0f0f0;
+  --ct-app-text: #fffaf0;
   --ct-panel-bg: rgba(36,36,36,0.90);
   --ct-panel-border: rgba(210,210,210,0.16);
 }
@@ -5204,4 +5204,50 @@ body[data-viewport-mode="wide"] .page { max-width: 1920px; margin: 0 auto; }
 :global(body[data-template="enkel"]) .catalogObjectMarket strong,
 :global(body[data-template="enkel"]) .dealerRow em {
   color: #1e5a9a !important;
+}
+
+/* CHANGE-2026-06-03-museum-text-contrast */
+:global(body[data-template="museum"]) .appShell {
+  --ct-app-text: #fffaf0;
+  --ct-text: #fffaf0;
+  --ct-app-topbar-text: #fffaf0;
+  --ct-app-button-text: #fffaf0;
+  --ct-dark-field-text: #fffaf0;
+  --ct-dark-muted: rgba(255, 250, 240, 0.78);
+}
+
+:global(body[data-template="museum"]) .appShell input,
+:global(body[data-template="museum"]) .appShell select,
+:global(body[data-template="museum"]) .appShell textarea,
+:global(body[data-template="museum"]) .appSidebar,
+:global(body[data-template="museum"]) .appSidebar nav a,
+:global(body[data-template="museum"]) .sidebarUserCard {
+  color: #fffaf0 !important;
+}
+
+:global(body[data-template="museum"]) .appShell input::placeholder,
+:global(body[data-template="museum"]) .appShell textarea::placeholder,
+:global(body[data-template="museum"]) .adminUserRowV18 small,
+:global(body[data-template="museum"]) .expandedUserRowV18 p,
+:global(body[data-template="museum"]) .expandedUserRowV20 p,
+:global(body[data-template="museum"]) .dealerRow small,
+:global(body[data-template="museum"]) .dealerDetail p,
+:global(body[data-template="museum"]) .catalogObjectTitleRow p,
+:global(body[data-template="museum"]) .catalogFilterGroup small,
+:global(body[data-template="museum"]) .catalogFilterHeader small,
+:global(body[data-template="museum"]) .infoBox p,
+:global(body[data-template="museum"]) .infoBox span {
+  color: rgba(255, 250, 240, 0.78) !important;
+}
+
+:global(body[data-template="museum"]) .sidebarLabel {
+  color: rgba(255, 250, 240, 0.72) !important;
+}
+
+:global(body[data-template="museum"]) .expandedUserRowV18 h3,
+:global(body[data-template="museum"]) .expandedUserRowV20 h3,
+:global(body[data-template="museum"]) .adminUserRowV18 strong,
+:global(body[data-template="museum"]) .dealerDetail h2,
+:global(body[data-template="museum"]) .infoBox strong {
+  color: #fffdf7 !important;
 }

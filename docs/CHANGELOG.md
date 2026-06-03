@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## CHANGE-2026-06-03-museum-text-contrast
+
+- Museum-skin har lysere teksttokens og sterkere kontrast i topbar, knapper, felt, sidebar og admininnhold.
+- Endringen treffer bare Museum; Collectium, Samleren og Finans er ikke endret.
+
 ## CHANGE-2026-06-03-catalog-api-mobile-overlay
 
 - Katalogen henter objekter og filterverdier via `/api/catalog/search` og `/api/catalog/filter` i stedet for hardkodede React-arrays.

@@ -69,14 +69,14 @@ html[data-template="museum"]{
   --ct-app-sidebar-bg-3:#3a3221;
   --ct-app-sidebar-glow:#b99a55;
   --ct-app-topbar-bg:rgba(18,18,18,.9);
-  --ct-app-topbar-text:#f0f0ea;
+  --ct-app-topbar-text:#fffaf0;
   --ct-app-topbar-border:rgba(210,210,210,.16);
   --ct-app-button-bg:rgba(255,255,255,.08);
-  --ct-app-button-text:#f0f0ea;
+  --ct-app-button-text:#fffaf0;
   --ct-app-button-border:rgba(220,220,210,.18);
   --ct-app-search-bg:rgba(255,255,255,.08);
-  --ct-app-text:#f0f0f0;
-  --ct-text:#f0f0f0;
+  --ct-app-text:#fffaf0;
+  --ct-text:#fffaf0;
   --ct-panel-bg:rgba(36,36,36,.9);
   --ct-panel-solid:#181818;
   --ct-surface-solid:#101010;
