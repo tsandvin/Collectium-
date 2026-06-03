@@ -5,26 +5,31 @@ button{cursor:pointer}
 
 body[data-template="collectium"],
 html[data-template="collectium"]{
-  --ct-app-bg:linear-gradient(135deg,#061621,#082238 58%,#0c3048);
-  --ct-app-sidebar-bg:#082238;
-  --ct-app-sidebar-bg-2:#04131f;
-  --ct-app-sidebar-bg-3:#0d2c3f;
-  --ct-app-sidebar-glow:#6fb7e6;
-  --ct-app-topbar-bg:rgba(6,22,33,.94);
-  --ct-app-topbar-text:#eef6ff;
-  --ct-app-topbar-border:rgba(90,145,190,.34);
-  --ct-app-button-bg:rgba(255,255,255,.08);
-  --ct-app-button-text:#eef6ff;
-  --ct-app-button-border:rgba(90,145,190,.36);
-  --ct-app-search-bg:rgba(255,255,255,.08);
-  --ct-app-text:#eef6ff;
-  --ct-text:#eef6ff;
-  --ct-panel-bg:rgba(8,34,56,.94);
-  --ct-panel-solid:#082238;
-  --ct-surface-solid:#061621;
-  --ct-card-bg:rgba(8,34,56,.92);
-  --ct-panel-border:rgba(90,145,190,.38);
-  --ct-border-strong:rgba(90,145,190,.55);
+  --ct-app-bg:linear-gradient(135deg,#f8f1e6,#fffaf2 58%,#f3e2c8);
+  --ct-app-sidebar-bg:#fff8ed;
+  --ct-app-sidebar-bg-2:#f7ecd9;
+  --ct-app-sidebar-bg-3:#efe0c8;
+  --ct-app-sidebar-glow:#d6a641;
+  --ct-app-topbar-bg:rgba(255,250,242,.94);
+  --ct-app-topbar-text:#143327;
+  --ct-app-topbar-border:rgba(161,122,58,.24);
+  --ct-app-button-bg:rgba(255,250,242,.88);
+  --ct-app-button-text:#143327;
+  --ct-app-button-border:rgba(161,122,58,.28);
+  --ct-app-search-bg:rgba(255,252,247,.96);
+  --ct-app-text:#143327;
+  --ct-text:#143327;
+  --ct-panel-bg:rgba(255,250,242,.92);
+  --ct-panel-solid:#fff8ed;
+  --ct-surface-solid:#f8f1e6;
+  --ct-card-bg:rgba(255,250,242,.94);
+  --ct-panel-border:rgba(161,122,58,.24);
+  --ct-border-strong:rgba(161,122,58,.38);
+  --ct-collectium-green:#145c38;
+  --ct-collectium-green-dark:#0f2e24;
+  --ct-collectium-sand:#f6f1e8;
+  --ct-collectium-gold:#d6a641;
+  --ct-collectium-blue:#dce9f8;
 }
 
 body[data-template="enkel"],

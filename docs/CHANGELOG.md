@@ -13,6 +13,13 @@
 - `catalog-filter.php` bruker gyldig SQL-streng og `/api/catalog/filter` henter filter direkte fra bridge-view.
 - Offentlig mobil toppmeny/designmeny er justert som topplag innenfor skjermbredden.
 
+## CHANGE-2026-06-03-collectium-signature-skin
+
+- Collectium-skin er skilt fra Finans og satt til lys Signature-palett: ivory/sand, royal green og gold.
+- Kun Collectium-tokenene er endret; Enkel, Museum og Finans er ikke rørt.
+- Innlogget sidebar, topbar, paneler, felt og katalogkort bruker Collectium Signature-farger.
+- Katalogens segmentknapper og admin-/arkivtabs får folder/tab-form med grønn aktiv fane og sand/blå inaktive faner.
+
 ## v9
 
 - Beholder offentlig forside uten lokal sidemeny.
