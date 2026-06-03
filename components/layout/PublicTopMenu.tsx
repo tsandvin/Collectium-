@@ -123,11 +123,17 @@ export default function PublicTopMenu({
   logoSrc,
   onSkinChange,
 }: PublicTopMenuProps) {
+  const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [designOpen, setDesignOpen] = useState(false);
   const [design, setDesign] = useState<DesignState>(defaultDesign);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     try {
       const savedSkin = window.localStorage.getItem("collectium.public.skin") as PublicSkin | null;
       if (savedSkin && skins.some((item) => item.key === savedSkin)) {
@@ -147,7 +153,7 @@ export default function PublicTopMenu({
     } catch {
       // Design settings are optional.
     }
-  }, [onSkinChange]);
+  }, [mounted, onSkinChange]);
 
   useEffect(() => {
     document.body.dataset.template = skin;

@@ -292,6 +292,7 @@ function formatPrice(plan: (typeof plans)[number], billingMode: BillingMode) {
 }
 
 export default function CollectiumFrontpageClient() {
+  const [mounted, setMounted] = useState(false);
   const [skin, setSkin] = useState<Skin>("collectium");
   const [billingMode, setBillingMode] = useState<BillingMode>("year");
   const [objectSegment, setObjectSegment] = useState<ObjectSegment>("samler");
@@ -299,13 +300,18 @@ export default function CollectiumFrontpageClient() {
   const [activeFeatureIndex, setActiveFeatureIndex] = useState(0);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     const timer = window.setInterval(() => {
       setObjectFamily((current) =>
         current === "banknote" ? "coin" : "banknote",
       );
     }, 2600);
     return () => window.clearInterval(timer);
-  }, []);
+  }, [mounted]);
 
   const selectedObjectSegment = objectSegments[objectSegment];
   const selectedFamily = objectFamilyMeta[objectFamily];

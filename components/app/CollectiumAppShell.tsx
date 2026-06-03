@@ -183,11 +183,17 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
   const [loading, setLoading] = useState(true);
   const [designOpen, setDesignOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     const savedTemplate = window.localStorage.getItem("collectium-template") || "collectium";
     applyCollectiumDesign(savedTemplate);
-  }, []);
+  }, [mounted]);
 
   useEffect(() => {
     fetch("/api/auth/session", { cache: "no-store" })
