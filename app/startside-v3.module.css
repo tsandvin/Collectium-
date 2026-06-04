@@ -823,3 +823,91 @@
     font-size: 42px;
   }
 }
+
+/* Collectium global hover signature animation
+   Regel:
+   - Alle bokser og knapper skal animere ved hover/fokus.
+   - Innerammen starter ved Collectium-signaturen nede til høyre.
+   - Streken/gløden skal være svak grå/sølvgrå, ikke sterk blå/gull.
+*/
+.animatedBox,
+.animatedButton {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.animatedBox:hover,
+.animatedButton:hover,
+.animatedBox:focus-within,
+.animatedButton:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(120, 135, 148, 0.46);
+  box-shadow: 0 18px 45px rgba(0, 31, 59, 0.12);
+}
+
+.animatedBox::before,
+.animatedButton::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    linear-gradient(
+      270deg,
+      rgba(120, 135, 148, 0.42),
+      rgba(120, 135, 148, 0.22),
+      transparent 42%
+    ) bottom right / 55% 1px no-repeat,
+    linear-gradient(
+      0deg,
+      rgba(120, 135, 148, 0.34),
+      transparent 58%
+    ) right bottom / 1px 55% no-repeat;
+  transition: opacity 180ms ease;
+}
+
+.animatedBox:hover::before,
+.animatedButton:hover::before,
+.animatedBox:focus-within::before,
+.animatedButton:focus-visible::before {
+  opacity: 1;
+  animation: collectiumFrameGlow 1100ms ease-out forwards;
+}
+
+@keyframes collectiumFrameGlow {
+  0% {
+    opacity: 0;
+    background-position:
+      bottom right,
+      right bottom;
+    filter: drop-shadow(0 0 0 rgba(120, 135, 148, 0));
+  }
+
+  15% {
+    opacity: 1;
+    filter: drop-shadow(0 0 5px rgba(120, 135, 148, 0.24));
+  }
+
+  55% {
+    opacity: 0.7;
+    background-position:
+      bottom left,
+      right top;
+  }
+
+  100% {
+    opacity: 0;
+    background-position:
+      bottom left,
+      right top;
+    filter: drop-shadow(0 0 0 rgba(120, 135, 148, 0));
+  }
+}
+

@@ -90,7 +90,7 @@ export default function StartsideV4Client() {
         <nav className={styles.nav} aria-label="Hovedmeny">
           <Link href="#konsept">Katalog</Link><Link href="#medlemskap">Medlemskap</Link><Link href="#forhandler-auksjon">Forhandlere</Link><Link href="#forhandler-auksjon">Auksjon</Link>
         </nav>
-        <div className={styles.actions}><Link href="/login" className={styles.secondaryButton}>Logg inn</Link><Link href="#medlemskap" className={styles.ghostButton}>Kom i gang gratis</Link></div>
+        <div className={styles.actions}><Link href="/login" className={`${styles.secondaryButton} ${styles.animatedButton}`}>Logg inn</Link><Link href="#medlemskap" className={`${styles.ghostButton} ${styles.animatedButton}`}>Kom i gang gratis</Link></div>
       </header>
 
       <section id="konsept" className={`${styles.section} ${styles.hero}`}>
@@ -98,32 +98,32 @@ export default function StartsideV4Client() {
           <p className={styles.kicker}>For samlere Â· for historien Â· for markedet</p>
           <h1 className={styles.heroTitle}>For samlere. Av samlere. <span className={styles.blueText}>Alt pÃ¥ ett sted.</span></h1>
           <p className={styles.heroLead}>Collectium samler katalog, egen samling, verdsettelse, auksjon, forhandlerkontakt, index og historiske relasjoner i en strukturert plattform.</p>
-          <div className={styles.heroCtas}><Link href="#medlemskap" className={styles.primaryButton}>Start gratis</Link><Link href="#konsept" className={styles.secondaryButton}>Se katalog</Link></div>
+          <div className={styles.heroCtas}><Link href="#medlemskap" className={`${styles.primaryButton} ${styles.animatedButton}`}>Start gratis</Link><Link href="#konsept" className={`${styles.secondaryButton} ${styles.animatedButton}`}>Se katalog</Link></div>
           <p className={styles.publicNote}>Offentlig forside uten sidemeny. Etter innlogging overtar global AppShell og viser sidemenyen.</p>
           <div className={styles.chips}><span className={styles.chip}>Relasjonsbasert katalog</span><span className={styles.chip}>Oppdatert marked</span><span className={styles.chip}>Sikker samling</span></div>
         </div>
 
         <div className={styles.deviceWrap}>
-          <div className={styles.device}>
+          <div className={`${styles.device} ${styles.animatedBox}`}>
             <div className={styles.deviceTop}>
               <div className={styles.segmentSwitch}>{(["samler", "historie", "finans"] as SegmentKey[]).map((key) => <button key={key} type="button" onClick={() => setSegment(key)} style={{ minHeight: 28, padding: "0 16px", border: 0, borderRadius: 999, background: segment === key ? "#fff" : "transparent", fontWeight: 950, cursor: "pointer" }}>{key === "samler" ? "Samler" : key === "historie" ? "Historie" : "Finans"}</button>)}</div>
               <div className={styles.sourceSwitch}>{(["sedler", "mynter"] as SourceKey[]).map((key) => <button key={key} type="button" onClick={() => setSource(key)} style={{ minHeight: 28, padding: "0 16px", border: 0, borderRadius: 999, background: source === key ? "#fff" : "transparent", fontWeight: 950, cursor: "pointer" }}>{key === "sedler" ? "Sedler" : "Mynter"}</button>)}</div>
             </div>
-            <div className={styles.objectCard}>
+            <div className={`${styles.objectCard} ${styles.animatedBox}`}>
               <div><Image src="/images/collectium-c-logo.png" alt="Collectium C" width={96} height={96} style={{ objectFit: "contain" }} /><span className={styles.objectType}>{activeSource.label}</span></div>
               <div><h2 className={styles.objectTitle}>{activeSource.title}</h2><p className={styles.objectMeta}>Kilde Â· objektgruppe Â· object_id</p><p className={styles.objectStatus}>{activeSegment.status}</p><div className={styles.pillRow}>{activeSource.pills.map((pill) => <span key={pill} className={styles.pill}>{pill}</span>)}</div><div className={styles.objectPrice}><span>{activeSegment.title}: hentes fra API</span><span className={styles.realData}>sanndata</span></div></div>
             </div>
-            <div className={styles.infoCard}><h3>{activeSegment.title} Â· {activeSource.type}</h3><p>{activeSegment.description}</p><p style={{ marginTop: 10, color: "#0069b4", fontWeight: 900 }}>{activeSegment.note}</p></div>
+            <div className={`${styles.infoCard} ${styles.animatedBox}`}><h3>{activeSegment.title} Â· {activeSource.type}</h3><p>{activeSegment.description}</p><p style={{ marginTop: 10, color: "#0069b4", fontWeight: 900 }}>{activeSegment.note}</p></div>
           </div>
-          <div className={styles.floatCard}><Image src="/images/collectium-c-logo.png" alt="Collectium" width={42} height={42} /><p className={styles.floatTitle}>Min samling</p><p className={styles.floatValue}>API-data</p><p className={styles.floatText}>Objekter og verdi hentes reelt</p></div>
+          <div className={`${styles.floatCard} ${styles.animatedBox}`}><Image src="/images/collectium-c-logo.png" alt="Collectium" width={42} height={42} /><p className={styles.floatTitle}>Min samling</p><p className={styles.floatValue}>API-data</p><p className={styles.floatText}>Objekter og verdi hentes reelt</p></div>
         </div>
       </section>
 
       <section className={styles.section}>
         <p className={styles.kicker}>Funksjoner</p><h2 className={styles.sectionTitle}>Alt du trenger for Ã¥ starte, organisere, forstÃ¥ og selge</h2>
         <div className={styles.twoCol} style={{ marginTop: 28 }}>
-          <div className={styles.featureList}>{features.map((feature) => <button key={feature.key} type="button" onClick={() => setFeatureKey(feature.key)} className={styles.featureItem} style={{ cursor: "pointer", borderColor: featureKey === feature.key ? "#0069b4" : "#bdd0df" }}><span className={styles.featureIcon}>{feature.icon}</span><span>{feature.title}</span></button>)}</div>
-          <article className={styles.panel}><div className={styles.panelIcon}>â—Ž</div><p className={styles.kicker}>Mulighet i Collectium</p><h3>{activeFeature.title}</h3><p>{activeFeature.text}</p><p className={styles.panelNote}>{activeFeature.note}</p></article>
+          <div className={styles.featureList}>{features.map((feature) => <button key={feature.key} type="button" onClick={() => setFeatureKey(feature.key)} className={`${styles.featureItem} ${styles.animatedButton}`} style={{ cursor: "pointer", borderColor: featureKey === feature.key ? "#0069b4" : "#bdd0df" }}><span className={styles.featureIcon}>{feature.icon}</span><span>{feature.title}</span></button>)}</div>
+          <article className={`${styles.panel} ${styles.animatedBox}`}><div className={styles.panelIcon}>â—Ž</div><p className={styles.kicker}>Mulighet i Collectium</p><h3>{activeFeature.title}</h3><p>{activeFeature.text}</p><p className={styles.panelNote}>{activeFeature.note}</p></article>
         </div>
       </section>
 
@@ -133,7 +133,7 @@ export default function StartsideV4Client() {
 
       <section id="medlemskap" className={styles.section}>
         <div className={styles.priceHeader}><div><p className={styles.kicker}>Medlemskap</p><h2 className={styles.sectionTitle}>Riktige priser og tilgangsnivÃ¥</h2><p className={styles.priceIntro}>Premium brukes ikke. Platinum finnes ikke som mÃ¥nedlig medlemskap.</p></div><div className={styles.toggle}><button type="button" onClick={() => setPriceMode("monthly")} style={{ minHeight: 36, padding: "0 18px", border: 0, borderRadius: 999, background: priceMode === "monthly" ? "#fff" : "transparent", fontWeight: 950, cursor: "pointer" }}>MÃ¥nedlig</button><button type="button" onClick={() => setPriceMode("yearly")} style={{ minHeight: 36, padding: "0 18px", border: 0, borderRadius: 999, background: priceMode === "yearly" ? "#fff" : "transparent", fontWeight: 950, cursor: "pointer" }}>Ã…rlig</button></div></div>
-        <div className={styles.priceGrid}>{priceCards.map((price) => { const p = price[priceMode]; return <article key={price.name} className={`${styles.priceCard} ${price.featured ? styles.priceCardFeatured : ""}`}><h3>{price.name}</h3><p className={styles.priceRole}>{price.role}</p><p className={styles.priceMain}>{p[0]}</p><p className={styles.priceSub}>{p[1]}</p><p className={styles.priceNote}>{p[2]}</p><ul className={styles.priceList}>{price.items.map((item) => <li key={item}>{item}</li>)}</ul><Link href="/login" className={styles.cardButton}>{price.button}</Link></article>; })}</div>
+        <div className={styles.priceGrid}>{priceCards.map((price) => { const p = price[priceMode]; return <article key={price.name} className={`${styles.priceCard} ${styles.animatedBox} ${price.featured ? styles.priceCardFeatured : ""}`}><h3>{price.name}</h3><p className={styles.priceRole}>{price.role}</p><p className={styles.priceMain}>{p[0]}</p><p className={styles.priceSub}>{p[1]}</p><p className={styles.priceNote}>{p[2]}</p><ul className={styles.priceList}>{price.items.map((item) => <li key={item}>{item}</li>)}</ul><Link href="/login" className={`${styles.cardButton} ${styles.animatedButton}`}>{price.button}</Link></article>; })}</div>
       </section>
 
             <section id="forhandler-auksjon" className={styles.section}>
@@ -324,4 +324,5 @@ export default function StartsideV4Client() {
     </main>
   );
 }
+
 
