@@ -24,6 +24,12 @@
 
 import { useState } from "react";
 import styles from "../landing/collectium-frontpage.module.css";
+import PageHeader from "../ui/collectium/PageHeader";
+import ContentPanel from "../ui/collectium/ContentPanel";
+import InfoCard from "../ui/collectium/InfoCard";
+import StatusCard from "../ui/collectium/StatusCard";
+import ArchiveTabs from "../ui/collectium/ArchiveTabs";
+import ActionButton from "../ui/collectium/ActionButton";
 
 const dealers = [
   {
@@ -69,48 +75,67 @@ const dealers = [
 
 export default function AdminDealersClient() {
   const [selected, setSelected] = useState(dealers[0]);
+  const [activeTab, setActiveTab] = useState("Alle");
 
   return (
-    <div className={styles.adminUsersPage}>
-      <section className={styles.adminPageHeader}>
-        <div>
-          <p className={styles.kicker}>Admin / forhandlere</p>
-          <h1>Forhandlere og avtaler</h1>
-          <p>Kontroller godkjenning, dokumentasjon, kategoriadgang, fee-avtale, auksjon og nettbutikk.</p>
-        </div>
-        <button type="button" className={styles.goldButton} data-feature-key="admin.dealers.create">Ny forhandler</button>
-      </section>
+    <div className="ct-page">
+      <PageHeader kicker="Admin / forhandlere" title="Forhandlere og avtaler" description="Kontroller godkjenning, dokumentasjon, kategoriadgang, fee-avtale, auksjon og nettbutikk.">
+        <ActionButton variant="gold" data-feature-key="admin.dealers.create">Ny forhandler</ActionButton>
+      </PageHeader>
 
-      <section className={styles.adminStatsGrid}>
-        <article className={`${styles.adminStatCard} ct-card`}><strong>48</strong><span>Aktive forhandlere</span><small>12 venter dokumentasjon</small></article>
-        <article className={`${styles.adminStatCard} ct-card`}><strong>7</strong><span>Nye søknader</span><small>3 kritiske avtaler</small></article>
-        <article className={`${styles.adminStatCard} ct-card`}><strong>2,1 mill</strong><span>Omsetning</span><small>fee må avstemmes</small></article>
-        <article className={`${styles.adminStatCard} ct-card`}><strong>19</strong><span>Kategoritilganger</span><small>sedler, mynter, dokumenter</small></article>
-      </section>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px", marginBottom: "20px" }}>
+        <StatusCard value="48" label="Aktive forhandlere" note="12 venter dokumentasjon" tone="green" />
+        <StatusCard value="7" label="Nye søknader" note="3 kritiske avtaler" tone="gold" />
+        <StatusCard value="2,1 mill" label="Omsetning" note="fee må avstemmes" tone="blue" />
+        <StatusCard value="19" label="Kategoritilganger" note="sedler, mynter, dokumenter" tone="neutral" />
+      </div>
 
-      <section className={styles.dealerWorkspace}>
-        <div className={`${styles.dealerList} ct-panel`}>
-          <div className={styles.archiveTabs}>
-            <button type="button" className={styles.archiveTabActive}>Alle</button>
-            <button type="button">Venter</button>
-            <button type="button">Aktive</button>
-            <button type="button">Avvist</button>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "20px", alignItems: "start" }}>
+        <ContentPanel>
+          <ArchiveTabs
+            items={[
+              { key: "Alle", label: "Alle" },
+              { key: "Venter", label: "Venter" },
+              { key: "Aktive", label: "Aktive" },
+              { key: "Avvist", label: "Avvist" }
+            ]}
+            activeKey={activeTab}
+            onChange={setActiveTab}
+          />
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "12px" }}>
+            {dealers.map((dealer) => (
+              <button
+                key={dealer.name}
+                type="button"
+                className="ct-btn"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "stretch",
+                  textAlign: "left",
+                  padding: "12px",
+                  background: selected.name === dealer.name ? "var(--ct-active-bg)" : "none",
+                  color: selected.name === dealer.name ? "var(--ct-active-text)" : "var(--ct-text)",
+                  border: "1px solid var(--ct-border)",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  width: "100%"
+                }}
+                onClick={() => setSelected(dealer)}
+              >
+                <strong style={{ display: "block", fontSize: "0.95rem" }}>{dealer.name}</strong>
+                <span style={{ fontSize: "0.8rem", color: selected.name === dealer.name ? "var(--ct-active-text)" : "var(--ct-text-soft)", opacity: 0.85 }}>Org.nr {dealer.org}</span>
+                <span style={{ display: "inline-block", alignSelf: "start", marginTop: "6px", fontSize: "0.75rem", padding: "2px 6px", background: "rgba(0,0,0,0.1)", borderRadius: "4px" }}>{dealer.status}</span>
+              </button>
+            ))}
           </div>
-          {dealers.map((dealer) => (
-            <button key={dealer.name} type="button" className={`${styles.dealerRow} ${selected.name === dealer.name ? styles.adminUserRowActive : ""}`} onClick={() => setSelected(dealer)}>
-              <strong>{dealer.name}</strong>
-              <span>{dealer.org}</span>
-              <em>{dealer.status}</em>
-              <small>{dealer.categories}</small>
-            </button>
-          ))}
-        </div>
+        </ContentPanel>
 
-        <aside className={`${styles.dealerDetail} ct-panel`}>
-          <p className={styles.kicker}>Forhandlerark</p>
-          <h2>{selected.name}</h2>
-          <p>{selected.contact} · {selected.email} · Org.nr {selected.org}</p>
-          <div className={styles.membershipGrid}>
+        <ContentPanel>
+          <p className="ct-kicker">Forhandlerark</p>
+          <h2 className="ct-title" style={{ fontSize: "1.5rem" }}>{selected.name}</h2>
+          <p className="ct-description" style={{ marginBottom: "20px" }}>{selected.contact} · {selected.email} · Org.nr {selected.org}</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px" }}>
             <Info title="Status" value={selected.status} note="Godkjenning og dokumentasjonskrav" />
             <Info title="Kategorier" value={selected.categories} note="Objektgrupper forhandler kan selge i" />
             <Info title="Avtale" value={selected.agreement} note="Collectium-avtale i tekstformat" />
@@ -120,19 +145,18 @@ export default function AdminDealersClient() {
             <Info title="Objekter" value={`${selected.objects}`} note="Aktive / ventende objekter" />
             <Info title="Neste handling" value="Kontroller" note="Be om dokumentasjon eller godkjenn" />
           </div>
-        </aside>
-      </section>
+        </ContentPanel>
+      </div>
     </div>
   );
 }
 
 function Info({ title, value, note }: { title: string; value: string; note: string }) {
   return (
-    <article className={`${styles.infoBox} ct-card`}>
-      <span>{title}</span>
-      <strong>{value}</strong>
-      <p>{note}</p>
-      <button type="button">Åpne</button>
-    </article>
+    <InfoCard title={title}>
+      <strong style={{ display: "block", fontSize: "1.15rem", color: "var(--ct-brand-primary)", marginBottom: "4px" }}>{value}</strong>
+      <p style={{ margin: "0 0 10px 0", fontSize: "0.82rem", color: "var(--ct-text-soft)" }}>{note}</p>
+      <ActionButton style={{ padding: "4px 10px", fontSize: "0.76rem" }} type="button">Åpne</ActionButton>
+    </InfoCard>
   );
 }

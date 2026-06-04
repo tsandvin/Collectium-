@@ -4,9 +4,9 @@
  * COLLECTIUM FILE HEADER
  *
  * Overskrift:
- * CatalogWorkspaceClient v22
+ * CatalogWorkspaceClient v23
  *
- * Definering / formal:
+ * Definering / formål:
  * Relasjonsbasert katalogarbeidsflate som viser kildebaserte katalogdata fra
  * Collectium API/MariaDB-kjeden. React lager ikke egne katalogobjekter eller
  * filterverdier.
@@ -16,7 +16,12 @@
  */
 
 import { useEffect, useMemo, useState } from "react";
-import styles from "../landing/collectium-frontpage.module.css";
+import PageHeader from "../ui/collectium/PageHeader";
+import ContentPanel from "../ui/collectium/ContentPanel";
+import InfoCard from "../ui/collectium/InfoCard";
+import ArchiveTabs from "../ui/collectium/ArchiveTabs";
+import ActionButton from "../ui/collectium/ActionButton";
+import EmptyState from "../ui/collectium/EmptyState";
 
 type Segment = "samler" | "historie" | "finans";
 type ViewMode = "horizontal" | "standing" | "list";
@@ -70,10 +75,10 @@ const defaultSourceKey = "norske_sedler";
 const defaultObjectGroup = "banknote";
 
 const filterTitles: Record<string, string> = {
-  country: "Land / omrade",
+  country: "Land / område",
   ruler: "Regent / konge",
-  denomination: "Valor",
-  year_label: "Ar / periode",
+  denomination: "Valør",
+  year_label: "År / periode",
   litra: "Litra / detalj",
   denomination_issue: "Utgave / serie",
   variant: "Variant / type",
@@ -144,7 +149,7 @@ function segmentCopy(object: CatalogObject, segment: Segment) {
   ].filter(Boolean);
 
   if (segment === "samler") {
-    return [...base, "Samlerfelt viser samling, onske/favoritt og brukerstatus nar API returnerer dette."].join(". ");
+    return [...base, "Samlerfelt viser samling, ønske/favoritt og brukerstatus når API returnerer dette."].join(". ");
   }
 
   if (segment === "historie") {
@@ -286,55 +291,140 @@ export default function CatalogWorkspaceClient() {
   );
 
   return (
-    <section className={styles.catalogWorkspace} data-view={view} data-segment={segment}>
-      <div className={`${styles.catalogHero} ct-panel`}>
-        <div>
-          <p className={styles.kicker}>Katalog</p>
-          <h1>Relasjonsbasert katalog</h1>
-          <p>
-            Katalogen viser reelle data fra MariaDB/API. Teknisk nokkel er alltid object_id + object_group + source_key.
-          </p>
-        </div>
-        <div className={styles.catalogStatusGrid}>
+    <section className="ct-page" data-view={view} data-segment={segment}>
+      <style dangerouslySetInnerHTML={{ __html: `
+        .ct-catalog-layout {
+          display: grid;
+          grid-template-columns: 260px 1fr;
+          gap: 20px;
+          align-items: start;
+        }
+        .ct-catalog-card {
+          display: grid;
+          grid-template-columns: 160px 1fr 200px;
+          gap: 16px;
+          margin-bottom: 16px;
+          align-items: stretch;
+        }
+        .ct-catalog-card.ct-view-list {
+          grid-template-columns: 80px 1fr 150px;
+          gap: 12px;
+          padding: 8px 12px;
+        }
+        .ct-catalog-card.ct-view-standing {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+        .ct-catalog-card-image {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          aspect-ratio: 4/3;
+          background: rgba(0,0,0,0.03);
+          border-radius: 8px;
+          overflow: hidden;
+          border: 1px solid var(--ct-border);
+        }
+        .ct-catalog-card-market {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          border-left: 1px solid var(--ct-border);
+          padding-left: 16px;
+        }
+        .ct-catalog-mobile-topbar {
+          display: none;
+        }
+        @media (max-width: 768px) {
+          .ct-catalog-layout {
+            grid-template-columns: 1fr;
+          }
+          .ct-catalog-card, .ct-catalog-card.ct-view-list, .ct-catalog-card.ct-view-standing {
+            grid-template-columns: 1fr !important;
+            gap: 12px;
+          }
+          .ct-catalog-card-market {
+            border-left: 0 !important;
+            border-top: 1px solid var(--ct-border);
+            padding-left: 0 !important;
+            padding-top: 12px;
+          }
+          .ct-catalog-mobile-topbar {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+          }
+          .ct-catalog-desktop-filter {
+            display: none;
+          }
+        }
+      `}} />
+
+      <PageHeader kicker="Katalog" title="Relasjonsbasert katalog" description="Katalogen viser reelle data fra MariaDB/API. Teknisk nøkkel er alltid object_id + object_group + source_key.">
+        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", fontSize: "0.88rem", color: "var(--ct-text-soft)" }}>
           <span><b>{totals.count}</b> treff</span>
           <span><b>{formatCurrency(totals.value)}</b> estimert verdi</span>
           <span><b>{sourceLabel(sourceKey)}</b> kilde</span>
-          <span><b>{objectGroupLabel(objectGroup)}</b> objekttype</span>
+          <span><b>{objectGroupLabel(objectGroup)}</b> type</span>
         </div>
+      </PageHeader>
+
+      <div className="ct-catalog-mobile-topbar">
+        <ActionButton onClick={() => setFilterOpen(true)} data-feature-key="catalog.filters">Filter</ActionButton>
+        <ArchiveTabs
+          items={[["samler", "Samler"], ["historie", "Historie"], ["finans", "Finans"]].map(([key, label]) => ({ key, label }))}
+          activeKey={segment}
+          onChange={(key) => setSegment(key as Segment)}
+        />
       </div>
 
-      <div className={styles.catalogMobileTopbar}>
-        <button type="button" onClick={() => setFilterOpen(true)} data-feature-key="catalog.filters">Filter</button>
-        <SegmentSwitch segment={segment} setSegment={setSegment} />
-      </div>
+      <div className="ct-catalog-layout">
+        <aside className="ct-catalog-desktop-filter">
+          <ContentPanel>
+            {filterPanel}
+          </ContentPanel>
+        </aside>
 
-      <div className={styles.catalogBody}>
-        <aside className={`${styles.catalogDesktopFilter} ct-card`}>{filterPanel}</aside>
-
-        <main className={styles.catalogResultsArea}>
-          <div className={`${styles.catalogToolbar} ct-card`}>
-            <div>
-              <SegmentSwitch segment={segment} setSegment={setSegment} />
-              <ViewSwitch view={view} setView={setView} />
+        <main style={{ display: "flex", flexDirection: "column" }}>
+          <ContentPanel style={{ marginBottom: "20px", display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "16px" }}>
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
+              <ArchiveTabs
+                items={[["samler", "Samler"], ["historie", "Historie"], ["finans", "Finans"]].map(([key, label]) => ({ key, label }))}
+                activeKey={segment}
+                onChange={(key) => setSegment(key as Segment)}
+                style={{ borderBottom: 0, marginBottom: 0 }}
+              />
+              <ArchiveTabs
+                items={[["horizontal", "Horisontal"], ["standing", "Stående"], ["list", "Liste"]].map(([key, label]) => ({ key, label }))}
+                activeKey={view}
+                onChange={(key) => setView(key as ViewMode)}
+                style={{ borderBottom: 0, marginBottom: 0 }}
+              />
             </div>
-            <label className={styles.catalogSearchField}>
-              <span>Sok</span>
+            <label className="ct-field" style={{ margin: 0, minWidth: "240px" }}>
+              <span className="ct-label">Søk</span>
               <input
+                className="ct-input"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Sok objekt, valor, regent, signatur eller katalognummer"
+                placeholder="Søk objekt, valør, regent, signatur..."
                 data-feature-key="catalog.search"
               />
             </label>
-          </div>
+          </ContentPanel>
 
-          {error ? <div className={`${styles.catalogNotice} ct-card`}>{error}</div> : null}
-          {loading ? <div className={`${styles.catalogNotice} ct-card`}>Henter reelle katalogdata...</div> : null}
+          {error ? <EmptyState message="Feil ved henting av data" description={error} /> : null}
+          {loading ? <EmptyState message="Henter reelle katalogdata..." /> : null}
           {!loading && !error && objects.length === 0 ? (
-            <div className={`${styles.catalogNotice} ct-card`}>Ingen reelle katalogdata ble returnert for valgt kilde og filter.</div>
+            <EmptyState message="Ingen reelle katalogdata ble returnert for valgt kilde og filter." />
           ) : null}
 
-          <div className={styles.catalogResultGrid}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             {objects.map((object) => (
               <CatalogCard key={`${object.source_key}:${object.object_group}:${object.object_id}`} object={object} segment={segment} view={view} />
             ))}
@@ -343,54 +433,41 @@ export default function CatalogWorkspaceClient() {
       </div>
 
       {filterOpen ? (
-        <div className={styles.catalogFilterOverlay} role="dialog" aria-modal="true" onClick={() => setFilterOpen(false)}>
-          <div className={`${styles.catalogFilterSheet} ct-card`} onClick={(event) => event.stopPropagation()}>
-            <div className={styles.catalogFilterSheetTop}>
-              <strong>Filter</strong>
-              <button type="button" onClick={() => setFilterOpen(false)}>Lukk</button>
+        <div
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setFilterOpen(false)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(0,0,0,0.5)",
+            zIndex: 1000,
+            display: "flex",
+            justifyContent: "flex-end"
+          }}
+        >
+          <ContentPanel
+            onClick={(event) => event.stopPropagation()}
+            style={{
+              width: "320px",
+              height: "100%",
+              overflowY: "auto",
+              borderRadius: 0,
+              background: "var(--ct-panel-solid)"
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", borderBottom: "1px solid var(--ct-border)", paddingBottom: "12px" }}>
+              <strong style={{ fontSize: "1.1rem" }}>Filter</strong>
+              <ActionButton onClick={() => setFilterOpen(false)}>Lukk</ActionButton>
             </div>
             {filterPanel}
-          </div>
+          </ContentPanel>
         </div>
       ) : null}
     </section>
-  );
-}
-
-function SegmentSwitch({ segment, setSegment }: { segment: Segment; setSegment: (segment: Segment) => void }) {
-  return (
-    <div className={styles.catalogSegmentSwitch}>
-      {[
-        ["samler", "Samler"],
-        ["historie", "Historie"],
-        ["finans", "Finans"],
-      ].map(([key, label]) => (
-        <button
-          key={key}
-          type="button"
-          onClick={() => setSegment(key as Segment)}
-          className={segment === key ? styles.catalogSwitchActive : ""}
-        >
-          {label}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-function ViewSwitch({ view, setView }: { view: ViewMode; setView: (view: ViewMode) => void }) {
-  return (
-    <div className={styles.catalogViewSwitch}>
-      {[
-        ["horizontal", "Horisontal"],
-        ["standing", "Staende"],
-        ["list", "Liste"],
-      ].map(([key, label]) => (
-        <button key={key} type="button" onClick={() => setView(key as ViewMode)} className={view === key ? styles.catalogSwitchActive : ""}>
-          {label}
-        </button>
-      ))}
-    </div>
   );
 }
 
@@ -410,41 +487,56 @@ function CatalogFilterPanel({
   clearFilters: () => void;
 }) {
   return (
-    <div className={styles.catalogFilterPanel}>
-      <div className={styles.catalogFilterHeader}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", borderBottom: "1px solid var(--ct-border)", paddingBottom: "12px" }}>
         <div>
-          <strong>Katalogfilter</strong>
-          <small>Kilde-scopet fra API: source_key + object_group + filter_field + filter_value</small>
+          <strong style={{ display: "block", fontSize: "0.95rem" }}>Katalogfilter</strong>
+          <small style={{ display: "block", fontSize: "0.75rem", color: "var(--ct-text-muted)", marginTop: "2px" }}>Kilde-scopet fra API</small>
         </div>
-        <button type="button" onClick={clearFilters}>Nullstill</button>
+        <ActionButton style={{ padding: "4px 8px", fontSize: "0.75rem" }} onClick={clearFilters}>Nullstill</ActionButton>
       </div>
 
-      <div className={styles.catalogFilterChips}>
+      <div style={{ minHeight: "24px" }}>
         {selectedFilter ? (
-          <button type="button" onClick={clearFilters}>{selectedFilter.value} x</button>
+          <ActionButton style={{ padding: "2px 6px", fontSize: "0.75rem" }} onClick={clearFilters}>{selectedFilter.value} x</ActionButton>
         ) : (
-          <span>Ingen valgte filter</span>
+          <span style={{ fontSize: "0.8rem", color: "var(--ct-text-muted)" }}>Ingen valgte filter</span>
         )}
       </div>
 
-      <div className={styles.catalogFilterGroups}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         {filters.map((group) => {
           const open = expandedFilter === group.field;
           return (
-            <section key={group.field} className={styles.catalogFilterGroup}>
-              <button type="button" onClick={() => setExpandedFilter(open ? null : group.field)}>
-                <span>{filterTitles[group.field] || group.field}</span>
-                <b>{group.values.length}</b>
+            <section key={group.field} style={{ borderBottom: "1px solid var(--ct-border)", paddingBottom: "8px" }}>
+              <button
+                type="button"
+                className="ct-btn"
+                style={{
+                  width: "100%",
+                  justifyContent: "space-between",
+                  textAlign: "left",
+                  background: "none",
+                  border: 0,
+                  padding: "8px 0"
+                }}
+                onClick={() => setExpandedFilter(open ? null : group.field)}
+              >
+                <span style={{ fontSize: "0.9rem", fontWeight: "700" }}>{filterTitles[group.field] || group.field}</span>
+                <span style={{ fontSize: "0.75rem", padding: "2px 6px", background: "rgba(0,0,0,0.05)", borderRadius: "10px" }}>{group.values.length}</span>
               </button>
               {open ? (
-                <div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px", padding: "8px", maxHeight: "200px", overflowY: "auto" }}>
                   {group.values.map((filter) => {
                     const checked = selectedFilter?.field === filter.filter_field && selectedFilter.value === filter.filter_value;
                     return (
-                      <label key={`${filter.source_key}:${filter.object_group}:${filter.filter_field}:${filter.filter_value}`}>
+                      <label
+                        key={`${filter.source_key}:${filter.object_group}:${filter.filter_field}:${filter.filter_value}`}
+                        style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.85rem", cursor: "pointer" }}
+                      >
                         <input type="checkbox" checked={checked} onChange={() => toggleFilter(filter.filter_field, filter.filter_value)} />
-                        <span>{filter.filter_label || filter.filter_value}</span>
-                        <small>{filter.object_count ?? ""}</small>
+                        <span style={{ flex: 1 }}>{filter.filter_label || filter.filter_value}</span>
+                        <small style={{ color: "var(--ct-text-muted)" }}>{filter.object_count ?? ""}</small>
                       </label>
                     );
                   })}
@@ -463,53 +555,74 @@ function CatalogCard({ object, segment, view }: { object: CatalogObject; segment
   const relations = relationItems(object);
 
   return (
-    <article className={`${styles.catalogObjectCard} ${styles[`catalogView_${view}`]} ct-card`}>
-      <a className={styles.catalogObjectImage} href={objectHref} data-feature-key="catalog.object.open">
-        {object.image_path ? <img src={object.image_path} alt="" /> : <span>{objectGroupLabel(object.object_group)}</span>}
-        <small>{object.source_catalog_number || object.collectium_catalog_meta || object.object_id}</small>
+    <article className={`ct-card ct-catalog-card ct-view-${view}`}>
+      <a className="ct-catalog-card-image" href={objectHref} data-feature-key="catalog.object.open">
+        {object.image_path ? (
+          <img src={object.image_path} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        ) : (
+          <span style={{ fontSize: "0.8rem", color: "var(--ct-text-muted)" }}>{objectGroupLabel(object.object_group)}</span>
+        )}
+        <small style={{ position: "absolute", bottom: "4px", background: "rgba(0,0,0,0.6)", color: "#fff", padding: "2px 6px", borderRadius: "4px", fontSize: "0.65rem" }}>
+          {object.source_catalog_number || object.collectium_catalog_meta || object.object_id}
+        </small>
       </a>
 
-      <div className={styles.catalogObjectMain}>
-        <div className={styles.catalogObjectTitleRow}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", flexWrap: "wrap", gap: "8px" }}>
           <div>
-            <h2>{objectTitle(object)}</h2>
-            <p>
-              Kilde: {sourceLabel(object.source_key)} - Objekttype: {objectGroupLabel(object.object_group)} - ID: {String(object.object_id)}
+            <h2 className="ct-title" style={{ fontSize: "1.15rem", fontWeight: "bold" }}>{objectTitle(object)}</h2>
+            <p style={{ margin: "2px 0 0 0", fontSize: "0.75rem", color: "var(--ct-text-muted)" }}>
+              Kilde: {sourceLabel(object.source_key)} · Objekttype: {objectGroupLabel(object.object_group)} · ID: {String(object.object_id)}
             </p>
           </div>
-          <div className={styles.catalogObjectActions}>
-            <a href={objectHref} data-feature-key="catalog.object.open">Objektpresentasjon</a>
+          <div>
+            <a href={objectHref} className="ct-btn" style={{ padding: "4px 8px", fontSize: "0.75rem" }} data-feature-key="catalog.object.open">
+              Vis objekt
+            </a>
           </div>
         </div>
 
-        <div className={styles.catalogObjectMetaGrid}>
-          <span><b>Land</b>{object.country || "Ikke oppgitt"}</span>
-          <span><b>Produsent</b>{object.producer || object.issuer || "Ikke oppgitt"}</span>
-          <span><b>Ar</b>{object.year_label || "Ikke oppgitt"}</span>
-          <span><b>Valor</b>{object.denomination || "Ikke oppgitt"}</span>
-          <span><b>Litra</b>{object.litra || "Ikke oppgitt"}</span>
-          <span><b>Regent</b>{object.ruler || "Ikke oppgitt"}</span>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: "8px", fontSize: "0.8rem", margin: "4px 0" }}>
+          <span><b style={{ color: "var(--ct-text-muted)", marginRight: "4px" }}>Land:</b>{object.country || "Ikke oppgitt"}</span>
+          <span><b style={{ color: "var(--ct-text-muted)", marginRight: "4px" }}>Produsent:</b>{object.producer || object.issuer || "Ikke oppgitt"}</span>
+          <span><b style={{ color: "var(--ct-text-muted)", marginRight: "4px" }}>År:</b>{object.year_label || "Ikke oppgitt"}</span>
+          <span><b style={{ color: "var(--ct-text-muted)", marginRight: "4px" }}>Valør:</b>{object.denomination || "Ikke oppgitt"}</span>
+          <span><b style={{ color: "var(--ct-text-muted)", marginRight: "4px" }}>Litra:</b>{object.litra || "Ikke oppgitt"}</span>
+          <span><b style={{ color: "var(--ct-text-muted)", marginRight: "4px" }}>Regent:</b>{object.ruler || "Ikke oppgitt"}</span>
         </div>
 
-        <div className={styles.catalogSegmentInfo}>
-          <strong>{segment === "samler" ? "Samler" : segment === "historie" ? "Historie" : "Finans"}</strong>
-          <p>{segmentCopy(object, segment)}</p>
+        <div style={{ padding: "8px", background: "rgba(0,0,0,0.02)", borderRadius: "6px", fontSize: "0.8rem" }}>
+          <strong style={{ display: "block", color: "var(--ct-brand-primary)", marginBottom: "4px" }}>
+            {segment === "samler" ? "Samler" : segment === "historie" ? "Historie" : "Finans"}
+          </strong>
+          <p style={{ margin: 0, color: "var(--ct-text-soft)" }}>{segmentCopy(object, segment)}</p>
         </div>
 
-        <div className={styles.catalogRelationLinks}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", marginTop: "4px" }}>
           {relations.map((relation) => (
-            <a key={`${relation.field}:${relation.value}`} href={relationHref(object, relation.field, relation.value)}>
+            <a
+              key={`${relation.field}:${relation.value}`}
+              href={relationHref(object, relation.field, relation.value)}
+              className="ct-btn"
+              style={{ padding: "2px 6px", fontSize: "0.7rem", borderRadius: "4px" }}
+            >
               {relation.value}
             </a>
           ))}
         </div>
       </div>
 
-      <aside className={styles.catalogObjectMarket}>
-        <span>{formatCurrency(getDisplayValue(object), object.currency ?? "NOK")}</span>
-        <strong>{object.value_label || "Marked fra API"}</strong>
-        <small>{object.source_catalog_number || object.collectium_catalog_meta || "Kildekatalognummer mangler"}</small>
-        <em>{object.source_key}:{object.object_group}:{String(object.object_id)}</em>
+      <aside className="ct-catalog-card-market">
+        <span style={{ fontSize: "1.25rem", fontWeight: "900", color: "var(--ct-brand-primary)" }}>
+          {formatCurrency(getDisplayValue(object), object.currency ?? "NOK")}
+        </span>
+        <strong style={{ fontSize: "0.85rem", margin: "4px 0" }}>{object.value_label || "Marked fra API"}</strong>
+        <small style={{ fontSize: "0.7rem", color: "var(--ct-text-muted)" }}>
+          {object.source_catalog_number || object.collectium_catalog_meta || "Kildekatalognummer mangler"}
+        </small>
+        <em style={{ fontSize: "0.6rem", color: "var(--ct-text-muted)", marginTop: "8px", fontStyle: "normal" }}>
+          {object.source_key}:{object.object_group}:{String(object.object_id)}
+        </em>
       </aside>
     </article>
   );

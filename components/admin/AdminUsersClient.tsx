@@ -36,6 +36,13 @@
 
 import { useEffect, useMemo, useState } from "react";
 import styles from "../landing/collectium-frontpage.module.css";
+import PageHeader from "../ui/collectium/PageHeader";
+import ContentPanel from "../ui/collectium/ContentPanel";
+import InfoCard from "../ui/collectium/InfoCard";
+import StatusCard from "../ui/collectium/StatusCard";
+import ArchiveTabs from "../ui/collectium/ArchiveTabs";
+import ActionButton from "../ui/collectium/ActionButton";
+import DataTable from "../ui/collectium/DataTable";
 import {
   accountDeletionRule,
   allDemoUsers,
@@ -335,48 +342,41 @@ export default function AdminUsersClient() {
   }
 
   return (
-    <div className={styles.adminUsersPageFull}>
-      <section className={styles.adminPageHeader}>
-        <div>
-          <p className={styles.kicker}>Admin / brukere</p>
-          <h1>Brukere og medlemskap</h1>
-          <p>Brukeroversikt med demo-kunder, brukernavn, kundekilde, aktivitetsdata, sletteregel, eierhistorikk og profilfletting.</p>
-        </div>
-        <div className={styles.adminHeaderActions}>
-          <a href="/admin" className={styles.secondaryButton}>Admin dashboard</a>
-          <button className={styles.goldButton} type="button" data-feature-key="admin.users.create" onClick={() => setCreateOpen((open) => !open)}>
-            Opprett ny bruker
-          </button>
-          <button
-            type="button"
-            className={`${styles.demoAccessToggle} ${demoAccessPaused ? styles.demoAccessToggleActive : ""}`}
-            data-feature-key="admin.demo_users.access.toggle"
-            title={demoAccessPaused ? "Demo-brukere er stoppet. Klikk for å åpne demo-tilgang igjen." : "Stopper alle demo-brukere fra å brukes som testtilgang. Admin/superadmin beholdes."}
-            aria-label={demoAccessPaused ? "Demo-brukere er stoppet. Åpne demo-tilgang igjen." : "Stopp demo-brukere fra testtilgang."}
-            onClick={() => updateDemoAccessPaused(!demoAccessPaused)}
-          >
-            {demoAccessPaused ? "Åpne demo-tilgang" : "Stopp demo-brukere"}
-          </button>
-        </div>
-      </section>
+    <div className="ct-page">
+      <PageHeader kicker="Admin / brukere" title="Brukere og medlemskap" description="Brukeroversikt med demo-kunder, brukernavn, kundekilde, aktivitetsdata, sletteregel, eierhistorikk og profilfletting.">
+        <a href="/admin" className="ct-btn">Admin dashboard</a>
+        <ActionButton variant="gold" data-feature-key="admin.users.create" onClick={() => setCreateOpen((open) => !open)}>
+          Opprett ny bruker
+        </ActionButton>
+        <button
+          type="button"
+          className={`ct-btn ${demoAccessPaused ? "" : "ct-btn-gold"}`}
+          data-feature-key="admin.demo_users.access.toggle"
+          title={demoAccessPaused ? "Demo-brukere er stoppet. Klikk for å åpne demo-tilgang igjen." : "Stopper alle demo-brukere fra å brukes som testtilgang. Admin/superadmin beholdes."}
+          aria-label={demoAccessPaused ? "Demo-brukere er stoppet. Åpne demo-tilgang igjen." : "Stopp demo-brukere fra testtilgang."}
+          onClick={() => updateDemoAccessPaused(!demoAccessPaused)}
+        >
+          {demoAccessPaused ? "Åpne demo-tilgang" : "Stopp demo-brukere"}
+        </button>
+      </PageHeader>
 
       {createOpen ? <CreateUserPanel value={newUser} onChange={setNewUser} onCreate={createUser} onCancel={() => setCreateOpen(false)} /> : null}
 
-      <section className={styles.adminStatsGrid}>
-        <StatCard value={String(resultSummary.totalUsers)} label="Brukere i resultatet" note={membership === "Alle" ? "Total i valgt arkiv/status" : `Kun ${membership}`} tone="green" />
-        <StatCard value={String(resultSummary.objects)} label="Samleobjekter" note="sum i filtrert brukerresultat" tone="gold" />
-        <StatCard value={formatKr(resultSummary.value)} label="Estimert samlerverdi" note="sum for valgte brukere" tone="blue" />
-        <StatCard value={formatMinutes(resultSummary.online)} label="Online i dag" note={`${resultSummary.support} supportindikasjoner · ${resultSummary.auctions} med auksjonsaktivitet`} tone="red" />
-      </section>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px", marginBottom: "20px" }}>
+        <StatusCard value={String(resultSummary.totalUsers)} label="Brukere i resultatet" note={membership === "Alle" ? "Total i valgt arkiv/status" : `Kun ${membership}`} tone="green" />
+        <StatusCard value={String(resultSummary.objects)} label="Samleobjekter" note="sum i filtrert brukerresultat" tone="gold" />
+        <StatusCard value={formatKr(resultSummary.value)} label="Estimert samlerverdi" note="sum for valgte brukere" tone="blue" />
+        <StatusCard value={formatMinutes(resultSummary.online)} label="Online i dag" note={`${resultSummary.support} supportindikasjoner · ${resultSummary.auctions} med auksjonsaktivitet`} tone="red" />
+      </div>
 
-      <section className={`${styles.adminFilterBarV18} ct-panel`}>
-        <label>
-          Søk bruker
-          <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Navn, brukernavn, e-post, telefon, kundenummer, adresse eller ID" />
+      <ContentPanel style={{ display: "grid", gap: "12px", gridTemplateColumns: "minmax(240px, 2fr) repeat(3, minmax(140px, 1fr)) auto", alignItems: "end", marginBottom: "20px" }}>
+        <label className="ct-field">
+          <span className="ct-label">Søk bruker</span>
+          <input className="ct-input" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Navn, brukernavn, e-post, kundenummer..." />
         </label>
-        <label>
-          Status
-          <select value={status} onChange={(event) => setStatus(event.target.value as "Alle" | UserStatus)}>
+        <label className="ct-field">
+          <span className="ct-label">Status</span>
+          <select className="ct-select" value={status} onChange={(event) => setStatus(event.target.value as any)}>
             <option>Alle</option>
             <option value="active">Aktiv</option>
             <option value="suspended">Suspendert</option>
@@ -386,181 +386,193 @@ export default function AdminUsersClient() {
             <option value="anonymized">Anonymisert</option>
           </select>
         </label>
-        <label>
-          KYC
-          <select value={kyc} onChange={(event) => setKyc(event.target.value as "Alle" | KycStatus)}>
+        <label className="ct-field">
+          <span className="ct-label">KYC</span>
+          <select className="ct-select" value={kyc} onChange={(event) => setKyc(event.target.value as any)}>
             <option>Alle</option>
             <option value="verified">Verifisert</option>
             <option value="pending">Venter</option>
             <option value="not_started">Ikke startet</option>
           </select>
         </label>
-        <label>
-          Kundekilde
-          <select value={origin} onChange={(event) => setOrigin(event.target.value as "Alle" | CustomerOriginType)}>
+        <label className="ct-field">
+          <span className="ct-label">Kundekilde</span>
+          <select className="ct-select" value={origin} onChange={(event) => setOrigin(event.target.value as any)}>
             {originFilters.map((item) => <option key={item} value={item}>{item === "Alle" ? "Alle" : originLabel(item)}</option>)}
           </select>
         </label>
-        <button type="button" className={styles.goldButton}>Filtrer</button>
-      </section>
+        <ActionButton variant="gold" type="button">Filtrer</ActionButton>
+      </ContentPanel>
 
-      <section className={`${styles.retentionRulePanel} ct-panel`}>
-        <div>
-          <p className={styles.kicker}>Låst brukerregel</p>
-          <h2>{accountDeletionRule.title}</h2>
-          <p>{accountDeletionRule.short}</p>
+      <ContentPanel style={{ marginBottom: "20px" }}>
+        <p className="ct-kicker">Låst brukerregel</p>
+        <h2 className="ct-title" style={{ fontSize: "1.3rem", marginBottom: "12px" }}>{accountDeletionRule.title}</h2>
+        <p className="ct-description" style={{ marginBottom: "16px" }}>{accountDeletionRule.short}</p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px" }}>
+          <InfoCard title="Kundenummer">
+            <span style={{ fontSize: "1.1rem", fontWeight: "bold", display: "block" }}>{customerNumberRule.customer}</span>
+            <small style={{ color: "var(--ct-text-muted)" }}>Eksempel {customerNumberRule.exampleCustomer}</small>
+          </InfoCard>
+          <InfoCard title="Forhandlernummer">
+            <span style={{ fontSize: "1.1rem", fontWeight: "bold", display: "block" }}>{customerNumberRule.dealer}</span>
+            <small style={{ color: "var(--ct-text-muted)" }}>Eksempel {customerNumberRule.exampleDealer}</small>
+          </InfoCard>
+          <InfoCard title="Eierhistorikk">
+            <span>Beholdes</span>
+            <p style={{ margin: "4px 0 0 0", fontSize: "0.85rem", color: "var(--ct-text-soft)" }}>Persondata kan slettes/anonymiseres uten å ødelegge proveniens.</p>
+          </InfoCard>
+          <InfoCard title="Profilfletting">
+            <span>Admin-kontroll</span>
+            <p style={{ margin: "4px 0 0 0", fontSize: "0.85rem", color: "var(--ct-text-soft)" }}>Ny e-post + samme bosted/eiendel kan kobles til gammel eierhistorikk.</p>
+          </InfoCard>
         </div>
-        <div className={styles.retentionRuleGrid}>
-          <article><b>Kundenummer</b><span>{customerNumberRule.customer}</span><small>Eksempel {customerNumberRule.exampleCustomer}</small></article>
-          <article><b>Forhandlernummer</b><span>{customerNumberRule.dealer}</span><small>Eksempel {customerNumberRule.exampleDealer}</small></article>
-          <article><b>Eierhistorikk</b><span>Beholdes</span><small>Persondata kan slettes/anonymiseres uten å ødelegge proveniens.</small></article>
-          <article><b>Profilfletting</b><span>Admin-kontroll</span><small>Ny e-post + samme bosted/eiendel kan kobles til gammel eierhistorikk.</small></article>
-        </div>
-      </section>
+      </ContentPanel>
 
-      <section className={`${styles.adminUserListFull} ct-panel`}>
-        <div className={styles.userArchiveTabsSplit}>
-          <div className={styles.archiveTabsLeft} aria-label="Medlemskap og kundetype">
-            {membershipTabs.map((item) => (
-              <button key={item} type="button" onClick={() => setMembership(item)} className={membership === item ? styles.archiveTabActive : ""}>
-                {membershipTabText(visibleUsers, item)}
+      <ContentPanel>
+        <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "14px", borderBottom: "1px solid var(--ct-border-strong)", marginBottom: "12px" }}>
+          <ArchiveTabs
+            items={membershipTabs.map((tab) => ({ key: tab, label: membershipTabText(visibleUsers, tab) }))}
+            activeKey={membership}
+            onChange={(key) => setMembership(key as any)}
+            className="ct-archive-tabs"
+            style={{ borderBottom: 0, marginBottom: 0 }}
+          />
+          <ArchiveTabs
+            items={archiveTabs.map((tab) => ({ key: tab, label: archiveTabText(visibleUsers, tab) }))}
+            activeKey={archive}
+            onChange={(key) => setArchive(key as any)}
+            className="ct-archive-tabs"
+            style={{ borderBottom: 0, marginBottom: 0 }}
+          />
+        </div>
+
+        <DataTable
+          headers={[
+            <button key="user" type="button" style={{ background: "none", border: 0, color: "inherit", font: "inherit", fontWeight: "inherit", cursor: "pointer", textTransform: "inherit" }} onClick={() => handleSort("user")}>Bruker{sortMark("user")}</button>,
+            <button key="num" type="button" style={{ background: "none", border: 0, color: "inherit", font: "inherit", fontWeight: "inherit", cursor: "pointer", textTransform: "inherit" }} onClick={() => handleSort("customerNumber")}>Kundenummer{sortMark("customerNumber")}</button>,
+            <button key="src" type="button" style={{ background: "none", border: 0, color: "inherit", font: "inherit", fontWeight: "inherit", cursor: "pointer", textTransform: "inherit" }} onClick={() => handleSort("source")}>Kilde{sortMark("source")}</button>,
+            <button key="status" type="button" style={{ background: "none", border: 0, color: "inherit", font: "inherit", fontWeight: "inherit", cursor: "pointer", textTransform: "inherit" }} onClick={() => handleSort("status")}>Status{sortMark("status")}</button>,
+            <button key="kyc" type="button" style={{ background: "none", border: 0, color: "inherit", font: "inherit", fontWeight: "inherit", cursor: "pointer", textTransform: "inherit" }} onClick={() => handleSort("kyc")}>KYC{sortMark("kyc")}</button>,
+            <button key="coll" type="button" style={{ background: "none", border: 0, color: "inherit", font: "inherit", fontWeight: "inherit", cursor: "pointer", textTransform: "inherit" }} onClick={() => handleSort("collection")}>Samling{sortMark("collection")}</button>,
+            <button key="auc" type="button" style={{ background: "none", border: 0, color: "inherit", font: "inherit", fontWeight: "inherit", cursor: "pointer", textTransform: "inherit" }} onClick={() => handleSort("auction")}>Auksjon{sortMark("auction")}</button>,
+            <button key="act" type="button" style={{ background: "none", border: 0, color: "inherit", font: "inherit", fontWeight: "inherit", cursor: "pointer", textTransform: "inherit" }} onClick={() => handleSort("action")}>Handling{sortMark("action")}</button>
+          ]}
+          className="ct-user-table"
+          style={{ display: "grid", gridTemplateColumns: "minmax(210px, 1.5fr) minmax(150px, 1fr) minmax(150px, 1fr) 0.75fr 0.75fr 0.85fr 0.9fr 0.8fr" }}
+        >
+          {filtered.map((user) => (
+            <div key={user.id} className={`ct-user-expandable-row ${expandedId === user.id ? "active" : ""}`} style={{ borderBottom: "1px solid var(--ct-border)" }}>
+              <button
+                type="button"
+                className="ct-btn"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "minmax(210px, 1.5fr) minmax(150px, 1fr) minmax(150px, 1fr) 0.75fr 0.75fr 0.85fr 0.9fr 0.8fr",
+                  width: "100%",
+                  textAlign: "left",
+                  background: "none",
+                  border: 0,
+                  borderRadius: 0,
+                  minHeight: "76px",
+                  padding: "12px 16px"
+                }}
+                onClick={() => toggleUser(user)}
+              >
+                <span className={styles.userIdentity}><b>{user.initials}</b><strong>{user.name}</strong><small>@{getUsername(user)} · {user.email}</small></span>
+                <span><strong>{user.customerNumber}</strong><small>{user.customerCountryCode} · {user.customerNumberYear}</small></span>
+                <span><strong>{originLabel(user.originType)}</strong><small>{user.originSource}</small></span>
+                <span><em className={`${styles.statusPill} ${styles[user.status] || ""}`}>{statusLabel(user.status)}</em></span>
+                <span><em className={`${styles.statusPill} ${styles[user.kyc]}`}>{kycLabel(user.kyc)}</em></span>
+                <span><strong>{formatKr(user.collectionValue)}</strong><small>{user.objects} objekter</small></span>
+                <span><strong>{user.auction}</strong><small>{user.shop}</small></span>
+                <span><i>Åpne ark</i><small>Klikk for hurtigvisning</small></span>
               </button>
-            ))}
-          </div>
-          <div className={styles.archiveTabsRight} aria-label="Statusfaner">
-            {archiveTabs.map((item) => (
-              <button key={item} type="button" onClick={() => setArchive(item)} className={archive === item ? styles.archiveTabActive : ""}>
-                {archiveTabText(visibleUsers, item)}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className={styles.adminUserTableHeaderV18}>
-          <button type="button" onClick={() => handleSort("user")}>Bruker{sortMark("user")}</button>
-          <button type="button" onClick={() => handleSort("customerNumber")}>Kundenummer{sortMark("customerNumber")}</button>
-          <button type="button" onClick={() => handleSort("source")}>Kilde{sortMark("source")}</button>
-          <button type="button" onClick={() => handleSort("status")}>Status{sortMark("status")}</button>
-          <button type="button" onClick={() => handleSort("kyc")}>KYC{sortMark("kyc")}</button>
-          <button type="button" onClick={() => handleSort("collection")}>Samling{sortMark("collection")}</button>
-          <button type="button" onClick={() => handleSort("auction")}>Auksjon{sortMark("auction")}</button>
-          <button type="button" onClick={() => handleSort("action")}>Handling{sortMark("action")}</button>
-        </div>
-
-        {filtered.map((user) => (
-          <div key={user.id} className={`${styles.adminUserExpandable} ${expandedId === user.id ? styles.adminUserRowActive : ""}`}>
-            <button type="button" className={styles.adminUserRowV18} onClick={() => toggleUser(user)}>
-              <span className={styles.userIdentity}><b>{user.initials}</b><strong>{user.name}</strong><small>@{getUsername(user)} · {user.email}</small></span>
-              <span><strong>{user.customerNumber}</strong><small>{user.customerCountryCode} · {user.customerNumberYear}</small></span>
-              <span><strong>{originLabel(user.originType)}</strong><small>{user.originSource}</small></span>
-              <span><em className={`${styles.statusPill} ${styles[user.status] || ""}`}>{statusLabel(user.status)}</em></span>
-              <span><em className={`${styles.statusPill} ${styles[user.kyc]}`}>{kycLabel(user.kyc)}</em></span>
-              <span><strong>{formatKr(user.collectionValue)}</strong><small>{user.objects} objekter</small></span>
-              <span><strong>{user.auction}</strong><small>{user.shop}</small></span>
-              <span><i>Åpne ark</i><small>Klikk for hurtigvisning</small></span>
-            </button>
-            {expandedId === user.id ? <ExpandedUserRow user={user} username={getUsername(user)} /> : null}
-          </div>
-        ))}
-      </section>
+              {expandedId === user.id ? <ExpandedUserRow user={user} username={getUsername(user)} /> : null}
+            </div>
+          ))}
+        </DataTable>
+      </ContentPanel>
     </div>
   );
 }
 
 function CreateUserPanel({ value, onChange, onCreate, onCancel }: { value: NewUserForm; onChange: (value: NewUserForm) => void; onCreate: () => void; onCancel: () => void }) {
   return (
-    <section className={`${styles.createUserPanel} ct-panel`}>
+    <ContentPanel style={{ marginBottom: "20px" }}>
       <div>
-        <p className={styles.kicker}>Adminhandling</p>
-        <h2>Opprett ny bruker</h2>
-        <p>Demo-opprettelse i frontend. Senere skal dette kobles til <b>admin.users.create</b> og MariaDB/API med passordflyt/e-postverifisering.</p>
+        <p className="ct-kicker">Adminhandling</p>
+        <h2 className="ct-title" style={{ fontSize: "1.3rem" }}>Opprett ny bruker</h2>
+        <p className="ct-description">Demo-opprettelse i frontend. Senere skal dette kobles til <b>admin.users.create</b> og MariaDB/API med passordflyt/e-postverifisering.</p>
       </div>
-      <label>Navn<input value={value.name} onChange={(event) => onChange({ ...value, name: event.target.value })} placeholder="Navn" /></label>
-      <label>Brukernavn<input value={value.username} onChange={(event) => onChange({ ...value, username: event.target.value })} placeholder="brukernavn" /></label>
-      <label>E-post<input value={value.email} onChange={(event) => onChange({ ...value, email: event.target.value })} placeholder="epost@example.no" /></label>
-      <label>Telefon<input value={value.phone} onChange={(event) => onChange({ ...value, phone: event.target.value })} placeholder="telefon" /></label>
-      <label>Land<select value={value.countryCode} onChange={(event) => onChange({ ...value, countryCode: event.target.value as NewUserForm["countryCode"] })}><option>NO</option><option>SE</option><option>DK</option><option>FI</option><option>US</option></select></label>
-      <label>Medlemskap<select value={value.membership} onChange={(event) => onChange({ ...value, membership: event.target.value as Membership })}><option>Free</option><option>Bronze</option><option>Silver</option><option>Gold</option><option>Platinum</option></select></label>
-      <label>Kundetype<select value={value.customerType} onChange={(event) => onChange({ ...value, customerType: event.target.value as CustomerType })}><option value="customer">Kunde</option><option value="dealer">Forhandler</option></select></label>
-      <label>Kilde<select value={value.originType} onChange={(event) => onChange({ ...value, originType: event.target.value as CustomerOriginType })}>{originFilters.filter((item) => item !== "Alle").map((item) => <option key={item} value={item}>{originLabel(item as CustomerOriginType)}</option>)}</select></label>
-      <div className={styles.createUserActions}>
-        <button type="button" className={styles.secondaryButton} onClick={onCancel}>Avbryt</button>
-        <button type="button" className={styles.goldButton} data-feature-key="admin.users.create" onClick={onCreate}>Opprett bruker</button>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px", marginTop: "12px", width: "100%" }}>
+        <label className="ct-field"><span className="ct-label">Navn</span><input className="ct-input" value={value.name} onChange={(event) => onChange({ ...value, name: event.target.value })} placeholder="Navn" /></label>
+        <label className="ct-field"><span className="ct-label">Brukernavn</span><input className="ct-input" value={value.username} onChange={(event) => onChange({ ...value, username: event.target.value })} placeholder="brukernavn" /></label>
+        <label className="ct-field"><span className="ct-label">E-post</span><input className="ct-input" value={value.email} onChange={(event) => onChange({ ...value, email: event.target.value })} placeholder="epost@example.no" /></label>
+        <label className="ct-field"><span className="ct-label">Telefon</span><input className="ct-input" value={value.phone} onChange={(event) => onChange({ ...value, phone: event.target.value })} placeholder="telefon" /></label>
+        <label className="ct-field"><span className="ct-label">Land</span><select className="ct-select" value={value.countryCode} onChange={(event) => onChange({ ...value, countryCode: event.target.value as any })}><option>NO</option><option>SE</option><option>DK</option><option>FI</option><option>US</option></select></label>
+        <label className="ct-field"><span className="ct-label">Medlemskap</span><select className="ct-select" value={value.membership} onChange={(event) => onChange({ ...value, membership: event.target.value as any })}><option>Free</option><option>Bronze</option><option>Silver</option><option>Gold</option><option>Platinum</option></select></label>
+        <label className="ct-field"><span className="ct-label">Kundetype</span><select className="ct-select" value={value.customerType} onChange={(event) => onChange({ ...value, customerType: event.target.value as any })}><option value="customer">Kunde</option><option value="dealer">Forhandler</option></select></label>
+        <label className="ct-field"><span className="ct-label">Kilde</span><select className="ct-select" value={value.originType} onChange={(event) => onChange({ ...value, originType: event.target.value as any })}>{originFilters.filter((item) => item !== "Alle").map((item) => <option key={item} value={item}>{originLabel(item as any)}</option>)}</select></label>
       </div>
-    </section>
-  );
-}
-
-function StatCard({ value, label, note, tone }: { value: string; label: string; note: string; tone: "green" | "gold" | "red" | "blue" }) {
-  return (
-    <article className={`${styles.adminStatCard} ${styles[tone]} ct-card`}>
-      <strong>{value}</strong>
-      <span>{label}</span>
-      <small>{note}</small>
-    </article>
+      <div style={{ display: "flex", gap: "10px", marginTop: "16px" }}>
+        <ActionButton onClick={onCancel}>Avbryt</ActionButton>
+        <ActionButton variant="gold" data-feature-key="admin.users.create" onClick={onCreate}>Opprett bruker</ActionButton>
+      </div>
+    </ContentPanel>
   );
 }
 
 function ExpandedUserRow({ user, username }: { user: AdminUser; username: string }) {
   return (
-    <div className={styles.expandedUserRowV20}>
-      <div>
-        <h3>Kontakt</h3>
-        <p>@{username}</p>
-        <p>{user.email}</p>
-        <p>{user.phone}</p>
-        <p>{user.address}</p>
-        <p>{user.country} · {user.customerCountryCode}</p>
-      </div>
-      <div>
-        <h3>Kundenummer</h3>
-        <p><b>{user.customerNumber}</b></p>
-        <p>Intern DB-ID: {user.userIdInternal}</p>
-        <p>Sekvens: {String(user.customerNumberSequence).padStart(6, "0")}</p>
-      </div>
-      <div>
-        <h3>Kundekilde</h3>
-        <p>{user.originSource}</p>
-        <p>Referrer: {user.originReferrer}</p>
-        <p>Kampanje: {user.originCampaign}</p>
-        {user.originDealerId ? <p>Forhandler: {user.originDealerId}</p> : null}
-      </div>
-      <div>
-        <h3>Første aktivitet</h3>
-        <p>Første side: {user.originFirstPage}</p>
-        <p>Objektgruppe: {user.originFirstObjectGroup}</p>
-        <p>Kanal: {user.originRegisteredChannel}</p>
-      </div>
-      <div>
-        <h3>Samlergrupper</h3>
+    <div style={{ padding: "18px", background: "color-mix(in srgb, var(--ct-panel-solid) 92%, transparent)", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px", borderBottom: "1px solid var(--ct-border)" }}>
+      <InfoCard title="Kontakt">
+        <p style={{ margin: "2px 0" }}>@{username}</p>
+        <p style={{ margin: "2px 0" }}>{user.email}</p>
+        <p style={{ margin: "2px 0" }}>{user.phone}</p>
+        <p style={{ margin: "2px 0" }}>{user.address}</p>
+        <p style={{ margin: "2px 0" }}>{user.country} · {user.customerCountryCode}</p>
+      </InfoCard>
+      <InfoCard title="Kundenummer">
+        <p style={{ margin: "2px 0" }}><b>{user.customerNumber}</b></p>
+        <p style={{ margin: "2px 0" }}>Intern DB-ID: {user.userIdInternal}</p>
+        <p style={{ margin: "2px 0" }}>Sekvens: {String(user.customerNumberSequence).padStart(6, "0")}</p>
+      </InfoCard>
+      <InfoCard title="Kundekilde">
+        <p style={{ margin: "2px 0" }}>{user.originSource}</p>
+        <p style={{ margin: "2px 0" }}>Referrer: {user.originReferrer}</p>
+        <p style={{ margin: "2px 0" }}>Kampanje: {user.originCampaign}</p>
+        {user.originDealerId ? <p style={{ margin: "2px 0" }}>Forhandler: {user.originDealerId}</p> : null}
+      </InfoCard>
+      <InfoCard title="Første aktivitet">
+        <p style={{ margin: "2px 0" }}>Første side: {user.originFirstPage}</p>
+        <p style={{ margin: "2px 0" }}>Objektgruppe: {user.originFirstObjectGroup}</p>
+        <p style={{ margin: "2px 0" }}>Kanal: {user.originRegisteredChannel}</p>
+      </InfoCard>
+      <InfoCard title="Samlergrupper">
         {user.groups.length ? user.groups.map((group) => (
-          <p key={group.name}><b>{group.name}</b> · {group.count} objekter · {formatKr(group.value)}</p>
-        )) : <p>Ingen grupper registrert</p>}
-      </div>
-      <div>
-        <h3>Aktivitet/support</h3>
-        <p>Online i dag: {formatMinutes(user.onlineTodayMin)}</p>
-        <p>Online måned: {formatMinutes(user.onlineMonthMin)}</p>
-        <p>Mest brukt: {user.mostUsedPages[0]?.page}</p>
-        <p>Support: {user.supportFlag}</p>
-      </div>
-      <div>
-        <h3>Sletting / historikk</h3>
-        <p>Valg: {user.deletionPreference}</p>
-        <p>{user.ownershipHistoryPolicy}</p>
-        <p>Feature: admin.users.ownership_history.preserve</p>
-      </div>
-      <div>
-        <h3>Profilfletting</h3>
+          <p key={group.name} style={{ margin: "2px 0" }}><b>{group.name}</b> · {group.count} objekter · {formatKr(group.value)}</p>
+        )) : <p style={{ margin: "2px 0" }}>Ingen grupper registrert</p>}
+      </InfoCard>
+      <InfoCard title="Aktivitet/support">
+        <p style={{ margin: "2px 0" }}>Online i dag: {formatMinutes(user.onlineTodayMin)}</p>
+        <p style={{ margin: "2px 0" }}>Online måned: {formatMinutes(user.onlineMonthMin)}</p>
+        <p style={{ margin: "2px 0" }}>Mest brukt: {user.mostUsedPages[0]?.page}</p>
+        <p style={{ margin: "2px 0" }}>Support: {user.supportFlag}</p>
+      </InfoCard>
+      <InfoCard title="Sletting / historikk">
+        <p style={{ margin: "2px 0" }}>Valg: {user.deletionPreference}</p>
+        <p style={{ margin: "2px 0" }}>{user.ownershipHistoryPolicy}</p>
+        <p style={{ margin: "2px 0" }}>Feature: admin.users.ownership_history.preserve</p>
+      </InfoCard>
+      <InfoCard title="Profilfletting">
         {user.mergeCandidates.length ? user.mergeCandidates.map((candidate) => (
-          <p key={candidate.userId}><b>{candidate.confidence}%</b> match mot {candidate.userId}: {candidate.reason}</p>
-        )) : <p>Ingen flettingsforslag</p>}
-      </div>
-      <div className={styles.expandedUserActions}>
-        <h3>Kundepresentasjon</h3>
-        <p>Egen side med full profil, aktivitet, grafer, supportlogg, slettevalg og profilfletting.</p>
-        <a href={`/admin/kunde/${encodeURIComponent(user.id)}`} className={styles.goldButton} data-feature-key="admin.customer.presentation.view">Åpne kundepresentasjon</a>
-      </div>
+          <p key={candidate.userId} style={{ margin: "2px 0" }}><b>{candidate.confidence}% match</b> {candidate.reason}</p>
+        )) : <p style={{ margin: "2px 0" }}>Ingen flettingsforslag</p>}
+      </InfoCard>
+      <InfoCard title="Kundepresentasjon">
+        <p style={{ margin: "0 0 12px 0" }}>Egen side med full profil, aktivitet, grafer, supportlogg, slettevalg og profilfletting.</p>
+        <a href={`/admin/kunde/${encodeURIComponent(user.id)}`} className="ct-btn ct-btn-gold" data-feature-key="admin.customer.presentation.view">Åpne kundepresentasjon</a>
+      </InfoCard>
     </div>
   );
 }

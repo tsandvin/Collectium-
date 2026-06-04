@@ -4,7 +4,7 @@
  * COLLECTIUM FILE HEADER
  *
  * Overskrift:
- * AdminSettingsClient v16
+ * AdminSettingsClient v22
  *
  * Definering / formål:
  * Adminside for organisering av innstillinger, design, tilgang, DB 8.4 og systemmoduler.
@@ -21,7 +21,10 @@
  */
 
 import { useEffect, useState } from "react";
-import styles from "../landing/collectium-frontpage.module.css";
+import PageHeader from "../ui/collectium/PageHeader";
+import ContentPanel from "../ui/collectium/ContentPanel";
+import InfoCard from "../ui/collectium/InfoCard";
+import ActionButton from "../ui/collectium/ActionButton";
 
 const sections = [
   "Design og template",
@@ -52,74 +55,102 @@ export default function AdminSettingsClient() {
   }
 
   return (
-    <div className={styles.adminSettingsPage}>
-      <section className={styles.adminPageHeader}>
-        <div>
-          <p className={styles.kicker}>Admin / innstillinger</p>
-          <h1>Organiser innstillinger</h1>
-          <p>Kontrollflate for design, medlemskap, tilgang, API-ruter, prosesser og systemstatus.</p>
-        </div>
-        <div className={styles.adminHeaderActions}>
-          <a className={styles.secondaryButton} href="/admin/brukere">Brukere</a>
-          <a className={styles.secondaryButton} href="/admin">Dashboard</a>
-        </div>
-      </section>
+    <div className="ct-page">
+      <PageHeader
+        kicker="Admin / innstillinger"
+        title="Organiser innstillinger"
+        description="Kontrollflate for design, medlemskap, tilgang, API-ruter, prosesser og systemstatus."
+      >
+        <a className="ct-btn" href="/admin/brukere">
+          Brukere
+        </a>
+        <a className="ct-btn" href="/admin">
+          Dashboard
+        </a>
+      </PageHeader>
 
-      <section className={styles.settingsSplit}>
-        <aside className={`${styles.settingsMenu} ct-panel`}>
-          <h2>Innstillingsgrupper</h2>
-          {sections.map((section) => (
-            <button key={section} type="button" onClick={() => setActive(section)} className={active === section ? styles.settingsMenuActive : ""}>
-              {section}
-            </button>
-          ))}
-        </aside>
+      <div style={{ display: "grid", gridTemplateColumns: "240px 1fr", gap: "20px", alignItems: "start" }}>
+        <ContentPanel>
+          <h3 className="ct-card-title" style={{ marginBottom: "12px", fontSize: "1.05rem" }}>Innstillingsgrupper</h3>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            {sections.map((section) => (
+              <button
+                key={section}
+                type="button"
+                onClick={() => setActive(section)}
+                className={`ct-btn ${active === section ? "ct-btn-gold" : ""}`}
+                style={{
+                  width: "100%",
+                  justifyContent: "flex-start",
+                  textAlign: "left",
+                  background: active === section ? "var(--ct-active-bg)" : "none",
+                  color: active === section ? "var(--ct-active-text)" : "var(--ct-text)",
+                  border: "1px solid var(--ct-border)",
+                  borderRadius: "8px"
+                }}
+              >
+                {section}
+              </button>
+            ))}
+          </div>
+        </ContentPanel>
 
-        <main className={`${styles.settingsContent} ct-panel`}>
-          <p className={styles.kicker}>{active}</p>
-          <h2>{active}</h2>
-          <p>
+        <ContentPanel>
+          <p className="ct-kicker">{active}</p>
+          <h2 className="ct-title" style={{ fontSize: "1.5rem", marginBottom: "12px" }}>{active}</h2>
+          <p className="ct-description" style={{ marginBottom: "20px" }}>
             Denne modulen organiserer hvilke kontroller som senere skal lagres i MariaDB og styres via DB 8.4.
             Ingen knapp skal bare være visuell; den skal ha feature_key, action_route eller være tydelig lokal template-kontroll.
           </p>
 
-          <div className={styles.demoSettingsRow}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "16px",
+              border: "1px solid var(--ct-border)",
+              borderRadius: "8px",
+              padding: "16px",
+              marginBottom: "20px"
+            }}
+          >
             <div>
-              <strong>Stopp demo-brukere</strong>
-              <p>
+              <strong style={{ display: "block", fontSize: "0.95rem" }}>Stopp demo-brukere</strong>
+              <p style={{ margin: "4px 0", fontSize: "0.85rem", color: "var(--ct-text-soft)" }}>
                 Stopper alle demo-brukere fra testtilgang uten å slette aktivitetsdata, kundekilde,
                 kundenummer eller eierhistorikk. Admin/superadmin beholdes.
               </p>
-              <small>Feature: admin.demo_users.access.toggle</small>
+              <small style={{ color: "var(--ct-text-muted)", fontSize: "0.75rem" }}>Feature: admin.demo_users.access.toggle</small>
             </div>
-            <button
+            <ActionButton
               type="button"
-              className={demoAccessPaused ? styles.secondaryButton : styles.goldButton}
+              variant={demoAccessPaused ? "secondary" : "gold"}
               data-feature-key="admin.demo_users.access.toggle"
               onClick={() => updateDemoAccessPaused(!demoAccessPaused)}
             >
               {demoAccessPaused ? "Åpne demo-tilgang" : "Stopp demo-brukere"}
-            </button>
+            </ActionButton>
           </div>
 
-          <div className={styles.settingsGrid}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px" }}>
             <SettingCard title="Status" value="Klar for kobling" text="Viser hvordan denne innstillingen skal kobles til API/backend." />
             <SettingCard title="Feature keys" value="Defineres" text="feature_key, access_rule og action_route må registreres før skriving." />
             <SettingCard title="Logging" value="Påkrevd" text="Alle adminendringer skal logges med bruker, tidspunkt og kategori." />
             <SettingCard title="Svar til ChatGPT" value="Kopierbar status" text="Senere skal admin se hva som fungerer og hva som mangler." />
           </div>
-        </main>
-      </section>
+        </ContentPanel>
+      </div>
     </div>
   );
 }
 
 function SettingCard({ title, value, text }: { title: string; value: string; text: string }) {
   return (
-    <article className={`${styles.infoBox} ct-card`}>
-      <span>{title}</span>
-      <strong>{value}</strong>
-      <p>{text}</p>
-    </article>
+    <InfoCard title={title}>
+      <strong style={{ display: "block", fontSize: "1.1rem", color: "var(--ct-brand-primary)", marginBottom: "4px" }}>{value}</strong>
+      <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--ct-text-soft)" }}>{text}</p>
+    </InfoCard>
   );
 }

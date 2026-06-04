@@ -4,7 +4,7 @@
  * COLLECTIUM FILE HEADER
  *
  * Overskrift:
- * CustomerPresentationClient v20
+ * CustomerPresentationClient v21
  *
  * Definering / formål:
  * Kundepresentasjon for support/admin med kundenummer, kundekilde/opprinnelse,
@@ -25,7 +25,11 @@
  * - admin.users.merge_profiles
  */
 
-import styles from "../landing/collectium-frontpage.module.css";
+import PageHeader from "../ui/collectium/PageHeader";
+import ContentPanel from "../ui/collectium/ContentPanel";
+import InfoCard from "../ui/collectium/InfoCard";
+import StatusCard from "../ui/collectium/StatusCard";
+import ActionButton from "../ui/collectium/ActionButton";
 import { accountDeletionRule, findDemoUser, formatKr, formatMinutes } from "./collectiumDemoUsers";
 
 type CustomerPresentationClientProps = {
@@ -37,117 +41,134 @@ export default function CustomerPresentationClient({ userId }: CustomerPresentat
   const username = user.username || user.email.split("@")[0];
 
   return (
-    <div className={styles.customerPage}>
-      <section className={`${styles.customerHero} ct-panel`}>
-        <div>
-          <p className={styles.kicker}>Admin / kundepresentasjon</p>
-          <h1>{user.name}</h1>
-          <p>{user.customerNumber} · @{username} · {user.email} · {user.membership}-medlem · {user.customerType === "dealer" ? "Forhandler" : "Kunde"}</p>
-        </div>
-        <div className={styles.customerHeroActions}>
-          <a href="/admin/brukere" className={styles.secondaryButton}>Til brukerliste</a>
-          <button type="button" className={styles.goldButton}>Opprett supportsak</button>
-        </div>
-      </section>
+    <div className="ct-page">
+      <PageHeader
+        kicker="Admin / kundepresentasjon"
+        title={user.name}
+        description={`${user.customerNumber} · @${username} · {user.email} · ${user.membership}-medlem · ${user.customerType === "dealer" ? "Forhandler" : "Kunde"}`}
+      >
+        <a href="/admin/brukere" className="ct-btn">Til brukerliste</a>
+        <ActionButton variant="gold">Opprett supportsak</ActionButton>
+      </PageHeader>
 
-      <section className={styles.customerMetricGrid}>
-        <article className="ct-card"><span>Kundenummer</span><strong>{user.customerNumber}</strong><small>Landkode {user.customerCountryCode} · år {user.customerNumberYear}</small></article>
-        <article className="ct-card"><span>Total samlerverdi</span><strong>{formatKr(user.collectionValue)}</strong><small>{user.objects} objekter</small></article>
-        <article className="ct-card"><span>Online i dag</span><strong>{formatMinutes(user.onlineTodayMin)}</strong><small>{formatMinutes(user.onlineMonthMin)} siste måned</small></article>
-        <article className="ct-card"><span>Supportstatus</span><strong>{user.supportOpenCases ? "Trenger oppfølging" : "OK"}</strong><small>{user.supportFlag}</small></article>
-      </section>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px", marginBottom: "20px" }}>
+        <StatusCard label="Kundenummer" value={user.customerNumber} note={`Landkode ${user.customerCountryCode} · år ${user.customerNumberYear}`} tone="neutral" />
+        <StatusCard label="Total samlerverdi" value={formatKr(user.collectionValue)} note={`${user.objects} objekter`} tone="gold" />
+        <StatusCard label="Online i dag" value={formatMinutes(user.onlineTodayMin)} note={`${formatMinutes(user.onlineMonthMin)} siste måned`} tone="blue" />
+        <StatusCard label="Supportstatus" value={user.supportOpenCases ? "Trenger oppfølging" : "OK"} note={user.supportFlag} tone={user.supportOpenCases ? "red" : "green"} />
+      </div>
 
-      <section className={styles.customerWorkspace}>
-        <div className={`${styles.customerPanel} ct-panel`}>
-          <h2>Kundeopprinnelse</h2>
-          <div className={styles.customerListGrid}>
-            <p><b>Kildetype</b><span>{user.originSource}</span></p>
-            <p><b>Første side</b><span>{user.originFirstPage}</span></p>
-            <p><b>Kampanje</b><span>{user.originCampaign}</span></p>
-            <p><b>Første objektgruppe</b><span>{user.originFirstObjectGroup}</span></p>
-            <p><b>Registrert kanal</b><span>{user.originRegisteredChannel}</span></p>
-            <p><b>Brukernavn</b><span>@{username}</span></p>
-            <p><b>Intern DB-ID</b><span>{user.userIdInternal}</span></p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))", gap: "20px" }}>
+        <ContentPanel>
+          <h2 className="ct-title" style={{ fontSize: "1.25rem", marginBottom: "16px" }}>Kundeopprinnelse</h2>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <KeyValuePair label="Kildetype" value={user.originSource} />
+            <KeyValuePair label="Første side" value={user.originFirstPage} />
+            <KeyValuePair label="Kampanje" value={user.originCampaign} />
+            <KeyValuePair label="Første objektgruppe" value={user.originFirstObjectGroup} />
+            <KeyValuePair label="Registrert kanal" value={user.originRegisteredChannel} />
+            <KeyValuePair label="Brukernavn" value={`@${username}`} />
+            <KeyValuePair label="Intern DB-ID" value={user.userIdInternal} />
           </div>
-        </div>
+        </ContentPanel>
 
-        <div className={`${styles.customerPanel} ct-panel`}>
-          <h2>Aktivitet siste periode</h2>
-          <div className={styles.activityGraph} aria-label="Påloggingsgraf">
+        <ContentPanel>
+          <h2 className="ct-title" style={{ fontSize: "1.25rem", marginBottom: "16px" }}>Aktivitet siste periode</h2>
+          <div style={{ display: "flex", gap: "4px", alignItems: "end", height: "120px", padding: "10px", background: "rgba(0,0,0,0.02)", borderRadius: "8px", border: "1px solid var(--ct-border)", marginBottom: "12px" }} aria-label="Påloggingsgraf">
             {user.activityByDay.map((value, index) => (
-              <span key={index} style={{ height: `${value}%` }} title={`${value}%`} />
+              <span key={index} style={{ flex: 1, height: `${value}%`, background: "var(--ct-brand-primary)", borderRadius: "2px 2px 0 0", minHeight: "2px" }} title={`${value}%`} />
             ))}
           </div>
-          <p>Grafen viser online-aktivitet, og skal senere hentes fra aktivitetslogg i MariaDB.</p>
-        </div>
+          <p style={{ fontSize: "0.85rem", color: "var(--ct-text-soft)", margin: 0 }}>Grafen viser online-aktivitet, og skal senere hentes fra aktivitetslogg i MariaDB.</p>
+        </ContentPanel>
 
-        <div className={`${styles.customerPanel} ct-panel`}>
-          <h2>Mest brukte sider</h2>
-          {user.mostUsedPages.map((item) => (
-            <div className={styles.pageUseRow} key={item.page}>
-              <b>{item.page}</b>
-              <span><i style={{ width: `${item.percent}%` }} /></span>
-              <em>{item.percent}%</em>
-            </div>
-          ))}
-        </div>
+        <ContentPanel>
+          <h2 className="ct-title" style={{ fontSize: "1.25rem", marginBottom: "16px" }}>Mest brukte sider</h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            {user.mostUsedPages.map((item) => (
+              <div key={item.page} style={{ display: "grid", gridTemplateColumns: "120px 1fr 40px", gap: "12px", alignItems: "center", padding: "4px 0" }}>
+                <b style={{ fontSize: "0.85rem", fontWeight: "600" }}>{item.page}</b>
+                <div style={{ height: "6px", background: "var(--ct-border)", borderRadius: "3px", overflow: "hidden" }}>
+                  <div style={{ height: "100%", width: `${item.percent}%`, background: "var(--ct-brand-primary)" }} />
+                </div>
+                <span style={{ fontSize: "0.85rem", textAlign: "right", color: "var(--ct-text-soft)" }}>{item.percent}%</span>
+              </div>
+            ))}
+          </div>
+        </ContentPanel>
 
-        <div className={`${styles.customerPanel} ct-panel`}>
-          <h2>Samling og marked</h2>
-          <div className={styles.customerListGrid}>
+        <ContentPanel>
+          <h2 className="ct-title" style={{ fontSize: "1.25rem", marginBottom: "16px" }}>Samling og marked</h2>
+          <div style={{ display: "flex", flexDirection: "column" }}>
             {user.groups.length ? user.groups.map((group) => (
-              <p key={group.name}><b>{group.name}</b><span>{group.count} objekter · {formatKr(group.value)}</span></p>
-            )) : <p><b>Samling</b><span>Ingen objekter registrert</span></p>}
-            <p><b>Auksjon</b><span>{user.auction}</span></p>
-            <p><b>Nettbutikk</b><span>{user.shop}</span></p>
-            <p><b>Risiko</b><span>{user.supportOpenCases} åpen supportindikasjon</span></p>
+              <KeyValuePair key={group.name} label={group.name} value={`${group.count} objekter · ${formatKr(group.value)}`} />
+            )) : <KeyValuePair label="Samling" value="Ingen objekter registrert" />}
+            <KeyValuePair label="Auksjon" value={user.auction} />
+            <KeyValuePair label="Nettbutikk" value={user.shop} />
+            <KeyValuePair label="Risiko" value={`${user.supportOpenCases} åpen supportindikasjon`} />
           </div>
-        </div>
+        </ContentPanel>
 
-        <div className={`${styles.customerPanel} ct-panel`}>
-          <h2>Sletting, bevaring og eierhistorikk</h2>
-          <div className={styles.customerListGrid}>
-            <p><b>Kundens valg</b><span>{user.deletionPreference}</span></p>
-            <p><b>Profilstatus</b><span>{user.deletionMode}</span></p>
-            <p><b>Eierhistorikk</b><span>{user.ownershipHistoryPolicy}</span></p>
-            <p><b>Regel</b><span>Persondata kan slettes, men objektets eierrekke bevares.</span></p>
+        <ContentPanel>
+          <h2 className="ct-title" style={{ fontSize: "1.25rem", marginBottom: "16px" }}>Sletting, bevaring og eierhistorikk</h2>
+          <div style={{ display: "flex", flexDirection: "column", marginBottom: "12px" }}>
+            <KeyValuePair label="Kundens valg" value={user.deletionPreference} />
+            <KeyValuePair label="Profilstatus" value={user.deletionMode} />
+            <KeyValuePair label="Eierhistorikk" value={user.ownershipHistoryPolicy} />
+            <KeyValuePair label="Regel" value="Persondata kan slettes, men eierrekken bevares." />
           </div>
-          <ul className={styles.activityLog}>
-            {accountDeletionRule.rules.slice(0, 4).map((rule) => <li key={rule}><b>Regel</b><span>{rule}</span></li>)}
-          </ul>
-        </div>
-
-        <div className={`${styles.customerPanel} ct-panel`}>
-          <h2>Profilfletting</h2>
-          {user.mergeCandidates.length ? (
-            <div className={styles.customerListGrid}>
-              {user.mergeCandidates.map((candidate) => (
-                <p key={candidate.userId}><b>{candidate.confidence}% match</b><span>{candidate.userId} · {candidate.reason}</span></p>
-              ))}
-              <p><b>Adminhandling</b><span>Slå sammen profiler etter kontroll av e-post, navn, bosted og samme eiendeler.</span></p>
-            </div>
-          ) : <p>Ingen flettingsforslag for denne profilen.</p>}
-        </div>
-
-        <div className={`${styles.customerPanel} ct-panel`}>
-          <h2>Supportverktøy</h2>
-          <div className={styles.customerListGrid}>
-            <p><b>Siste feilside</b><span>{user.mostUsedPages[0]?.page || "Ikke registrert"}</span></p>
-            <p><b>Feiltype</b><span>{user.supportFlag}</span></p>
-            <p><b>Anbefalt hjelp</b><span>Bruk aktivitetslogg og mest brukte sider for å finne problemområde.</span></p>
-            <p><b>Kontakt</b><span>Send melding / opprett supportsak</span></p>
-          </div>
-        </div>
-
-        <div className={`${styles.customerPanel} ct-panel`}>
-          <h2>Aktivitetslogg</h2>
-          <ul className={styles.activityLog}>
-            {user.activityLog.map((entry, index) => (
-              <li key={`${entry}-${index}`}><b>{index === 0 ? "Siste" : `#${index + 1}`}</b><span>{entry}</span></li>
+          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            {accountDeletionRule.rules.slice(0, 4).map((rule) => (
+              <li key={rule} style={{ padding: "6px 0", borderBottom: "1px solid var(--ct-border)", fontSize: "0.85rem", color: "var(--ct-text-soft)" }}>
+                {rule}
+              </li>
             ))}
           </ul>
-        </div>
-      </section>
+        </ContentPanel>
+
+        <ContentPanel>
+          <h2 className="ct-title" style={{ fontSize: "1.25rem", marginBottom: "16px" }}>Profilfletting</h2>
+          {user.mergeCandidates.length ? (
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              {user.mergeCandidates.map((candidate) => (
+                <KeyValuePair key={candidate.userId} label={`${candidate.confidence}% match`} value={`${candidate.userId} · ${candidate.reason}`} />
+              ))}
+              <KeyValuePair label="Adminhandling" value="Slå sammen profiler etter kontroll av e-post og eiendeler." />
+            </div>
+          ) : <p style={{ fontSize: "0.9rem", color: "var(--ct-text-soft)" }}>Ingen flettingsforslag for denne profilen.</p>}
+        </ContentPanel>
+
+        <ContentPanel>
+          <h2 className="ct-title" style={{ fontSize: "1.25rem", marginBottom: "16px" }}>Supportverktøy</h2>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <KeyValuePair label="Siste feilside" value={user.mostUsedPages[0]?.page || "Ikke registrert"} />
+            <KeyValuePair label="Feiltype" value={user.supportFlag} />
+            <KeyValuePair label="Anbefalt hjelp" value="Bruk aktivitetslogg og mest brukte sider for å feilsøke." />
+            <KeyValuePair label="Kontakt" value="Send melding / opprett supportsak" />
+          </div>
+        </ContentPanel>
+
+        <ContentPanel>
+          <h2 className="ct-title" style={{ fontSize: "1.25rem", marginBottom: "16px" }}>Aktivitetslogg</h2>
+          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            {user.activityLog.map((entry, index) => (
+              <li key={`${entry}-${index}`} style={{ display: "flex", gap: "12px", padding: "8px 0", borderBottom: "1px solid var(--ct-border)", fontSize: "0.85rem" }}>
+                <b style={{ color: "var(--ct-brand-primary)", minWidth: "50px" }}>{index === 0 ? "Siste" : `#${index + 1}`}</b>
+                <span style={{ color: "var(--ct-text)" }}>{entry}</span>
+              </li>
+            ))}
+          </ul>
+        </ContentPanel>
+      </div>
+    </div>
+  );
+}
+
+function KeyValuePair({ label, value }: { label: string; value: string }) {
+  return (
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", padding: "8px 0", borderBottom: "1px solid var(--ct-border)", gap: "16px" }}>
+      <span style={{ color: "var(--ct-text-soft)", fontSize: "0.88rem" }}>{label}</span>
+      <strong style={{ fontSize: "0.88rem", textAlign: "right", color: "var(--ct-text)" }}>{value}</strong>
     </div>
   );
 }
