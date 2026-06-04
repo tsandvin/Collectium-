@@ -1,0 +1,738 @@
+.frontpage {
+  width: 100%;
+  color: #10233f;
+}
+
+.section {
+  position: relative;
+  width: min(100%, 1480px);
+  margin: 0 auto 28px;
+  padding: clamp(18px, 2.4vw, 34px);
+  border: 1px solid rgba(47, 97, 153, 0.18);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 24px 60px rgba(25, 45, 84, 0.08);
+  overflow: hidden;
+}
+
+.section::after {
+  content: "________________ Collectium";
+  position: absolute;
+  right: 18px;
+  bottom: 10px;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  color: rgba(36, 75, 125, 0.48);
+  pointer-events: none;
+}
+
+.heroSection {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.72fr);
+  gap: clamp(20px, 3vw, 44px);
+  align-items: stretch;
+  min-height: 420px;
+  background:
+    radial-gradient(circle at top left, rgba(71, 122, 183, 0.16), transparent 34%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(236, 244, 253, 0.9));
+}
+
+.heroCopy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  padding: clamp(12px, 2vw, 26px);
+}
+
+.kicker {
+  margin: 0;
+  color: #315f96;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.heroCopy h1,
+.sectionHeader h2,
+.memberCopy h2 {
+  margin: 0;
+  max-width: 900px;
+  color: #0a1e38;
+  font-size: clamp(2rem, 4vw, 4.8rem);
+  line-height: 0.95;
+  letter-spacing: -0.065em;
+}
+
+.lead,
+.sectionHeader p,
+.memberCopy p {
+  margin: 0;
+  max-width: 760px;
+  color: #38506e;
+  font-size: clamp(1rem, 1.35vw, 1.24rem);
+  line-height: 1.65;
+}
+
+.heroActions,
+.objectActions,
+.objectToolbar,
+.groupSwitch,
+.segmentSwitch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.primaryButton,
+.secondaryButton,
+.ghostButton,
+.primaryButtonSmall,
+.secondaryButtonSmall,
+.textButton,
+.iconButton,
+.iconButtonStrong,
+.actionButton,
+.activeButton,
+.segmentButton,
+.segmentActive {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(41, 87, 144, 0.28);
+  padding: 0 18px;
+  color: inherit;
+  font-weight: 800;
+  font-size: 0.92rem;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.primaryButton,
+.primaryButtonSmall,
+.iconButtonStrong,
+.activeButton,
+.segmentActive {
+  color: #ffffff;
+  border-color: #215b9f;
+  background: linear-gradient(135deg, #1d5caa, #123c74);
+  box-shadow: 0 14px 30px rgba(28, 84, 154, 0.24);
+}
+
+.secondaryButton,
+.secondaryButtonSmall {
+  color: #143b68;
+  background: #ffffff;
+  box-shadow: 0 12px 24px rgba(35, 79, 130, 0.12);
+}
+
+.ghostButton,
+.actionButton,
+.segmentButton,
+.iconButton {
+  color: #244767;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.primaryButton:hover,
+.secondaryButton:hover,
+.ghostButton:hover,
+.primaryButtonSmall:hover,
+.secondaryButtonSmall:hover,
+.textButton:hover,
+.iconButton:hover,
+.iconButtonStrong:hover,
+.actionButton:hover,
+.activeButton:hover,
+.segmentButton:hover,
+.segmentActive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 34px rgba(25, 65, 120, 0.18);
+}
+
+.primaryButtonSmall,
+.secondaryButtonSmall {
+  min-height: 38px;
+  padding: 0 15px;
+  font-size: 0.86rem;
+}
+
+.textButton {
+  min-height: 36px;
+  width: fit-content;
+  color: #164f93;
+  background: rgba(235, 243, 253, 0.9);
+}
+
+.heroPanel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 22px;
+  min-height: 330px;
+  padding: clamp(20px, 3vw, 34px);
+  border: 1px solid rgba(47, 97, 153, 0.18);
+  border-radius: 26px;
+  background:
+    linear-gradient(145deg, rgba(10, 30, 56, 0.93), rgba(25, 65, 112, 0.88)),
+    radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.32), transparent 30%);
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.heroPanel::before {
+  content: "";
+  position: absolute;
+  inset: auto -60px -80px auto;
+  width: 260px;
+  height: 260px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 50%;
+}
+
+.collectiumMark {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 118px;
+  height: 118px;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.heroStatsGrid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.heroStatsGrid div {
+  min-height: 112px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.heroStatsGrid span,
+.heroStatsGrid small {
+  display: block;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.76rem;
+}
+
+.heroStatsGrid strong {
+  display: block;
+  margin: 8px 0 4px;
+  color: #ffffff;
+  font-size: clamp(1.2rem, 2vw, 2rem);
+}
+
+.sectionHeader {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.sectionHeader h2,
+.memberCopy h2 {
+  font-size: clamp(1.8rem, 3vw, 3.5rem);
+}
+
+.objectExplorer {
+  background:
+    radial-gradient(circle at top right, rgba(193, 152, 78, 0.16), transparent 28%),
+    rgba(255, 255, 255, 0.9);
+}
+
+.objectToolbar {
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.objectStage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.32fr);
+  gap: 18px;
+}
+
+.objectCard {
+  display: grid;
+  grid-template-columns: minmax(230px, 0.34fr) minmax(0, 1fr);
+  gap: 18px;
+  min-height: 520px;
+  padding: 16px;
+  border: 1px solid rgba(47, 97, 153, 0.16);
+  border-radius: 28px;
+  background: rgba(248, 251, 255, 0.94);
+}
+
+.objectImage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 430px;
+  padding: 22px;
+  border-radius: 24px;
+  overflow: hidden;
+  color: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+}
+
+.objectImage::before,
+.memberImage::before,
+.portrait::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 18px;
+}
+
+.objectImage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(120deg, transparent 0 30%, rgba(255, 255, 255, 0.18) 35%, transparent 42%),
+    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.24), transparent 22%);
+  animation: softShine 5.2s ease-in-out infinite;
+}
+
+.objectImage span,
+.objectImage strong,
+.objectImage small {
+  position: relative;
+  z-index: 1;
+}
+
+.objectImage span {
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+}
+
+.objectImage strong {
+  margin-top: 8px;
+  font-size: clamp(2.4rem, 5vw, 4.8rem);
+  line-height: 0.9;
+  letter-spacing: -0.08em;
+}
+
+.objectImage small {
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.blue {
+  background: linear-gradient(145deg, #113761, #2d73ba);
+}
+
+.gold {
+  background: linear-gradient(145deg, #5a3d16, #bd8b37);
+}
+
+.green {
+  background: linear-gradient(145deg, #163d35, #4c8d77);
+}
+
+.graphite {
+  background: linear-gradient(145deg, #101723, #53606e);
+}
+
+.objectContent {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.objectTitleRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.objectTitleRow h3,
+.collectionPreview h3,
+.historyCard h3,
+.dealerCard h3 {
+  margin: 4px 0 0;
+  color: #0c223e;
+  font-size: clamp(1.4rem, 2vw, 2.4rem);
+  line-height: 1.04;
+  letter-spacing: -0.045em;
+}
+
+.objectSubtitle {
+  margin: 7px 0 0;
+  color: #546b85;
+  font-weight: 700;
+}
+
+.rotationDots {
+  display: flex;
+  gap: 7px;
+  padding-top: 8px;
+}
+
+.dot,
+.dotActive {
+  width: 10px;
+  height: 10px;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.dot {
+  background: #c5d3e5;
+}
+
+.dotActive {
+  background: #1c5ca5;
+  transform: scale(1.3);
+}
+
+.metaLine {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.metaLine span {
+  min-height: 58px;
+  padding: 12px;
+  border: 1px solid rgba(42, 89, 145, 0.14);
+  border-radius: 16px;
+  background: #ffffff;
+  color: #48627e;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.objectActions {
+  padding: 10px;
+  border-radius: 18px;
+  background: rgba(232, 241, 253, 0.68);
+}
+
+.segmentPanel,
+.collectionPreview,
+.historyCard,
+.dealerCard {
+  position: relative;
+  border: 1px solid rgba(42, 89, 145, 0.16);
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 16px 34px rgba(25, 65, 120, 0.08);
+}
+
+.segmentPanel {
+  padding: 18px;
+}
+
+.segmentPanelHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 12px;
+  margin-bottom: 8px;
+}
+
+.segmentPanelHeader span {
+  color: #1f5d9d;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.segmentPanelHeader strong {
+  color: #0c223e;
+}
+
+.segmentPanel p,
+.collectionPreview p,
+.historyCard p,
+.dealerCard p {
+  margin: 0;
+  color: #405a78;
+  line-height: 1.62;
+}
+
+.specGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.specGrid div {
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(242, 247, 253, 0.94);
+}
+
+.specGrid span {
+  display: block;
+  color: #667c96;
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.specGrid strong {
+  display: block;
+  margin-top: 5px;
+  color: #0c223e;
+  font-size: 0.9rem;
+}
+
+.collectionPreview {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px;
+}
+
+.collectionMiniList {
+  display: grid;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.collectionMiniList span {
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(239, 245, 252, 0.98);
+  color: #294967;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.historyGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.historyGrid .sectionHeader {
+  grid-column: 1 / -1;
+}
+
+.historyCard {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.34fr) minmax(0, 1fr);
+  gap: 18px;
+  padding: 18px;
+}
+
+.portrait {
+  position: relative;
+  display: grid;
+  place-items: end center;
+  min-height: 260px;
+  padding: 18px;
+  border-radius: 20px;
+  color: #ffffff;
+  font-weight: 900;
+  text-align: center;
+  overflow: hidden;
+}
+
+.oscarPortrait {
+  background: linear-gradient(145deg, #1d3555, #92703a);
+}
+
+.karlPortrait {
+  background: linear-gradient(145deg, #231a15, #8b6034);
+}
+
+.dealerSection {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(239, 247, 244, 0.86));
+}
+
+.dealerGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.dealerCard {
+  padding: clamp(20px, 2.5vw, 32px);
+}
+
+.dealerCard h3 {
+  margin-bottom: 12px;
+}
+
+.dealerCard a {
+  margin-top: 18px;
+}
+
+.memberCta {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.42fr) minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 44px);
+  align-items: center;
+  min-height: 440px;
+  background:
+    radial-gradient(circle at left center, rgba(36, 88, 156, 0.2), transparent 36%),
+    linear-gradient(135deg, #f8fbff, #eef5fc);
+}
+
+.memberImage {
+  position: relative;
+  min-height: 350px;
+  border-radius: 26px;
+  background: linear-gradient(145deg, #263d5a, #d7c8a6);
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+}
+
+.albumStack,
+.noteCard,
+.coinTray {
+  position: absolute;
+  border-radius: 18px;
+  box-shadow: 0 18px 34px rgba(15, 34, 58, 0.22);
+}
+
+.albumStack {
+  left: 28px;
+  bottom: 44px;
+  width: 56%;
+  height: 48%;
+  background: linear-gradient(135deg, #fff7e5, #c9d8e8);
+  transform: rotate(-5deg);
+}
+
+.noteCard {
+  right: 32px;
+  top: 42px;
+  width: 44%;
+  min-height: 96px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #29425d;
+  font-weight: 900;
+  transform: rotate(4deg);
+}
+
+.coinTray {
+  right: 30px;
+  bottom: 52px;
+  padding: 14px 16px;
+  background: #17385f;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.memberCopy {
+  display: grid;
+  gap: 16px;
+}
+
+@keyframes softShine {
+  0%, 100% {
+    opacity: 0.55;
+    transform: translateX(-8%);
+  }
+  50% {
+    opacity: 0.95;
+    transform: translateX(8%);
+  }
+}
+
+@media (max-width: 1100px) {
+  .heroSection,
+  .objectStage,
+  .memberCta {
+    grid-template-columns: 1fr;
+  }
+
+  .objectCard {
+    grid-template-columns: 1fr;
+  }
+
+  .objectImage {
+    min-height: 280px;
+  }
+
+  .historyGrid,
+  .dealerGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .section {
+    margin-bottom: 16px;
+    padding: 16px;
+    border-radius: 20px;
+  }
+
+  .heroSection {
+    min-height: auto;
+  }
+
+  .heroStatsGrid,
+  .metaLine,
+  .specGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .historyCard {
+    grid-template-columns: 1fr;
+  }
+
+  .portrait,
+  .memberImage {
+    min-height: 240px;
+  }
+
+  .objectToolbar {
+    align-items: stretch;
+  }
+
+  .groupSwitch,
+  .segmentSwitch,
+  .heroActions,
+  .objectActions {
+    width: 100%;
+  }
+
+  .primaryButton,
+  .secondaryButton,
+  .ghostButton,
+  .iconButton,
+  .iconButtonStrong,
+  .actionButton,
+  .activeButton,
+  .segmentButton,
+  .segmentActive {
+    flex: 1 1 100%;
+  }
+
+  .objectTitleRow {
+    flex-direction: column;
+  }
+}
