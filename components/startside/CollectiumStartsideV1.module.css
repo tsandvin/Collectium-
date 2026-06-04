@@ -1,0 +1,343 @@
+.pageShell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  background: #eef3f8;
+  color: #102033;
+}
+
+.sideMenu {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 18px 14px;
+  background: #0d2238;
+  color: #f8fbff;
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.brandBlock {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 8px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.brandBlock strong,
+.brandBlock span {
+  display: block;
+}
+
+.brandBlock span {
+  color: rgba(248, 251, 255, 0.68);
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.brandMark {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.navList {
+  display: grid;
+  gap: 7px;
+  margin-top: 18px;
+}
+
+.navItem {
+  display: grid;
+  gap: 3px;
+  padding: 11px 10px;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 14px;
+  border: 1px solid transparent;
+}
+
+.navItem:hover,
+.navItem:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
+  outline: none;
+}
+
+.navItem span {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.navItem small {
+  color: rgba(248, 251, 255, 0.58);
+  font-size: 11px;
+}
+
+.contentArea {
+  padding: 22px;
+  display: grid;
+  gap: 18px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(39, 84, 130, 0.16);
+  border-radius: 22px;
+  box-shadow: 0 18px 45px rgba(23, 49, 78, 0.08);
+}
+
+.kicker {
+  display: block;
+  color: #436986;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: clamp(26px, 4vw, 44px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.authActions,
+.heroActions,
+.loginGrid {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.primaryButton,
+.secondaryButton,
+.ghostButton {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0 18px;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.primaryButton {
+  border: 1px solid #245b92;
+  background: #245b92;
+  color: #ffffff;
+}
+
+.secondaryButton {
+  border: 1px solid rgba(36, 91, 146, 0.26);
+  background: #ffffff;
+  color: #174268;
+}
+
+.ghostButton {
+  border: 1px solid rgba(36, 91, 146, 0.18);
+  background: transparent;
+  color: #174268;
+}
+
+.heroPanel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.6fr);
+  gap: 18px;
+}
+
+.heroText,
+.loginPanel,
+.statusCard,
+.moduleCard {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid rgba(39, 84, 130, 0.16);
+  border-radius: 24px;
+  box-shadow: 0 18px 45px rgba(23, 49, 78, 0.08);
+}
+
+.heroText,
+.loginPanel {
+  padding: clamp(22px, 4vw, 42px);
+}
+
+.heroText h2 {
+  margin: 0;
+  max-width: 820px;
+  font-size: clamp(34px, 6vw, 72px);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+}
+
+.heroText p,
+.loginPanel p,
+.statusCard p,
+.moduleCard p {
+  color: #4b6074;
+  line-height: 1.6;
+}
+
+.heroText p {
+  max-width: 720px;
+  font-size: 17px;
+}
+
+.loginPanel h3,
+.moduleCard h3 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.loginGrid {
+  align-items: stretch;
+  margin-top: 20px;
+}
+
+.loginTile,
+.loginTileForm,
+.loginTileButton {
+  flex: 1 1 120px;
+}
+
+.loginTile,
+.loginTileButton {
+  min-height: 88px;
+  display: grid;
+  gap: 5px;
+  align-content: center;
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(39, 84, 130, 0.16);
+  background: #f8fbff;
+  color: #123555;
+  text-align: left;
+  text-decoration: none;
+}
+
+.loginTileButton {
+  width: 100%;
+  font: inherit;
+  cursor: pointer;
+}
+
+.loginTile span,
+.loginTileButton span {
+  color: #62788b;
+  font-size: 12px;
+}
+
+.statusGrid,
+.moduleGrid {
+  display: grid;
+  gap: 14px;
+}
+
+.statusGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.moduleGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.statusCard,
+.moduleCard {
+  padding: 18px;
+}
+
+.statusCard span {
+  color: #436986;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.statusCard strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 24px;
+}
+
+.moduleCard {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.moduleCard a {
+  align-self: flex-start;
+  border-radius: 999px;
+  padding: 9px 14px;
+  border: 1px solid rgba(36, 91, 146, 0.22);
+  color: #174268;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+@media (max-width: 1100px) {
+  .pageShell {
+    grid-template-columns: 1fr;
+  }
+
+  .sideMenu {
+    position: static;
+    height: auto;
+  }
+
+  .navList {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .heroPanel,
+  .statusGrid,
+  .moduleGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 719px) {
+  .contentArea {
+    padding: 12px;
+  }
+
+  .topbar,
+  .moduleCard {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .navList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .authActions,
+  .heroActions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .primaryButton,
+  .secondaryButton,
+  .ghostButton {
+    width: 100%;
+  }
+}
