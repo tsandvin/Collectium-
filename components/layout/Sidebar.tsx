@@ -9,6 +9,7 @@ type NavItem = {
 
 const NAV: ReadonlyArray<NavItem> = [
   { href: "/", label: "Forside", icon: "ti-home", active: true },
+  { href: "/startside", label: "Startside", icon: "ti-layout-dashboard" },
   { href: "/katalog", label: "Katalog", icon: "ti-archive" },
   { href: "/samling", label: "Min samling", icon: "ti-bookmark" },
   { href: "/auksjon", label: "Auksjon", icon: "ti-gavel" },
