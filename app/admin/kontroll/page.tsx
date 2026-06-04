@@ -46,15 +46,14 @@
  * CT-FILE-ADMIN-CONTROL-PAGE-0001 / CHANGE-2026-06-02-0001
  */
 
+import CollectiumAppShell from '@/components/app/CollectiumAppShell';
 import { AdminControlTabs } from '@/components/collectium/admin/AdminControlTabs';
-import { CollectiumMobileNavigation } from '@/components/collectium/admin/CollectiumMobileNavigation';
 import '@/styles/collectium-admin-mobile-tabs.css';
 
 export default function AdminControlPage() {
   return (
-    <main className="ct-admin-page">
+    <CollectiumAppShell page="admin" adminModule="control">
       <AdminControlTabs />
-      <CollectiumMobileNavigation role="admin" activeHref="/admin/kontroll" />
-    </main>
+    </CollectiumAppShell>
   );
 }

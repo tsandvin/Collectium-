@@ -39,6 +39,7 @@
 
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import { type CollectiumSkin, type ViewportMode, normalizeSkin, templateForSkin, applyTheme, DEFAULT_SKIN } from "../../app/lib/theme";
 import AdminDealersClient from "../admin/AdminDealersClient";
 import AdminSettingsClient from "../admin/AdminSettingsClient";
 import AdminUsersClient from "../admin/AdminUsersClient";
@@ -55,14 +56,15 @@ type Session = {
   createdAt: string;
 };
 
-type AppPage = "minside" | "admin" | "catalog";
-type AdminModule = "dashboard" | "users" | "settings" | "customer" | "dealers";
+type AppPage = "minside" | "admin" | "catalog" | "samling" | "auksjon" | "forhandler";
+type AdminModule = "dashboard" | "users" | "settings" | "customer" | "dealers" | "control";
 type NotificationIconType = "object" | "collection" | "support" | "market" | "system" | "dealer" | "auction" | "user";
 
 type CollectiumAppShellProps = {
   page: AppPage;
   adminModule?: AdminModule;
   customerId?: string;
+  children?: ReactNode;
 };
 
 const mainMenu = [
@@ -79,6 +81,7 @@ const adminMenu = [
   { label: "Brukere og medlemskap", href: "/admin/brukere", module: "users" },
   { label: "Forhandlere", href: "/admin/forhandlere", module: "dealers" },
   { label: "Innstillinger", href: "/admin/innstillinger", module: "settings" },
+  { label: "Kontrollsenter", href: "/admin/kontroll", module: "control" },
 ];
 
 const notifications = [
@@ -186,56 +189,27 @@ function buildNotificationSections() {
 
 const notificationSections = buildNotificationSections();
 
-type CollectiumSkin = "signature-light" | "signature-dark" | "minimal-light" | "minimal-dark";
-
-const LOCKED_DEFAULT_SKIN: CollectiumSkin = "signature-light";
-
-function normalizeSkin(value: string | null | undefined): CollectiumSkin {
-  if (value === "signature-dark" || value === "museum") return "signature-dark";
-  if (value === "minimal-light" || value === "enkel") return "minimal-light";
-  if (value === "minimal-dark" || value === "finans") return "minimal-dark";
-  return "signature-light";
-}
-
 function applyCollectiumFront(skinValue: string | null | undefined) {
-  if (typeof document === "undefined") return;
-  const skin = normalizeSkin(skinValue);
-  const template = skin.startsWith("minimal") ? "enkel" : "collectium";
-  document.documentElement.setAttribute("data-template", template);
-  document.body.setAttribute("data-template", template);
-  document.documentElement.setAttribute("data-skin", skin);
-  document.body.setAttribute("data-skin", skin);
-  document.documentElement.setAttribute("data-collectium-front", "v4.1");
-  document.body.setAttribute("data-collectium-front", "v4.1");
-  document.documentElement.setAttribute("data-vp", document.documentElement.getAttribute("data-vp") || "pc");
-  try {
-    window.localStorage.setItem("collectium-skin", skin);
-    window.localStorage.setItem("collectium-template", template);
-    window.localStorage.setItem("ct-skin", skin);
-    window.localStorage.setItem("ct-template", template);
-    window.localStorage.removeItem("collectium.public.design");
-  } catch {
-    // ignore private mode / storage errors
-  }
+  applyTheme(skinValue);
 }
 
 function applyCollectiumDesign(template: string) {
-  applyCollectiumFront(template);
+  applyTheme(template);
 }
 
 
-export default function CollectiumAppShell({ page, adminModule = "dashboard", customerId }: CollectiumAppShellProps) {
+export default function CollectiumAppShell({ page, adminModule = "dashboard", customerId, children }: CollectiumAppShellProps) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [designOpen, setDesignOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
 
   useEffect(() => {
-    const savedSkin = window.localStorage.getItem("collectium-skin") || window.localStorage.getItem("ct-skin") || LOCKED_DEFAULT_SKIN;
-    applyCollectiumFront(savedSkin);
+    const savedSkin = window.localStorage.getItem("collectium-skin") || window.localStorage.getItem("ct-skin") || DEFAULT_SKIN;
+    applyTheme(savedSkin);
     const guard = window.setInterval(() => {
       const current = document.body.getAttribute("data-skin");
-      if (!current || document.body.getAttribute("data-collectium-front") !== "v4.1") applyCollectiumFront(window.localStorage.getItem("collectium-skin") || savedSkin);
+      if (!current || document.body.getAttribute("data-collectium-front") !== "v4.1") applyTheme(window.localStorage.getItem("collectium-skin") || savedSkin);
     }, 800);
     return () => window.clearInterval(guard);
   }, []);
@@ -347,7 +321,17 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
           <NotificationOverlay />
         </NotificationMenuPortal>
 
-        {isAdminPage ? <AdminContent module={adminModule} session={session} customerId={customerId} /> : page === "catalog" ? <CatalogWorkspaceClient /> : <MyPageContent session={session} />}
+        {isAdminPage ? (
+          <AdminContent module={adminModule} session={session} customerId={customerId}>
+            {children}
+          </AdminContent>
+        ) : page === "catalog" ? (
+          <CatalogWorkspaceClient />
+        ) : children ? (
+          children
+        ) : (
+          <MyPageContent session={session} />
+        )}
       </section>
     </main>
   );
@@ -356,6 +340,9 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
 function isActive(page: AppPage, href: string, adminModule: AdminModule) {
   if (page === "minside" && href === "/minside") return true;
   if (page === "catalog" && href === "/katalog") return true;
+  if (page === "samling" && href === "/samling") return true;
+  if (page === "auksjon" && href === "/auksjon") return true;
+  if (page === "forhandler" && href === "/forhandler") return true;
   if (page === "admin" && href === "/admin" && adminModule === "dashboard") return true;
   return false;
 }
@@ -603,11 +590,12 @@ function MyPageContent({ session }: { session: Session }) {
   );
 }
 
-function AdminContent({ module, session, customerId }: { module: AdminModule; session: Session; customerId?: string }) {
+function AdminContent({ module, session, customerId, children }: { module: AdminModule; session: Session; customerId?: string; children?: ReactNode }) {
   if (module === "users") return <AdminUsersClient />;
   if (module === "settings") return <AdminSettingsClient />;
   if (module === "customer") return <CustomerPresentationClient userId={customerId || "92121216"} />;
   if (module === "dealers") return <AdminDealersClient />;
+  if (module === "control") return children || null;
 
   return <AdminDashboard session={session} />;
 }

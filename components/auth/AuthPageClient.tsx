@@ -39,7 +39,8 @@
  */
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import PublicTopMenu, { type PublicSkin } from "../layout/PublicTopMenu";
+import { type CollectiumSkin, normalizeSkin, templateForSkin, getLegacyClass } from "../../app/lib/theme";
+import PublicTopMenu from "../layout/PublicTopMenu";
 import styles from "../landing/collectium-frontpage.module.css";
 
 type AuthMode = "login" | "register";
@@ -56,7 +57,7 @@ const planOptions = [
 ];
 
 export default function AuthPageClient({ mode }: AuthPageClientProps) {
-  const [skin, setSkin] = useState<PublicSkin>("collectium");
+  const [skin, setSkin] = useState<CollectiumSkin>("signature-light");
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -64,18 +65,16 @@ export default function AuthPageClient({ mode }: AuthPageClientProps) {
 
   useEffect(() => {
     try {
-      const savedSkin = window.localStorage.getItem("collectium.public.skin") as PublicSkin | null;
-      if (savedSkin && ["collectium", "enkel", "museum", "finans"].includes(savedSkin)) {
-        setSkin(savedSkin);
-      }
+      const rawSkin = window.localStorage.getItem("collectium-skin") || window.localStorage.getItem("ct-skin") || window.localStorage.getItem("collectium.public.skin");
+      setSkin(normalizeSkin(rawSkin));
     } catch {
       // localStorage is optional.
     }
   }, []);
 
   const logoSrc = useMemo(() => {
-    if (skin === "museum" || skin === "finans") return "/brand/collectium-logo-white.png";
-    if (skin === "enkel") return "/brand/collectium-logo-wide.png";
+    if (skin === "signature-dark" || skin === "minimal-dark") return "/brand/collectium-logo-white.png";
+    if (skin === "minimal-light") return "/brand/collectium-logo-wide.png";
     return "/brand/collectium-logo-dark.png";
   }, [skin]);
 
@@ -118,8 +117,9 @@ export default function AuthPageClient({ mode }: AuthPageClientProps) {
     }
   }
 
+  const legacyClass = getLegacyClass(skin);
   return (
-    <main className={`${styles.page} ${styles[skin]}`} data-skin={skin} data-template={skin}>
+    <main className={`${styles.page} ${styles[legacyClass]}`} data-skin={skin} data-template={templateForSkin(skin)}>
       <PublicTopMenu skin={skin} logoSrc={logoSrc} onSkinChange={setSkin} />
 
       <section className={styles.authShell}>

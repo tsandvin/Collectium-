@@ -39,9 +39,8 @@
  */
 
 import { useEffect, useState } from "react";
+import { type CollectiumSkin, normalizeSkin, templateForSkin } from "../../app/lib/theme";
 import styles from "../landing/collectium-frontpage.module.css";
-
-export type PublicSkin = "collectium" | "enkel" | "museum" | "finans";
 
 const publicLinks = [
   { label: "Katalog", href: "/katalog", featureKey: "catalog.view" },
@@ -54,19 +53,27 @@ const publicLinks = [
   { label: "Auksjon", href: "/auksjon", featureKey: "auction.view" },
 ];
 
-const skins: Array<{ key: PublicSkin; label: string; note: string }> = [
+const skins: Array<{ key: CollectiumSkin; label: string; note: string }> = [
   {
-    key: "collectium",
-    label: "Collectium",
+    key: "signature-light",
+    label: "Signature Lys",
     note: "8px hjørne, svak indre ramme og signaturhjørne",
   },
   {
-    key: "enkel",
-    label: "Samleren",
+    key: "signature-dark",
+    label: "Signature Mørk",
+    note: "grå/svart museumsflate",
+  },
+  {
+    key: "minimal-light",
+    label: "Minimal Lys",
     note: "minimal blå/hvit objekt- og relasjonspresentasjon",
   },
-  { key: "museum", label: "Museum", note: "grå/svart museumsflate" },
-  { key: "finans", label: "Finans", note: "mørk blå finansflate" },
+  {
+    key: "minimal-dark",
+    label: "Minimal Mørk",
+    note: "mørk blå finansflate",
+  },
 ];
 
 
@@ -113,9 +120,9 @@ function clampValue(value: unknown, min: number, max: number, fallback: number) 
 }
 
 type PublicTopMenuProps = {
-  skin: PublicSkin;
+  skin: CollectiumSkin;
   logoSrc: string;
-  onSkinChange: (skin: PublicSkin) => void;
+  onSkinChange: (skin: CollectiumSkin) => void;
 };
 
 export default function PublicTopMenu({
@@ -129,10 +136,9 @@ export default function PublicTopMenu({
 
   useEffect(() => {
     try {
-      const savedSkin = window.localStorage.getItem("collectium.public.skin") as PublicSkin | null;
-      if (savedSkin && skins.some((item) => item.key === savedSkin)) {
-        onSkinChange(savedSkin);
-      }
+      const rawSkin = window.localStorage.getItem("collectium-skin") || window.localStorage.getItem("ct-skin") || window.localStorage.getItem("collectium.public.skin");
+      const savedSkin = normalizeSkin(rawSkin);
+      onSkinChange(savedSkin);
       const saved = readSavedDesign();
       setDesign({
         bodySize: clampValue(saved.bodySize, 9, 17, defaultDesign.bodySize),
@@ -150,10 +156,16 @@ export default function PublicTopMenu({
   }, [onSkinChange]);
 
   useEffect(() => {
-    document.body.dataset.template = skin;
-    document.documentElement.dataset.template = skin;
+    const template = templateForSkin(skin);
+    document.body.dataset.template = template;
+    document.documentElement.dataset.template = template;
+    document.body.dataset.skin = skin;
+    document.documentElement.dataset.skin = skin;
     try {
-      window.localStorage.setItem("collectium.public.skin", skin);
+      window.localStorage.setItem("collectium-skin", skin);
+      window.localStorage.setItem("ct-skin", skin);
+      window.localStorage.setItem("collectium-template", template);
+      window.localStorage.setItem("ct-template", template);
     } catch {
       // localStorage is optional.
     }

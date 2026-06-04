@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./collectium-brand-tokens.css";
+import "./collectium-front-foundation.css";
+import "./collectium-shell-visibility-fix.css";
 
 export const metadata: Metadata = {
   title: "Collectium",

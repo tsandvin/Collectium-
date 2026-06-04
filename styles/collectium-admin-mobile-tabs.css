@@ -26,21 +26,21 @@
  */
 
 :root {
-  --ct-admin-bg: #eef3f7;
-  --ct-admin-panel: #ffffff;
-  --ct-admin-panel-soft: #f8fbfd;
-  --ct-admin-line: rgba(43, 82, 117, 0.18);
-  --ct-admin-ink: #13283a;
-  --ct-admin-muted: #6f7f8e;
-  --ct-admin-blue: #255d8c;
-  --ct-admin-blue-dark: #123a5a;
-  --ct-admin-ok: #26734d;
-  --ct-admin-warning: #a77a18;
-  --ct-admin-error: #a33c32;
-  --ct-admin-critical: #651b21;
-  --ct-admin-info: #2f628f;
-  --ct-admin-radius: 22px;
-  --ct-admin-shadow: 0 18px 45px rgba(28, 55, 77, 0.12);
+  --ct-admin-bg: var(--ct-page-bg, #eef3f7);
+  --ct-admin-panel: var(--ct-panel-solid, #ffffff);
+  --ct-admin-panel-soft: var(--ct-panel-bg, #f8fbfd);
+  --ct-admin-line: var(--ct-border, rgba(43, 82, 117, 0.18));
+  --ct-admin-ink: var(--ct-text, #13283a);
+  --ct-admin-muted: var(--ct-text-muted, #6f7f8e);
+  --ct-admin-blue: var(--ct-accent, #255d8c);
+  --ct-admin-blue-dark: var(--ct-accent-dark, #123a5a);
+  --ct-admin-ok: var(--ct-status-ok, #26734d);
+  --ct-admin-warning: var(--ct-status-pending, #a77a18);
+  --ct-admin-error: var(--ct-status-rejected, #a33c32);
+  --ct-admin-critical: var(--ct-status-rejected, #651b21);
+  --ct-admin-info: var(--ct-accent, #2f628f);
+  --ct-admin-radius: var(--ct-radius, 22px);
+  --ct-admin-shadow: var(--ct-shadow, 0 18px 45px rgba(28, 55, 77, 0.12));
   --ct-mobile-footer-height: 78px;
 }
 

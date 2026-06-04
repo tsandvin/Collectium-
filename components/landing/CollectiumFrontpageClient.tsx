@@ -49,10 +49,11 @@
  */
 
 import { useEffect, useMemo, useState } from "react";
-import PublicTopMenu, { type PublicSkin } from "../layout/PublicTopMenu";
+import { type CollectiumSkin, normalizeSkin, templateForSkin, getLegacyClass } from "../../app/lib/theme";
+import PublicTopMenu from "../layout/PublicTopMenu";
 import styles from "./collectium-frontpage.module.css";
 
-type Skin = PublicSkin;
+type Skin = CollectiumSkin;
 type BillingMode = "month" | "year";
 type ObjectSegment = "samler" | "historie" | "finans";
 type ObjectFamily = "banknote" | "coin";
@@ -292,7 +293,7 @@ function formatPrice(plan: (typeof plans)[number], billingMode: BillingMode) {
 }
 
 export default function CollectiumFrontpageClient() {
-  const [skin, setSkin] = useState<Skin>("collectium");
+  const [skin, setSkin] = useState<CollectiumSkin>("signature-light");
   const [billingMode, setBillingMode] = useState<BillingMode>("year");
   const [objectSegment, setObjectSegment] = useState<ObjectSegment>("samler");
   const [objectFamily, setObjectFamily] = useState<ObjectFamily>("banknote");
@@ -312,14 +313,15 @@ export default function CollectiumFrontpageClient() {
   const selectedFeature = featureGroups[activeFeatureIndex];
 
   const logoSrc = useMemo(() => {
-    if (skin === "museum" || skin === "finans")
+    if (skin === "signature-dark" || skin === "minimal-dark")
       return "/brand/collectium-logo-white.png";
-    if (skin === "enkel") return "/brand/collectium-logo-wide.png";
+    if (skin === "minimal-light") return "/brand/collectium-logo-wide.png";
     return "/brand/collectium-logo-dark.png";
   }, [skin]);
 
+  const legacyClass = getLegacyClass(skin);
   return (
-    <main className={`${styles.page} ${styles[skin]}`} data-skin={skin} data-template={skin}>
+    <main className={`${styles.page} ${styles[legacyClass]}`} data-skin={skin} data-template={templateForSkin(skin)}>
       <PublicTopMenu skin={skin} logoSrc={logoSrc} onSkinChange={setSkin} />
 
       <section className={styles.hero}>
