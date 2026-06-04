@@ -1,56 +1,35 @@
-# Collectium Developer Builder v1.5
+# Collectium Admin brukere v24.1
 
-## Nytt i v1.5
-- Ny knapp: **Se frontdesign**
-- Frontdesign-visning som viser:
-  - alle manifest-sider
-  - lokale `page`, `component` og `style` filer fra valgt mappe
-- Valgt lokal frontfil blir aktiv fil for preflight/deploy.
-- Ny knapp: **Deploy**
-- Deploy med dobbelbekreftelse:
-  1. **AI-sjekk / preflight**
-  2. **Deploy mock/staging**
-- Preflight sjekker blant annet:
-  - tom fil
-  - merge conflicts
-  - farlig SQL
-  - låste Collectium-kjernefiler
-  - mulig usikker API/DB-skriving
-  - manglende `object_group` ved `source_key`
-- Deploy er **mock/staging** i denne versjonen. Den skriver ikke live filer.
-- Live deploy må senere kobles til godkjent serverroute, audit-logg, tilgang og route whitelist.
+Denne pakken inneholder en ny kontrollert admin-brukerside som følger Collectium-reglene:
 
-## Viktig
-Browseren kan ikke lese en Windows-mappe automatisk. Trykk **Last inn lokal mappe** og velg prosjektmappen manuelt:
+- ingen side-eid visuell styling
+- ingen CSS module
+- ingen lokal bakgrunn, farge, shadow, radius eller paneldesign
+- bruker globale Collectium-komponenter
+- bruker API/backend som datakilde
+- DB 8.4 feature/action-route er dokumentert i filheader
 
-```text
-C:\Users\Bruker\Pictures\Next,js react front og bac-end UIUX -DB 8.3\Datbase Next.js react
+## Filer
+
+```txt
+components/admin/AdminUsersClient.tsx
+app/admin/brukere/page.tsx
+docs/CHANGE-2026-06-04-admin-users-v24.1.md
 ```
 
-## Start
+## Installer
+
+Kopier filene inn i prosjektet med samme stier.
+
+## Kjør
 
 ```powershell
-.\Start-Collectium-Canvas.cmd
+npm.cmd run build
 ```
 
-## Manuell start
+Ikke bruk `npm run build` i PowerShell hvis execution policy blokkerer npm.ps1. Bruk `npm.cmd run build`.
 
-```powershell
-npm.cmd install
-npm.cmd run dev
-```
 
-Åpne:
-
-```text
-http://localhost:3000
-```
-
-## API-er
-
-```text
-/api/control/manifest
-/api/control/search?q=catalog
-/api/deploy/preflight
-/api/deploy/mock
-```
+## v24.1 fix
+- Endret UI-komponentimporter fra named imports til default imports, fordi eksisterende globale Collectium UI-komponenter eksporteres som default.
+- Ingen design-, DB- eller route-endringer.
