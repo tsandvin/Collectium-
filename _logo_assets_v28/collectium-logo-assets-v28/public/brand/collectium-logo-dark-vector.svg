@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="420" viewBox="0 0 1800 420" role="img" aria-label="Collectium dark">
+  <title>Collectium</title>
+  <g transform="translate(40 28) scale(.7)" fill="none" stroke="#061f39" stroke-linecap="butt" stroke-linejoin="miter">
+    <path d="M256 28a228 228 0 1 0 0 456" stroke-width="52"/>
+    <path d="M256 28a228 228 0 0 1 0 456" stroke-width="52"/>
+    <path d="M256 112a144 144 0 1 0 104 244" stroke-width="52"/>
+    <path d="M360 156a144 144 0 0 0-104-44" stroke-width="52"/>
+  </g>
+  <text x="430" y="270" fill="#061f39" font-family="Inter, Arial, Helvetica, sans-serif" font-size="214" font-weight="800" letter-spacing="-8">Collectium</text>
+</svg>
