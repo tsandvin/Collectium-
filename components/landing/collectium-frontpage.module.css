@@ -126,26 +126,26 @@
 }
 
 .finans {
-  --ct-bg: #031221;
-  --ct-bg-2: #092c4a;
-  --ct-panel: rgba(4, 25, 43, 0.76);
-  --ct-panel-strong: rgba(5, 24, 40, 0.96);
-  --ct-border: rgba(105, 158, 219, 0.22);
-  --ct-line: rgba(105, 158, 219, 0.15);
-  --ct-text: #f5faff;
-  --ct-muted: #acc3d6;
-  --ct-accent: #5aa4f1;
+  --ct-bg: #0a1929;
+  --ct-bg-2: #1a3a5c;
+  --ct-panel: rgba(16, 42, 68, 0.88);
+  --ct-panel-strong: rgba(12, 35, 58, 0.96);
+  --ct-border: rgba(74, 122, 158, 0.32);
+  --ct-line: rgba(74, 122, 158, 0.2);
+  --ct-text: #f0f7ff;
+  --ct-muted: #a8c4dc;
+  --ct-accent: #3d7eab;
   --ct-accent-2: #d6a641;
-  --ct-accent-soft: rgba(90, 164, 241, 0.14);
-  --ct-shadow: 0 24px 82px rgba(0, 0, 0, 0.36);
+  --ct-accent-soft: rgba(61, 126, 171, 0.18);
+  --ct-shadow: 0 24px 82px rgba(0, 0, 0, 0.4);
   --ct-radius: 10px;
   --ct-card-radius: 8px;
   --ct-card-bg: var(--ct-panel);
-  --ct-card-border: rgba(90, 150, 220, 0.24);
-  --ct-inner-border: rgba(255, 255, 255, 0.08);
-  --ct-signature-line: rgba(150, 165, 180, 0.24);
-  --ct-signature-line-soft: rgba(150, 165, 180, 0.04);
-  --ct-signature-text: rgba(170, 180, 190, 0.4);
+  --ct-card-border: rgba(74, 122, 158, 0.28);
+  --ct-inner-border: rgba(255, 255, 255, 0.1);
+  --ct-signature-line: rgba(150, 175, 200, 0.28);
+  --ct-signature-line-soft: rgba(150, 175, 200, 0.06);
+  --ct-signature-text: rgba(170, 190, 210, 0.45);
   --ct-font:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
