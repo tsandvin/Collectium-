@@ -1,0 +1,824 @@
+.frontpage {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(75, 130, 190, 0.12), transparent 30%),
+    linear-gradient(135deg, #f8fbff 0%, #eef4fb 60%, #e9f1fa 100%);
+  color: #071f3c;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 14px clamp(18px, 3vw, 48px);
+  border-bottom: 1px solid rgba(47, 97, 153, 0.18);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(18px);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #071f3c;
+}
+
+.logoMark {
+  width: 22px;
+  height: 22px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(7, 31, 60, 0.38);
+  border-radius: 50%;
+  font-weight: 900;
+  font-size: 0.72rem;
+}
+
+.nav,
+.topActions,
+.actionRow,
+.heroChips,
+.explorerToolbar,
+.heroCardControls,
+.objectLinks,
+.segmentButtons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav {
+  justify-content: center;
+}
+
+.nav a {
+  color: #1d3650;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.section {
+  position: relative;
+  width: min(calc(100% - 32px), 1520px);
+  margin: 0 auto 30px;
+  padding: clamp(18px, 2.5vw, 34px);
+  border: 1px solid rgba(47, 97, 153, 0.18);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 24px 60px rgba(25, 45, 84, 0.08);
+}
+
+.signature {
+  position: absolute;
+  right: 14px;
+  bottom: 10px;
+  font-size: 8px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: rgba(36, 75, 125, 0.44);
+  pointer-events: none;
+}
+
+.kicker {
+  margin: 0;
+  color: #0d5da6;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(420px, 0.62fr);
+  gap: clamp(22px, 4vw, 70px);
+  align-items: center;
+  min-height: 560px;
+  margin-top: 28px;
+  background:
+    radial-gradient(circle at top right, rgba(29, 92, 170, 0.12), transparent 30%),
+    rgba(255, 255, 255, 0.94);
+}
+
+.heroCopy {
+  display: grid;
+  gap: 18px;
+}
+
+.hero h1,
+.sectionHeader h2,
+.membershipHeader h2,
+.dealerText h2,
+.shareSection h2,
+.memberCta h2,
+.signupSection h2 {
+  margin: 0;
+  color: #061f3a;
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+}
+
+.hero h1 {
+  font-size: clamp(3.2rem, 7vw, 7.6rem);
+}
+
+.hero h1 span {
+  color: #1b74b7;
+  display: block;
+}
+
+.sectionHeader h2,
+.membershipHeader h2,
+.dealerText h2,
+.shareSection h2,
+.memberCta h2,
+.signupSection h2 {
+  font-size: clamp(2rem, 4vw, 4.35rem);
+}
+
+.lead,
+.sectionHeader p,
+.featureCard p,
+.functionDetail p,
+.priceCard p,
+.activityCard p,
+.objectContent p,
+.segmentPanel p,
+.relationCard p,
+.dealerText p,
+.shareSection p,
+.memberCta p,
+.signupSection p {
+  margin: 0;
+  color: #3d5875;
+  line-height: 1.58;
+}
+
+.lead {
+  max-width: 720px;
+  font-size: clamp(1rem, 1.4vw, 1.22rem);
+}
+
+.primaryButton,
+.secondaryButton,
+.ghostButton,
+.primaryButtonSmall,
+.secondaryButtonSmall,
+.priceButton,
+.functionButton,
+.functionActive,
+.segmentButton,
+.segmentActive {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid rgba(41, 87, 144, 0.28);
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 900;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.primaryButton,
+.primaryButtonSmall,
+.priceButton,
+.functionActive,
+.segmentActive {
+  color: #fff;
+  border-color: #1d5caa;
+  background: linear-gradient(135deg, #1d5caa, #123c74);
+  box-shadow: 0 14px 30px rgba(28, 84, 154, 0.2);
+}
+
+.secondaryButton,
+.secondaryButtonSmall,
+.ghostButton,
+.functionButton,
+.segmentButton {
+  color: #173a61;
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.primaryButtonSmall,
+.secondaryButtonSmall,
+.priceButton,
+.segmentButton,
+.segmentActive {
+  min-height: 36px;
+  padding: 0 14px;
+  font-size: 0.82rem;
+}
+
+.primaryButton:hover,
+.secondaryButton:hover,
+.ghostButton:hover,
+.primaryButtonSmall:hover,
+.secondaryButtonSmall:hover,
+.priceButton:hover,
+.functionButton:hover,
+.functionActive:hover,
+.segmentButton:hover,
+.segmentActive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(25, 65, 120, 0.16);
+}
+
+.heroChips span,
+.objectLinks span,
+.shareOptions span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid rgba(47, 97, 153, 0.2);
+  border-radius: 999px;
+  color: #1b4b7e;
+  background: rgba(236, 245, 254, 0.88);
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+.heroCard,
+.featureCard,
+.functionDetail,
+.priceCard,
+.activityCard,
+.objectCard,
+.segmentPanel,
+.specGrid div,
+.relationCard {
+  position: relative;
+  border: 1px solid rgba(42, 89, 145, 0.16);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 14px 30px rgba(25, 65, 120, 0.08);
+}
+
+.heroCard {
+  padding: clamp(16px, 2vw, 24px);
+  display: grid;
+  gap: 16px;
+}
+
+.heroCardControls {
+  justify-content: space-between;
+}
+
+.segmentTabs {
+  display: inline-flex;
+  gap: 6px;
+  padding: 6px;
+  border: 1px solid rgba(47, 97, 153, 0.22);
+  border-radius: 999px;
+  background: #f4f9ff;
+}
+
+.segmentTabs span {
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: #123c61;
+  font-size: 0.75rem;
+  font-weight: 900;
+  background: #fff;
+}
+
+.heroObjectPreview {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+  padding: 18px;
+  border: 1px solid rgba(47, 97, 153, 0.16);
+  border-radius: 18px;
+}
+
+.previewVisual {
+  height: 150px;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.heroObjectPreview h2,
+.objectContent h3,
+.relationCard h3,
+.functionDetail h3,
+.priceCard h3,
+.featureCard h3 {
+  margin: 0;
+  color: #071f3c;
+  font-size: clamp(1.25rem, 2vw, 2rem);
+  line-height: 1.08;
+}
+
+.heroObjectPreview strong {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 1.35rem;
+}
+
+.heroObjectPreview em {
+  margin-left: 14px;
+  color: #15985e;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.heroNote {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #eff7ff;
+  color: #1b4b7e;
+  font-weight: 800;
+}
+
+.sectionHeader,
+.membershipHeader {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.featureCard,
+.activityCard,
+.priceCard,
+.functionDetail {
+  padding: 18px;
+}
+
+.featureCard h3 {
+  margin-bottom: 10px;
+}
+
+.functionsSection {
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.functionLayout {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.36fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.functionList {
+  display: grid;
+  gap: 10px;
+}
+
+.functionButton,
+.functionActive {
+  justify-content: flex-start;
+  width: 100%;
+  border-radius: 14px;
+}
+
+.functionDetail {
+  min-height: 310px;
+  display: grid;
+  align-content: center;
+  gap: 14px;
+  padding: clamp(20px, 4vw, 52px);
+}
+
+.membershipHeader {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+}
+
+.billingToggle {
+  display: inline-flex;
+  gap: 6px;
+  padding: 6px;
+  border: 1px solid rgba(47, 97, 153, 0.2);
+  border-radius: 999px;
+  background: #fff;
+}
+
+.billingToggle button {
+  min-height: 34px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 16px;
+  background: transparent;
+  color: #173a61;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.billingToggle .toggleActive {
+  background: #eff7ff;
+  box-shadow: inset 0 0 0 1px rgba(47, 97, 153, 0.18);
+}
+
+.priceGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.priceCard {
+  display: flex;
+  flex-direction: column;
+  min-height: 340px;
+}
+
+.featuredPrice {
+  border-color: #1d74be;
+  box-shadow: 0 24px 60px rgba(29, 116, 190, 0.14);
+}
+
+.planBadge {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  color: #071f3c;
+  font-size: 0.62rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.priceCard strong {
+  margin-top: 16px;
+  color: #071f3c;
+  font-size: 1.18rem;
+}
+
+.priceCard b {
+  margin-top: 8px;
+  color: #071f3c;
+  font-size: 0.95rem;
+}
+
+.priceCard ul {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0 22px;
+  padding-left: 18px;
+  color: #31526f;
+  font-size: 0.83rem;
+}
+
+.priceCard li::marker {
+  color: #1d74be;
+}
+
+.priceButton {
+  margin-top: auto;
+}
+
+.activityGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.activityCard span {
+  color: #49647e;
+  font-size: 0.78rem;
+}
+
+.activityCard strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 1.1rem;
+}
+
+.activityCard em {
+  color: #0a9b62;
+  font-style: normal;
+  font-weight: 950;
+}
+
+.objectExplorer {
+  background:
+    radial-gradient(circle at top right, rgba(193, 152, 78, 0.14), transparent 28%),
+    rgba(255, 255, 255, 0.92);
+}
+
+.explorerToolbar {
+  margin-bottom: 14px;
+}
+
+.objectCard {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.36fr) minmax(0, 1fr);
+  gap: 16px;
+  padding: 14px;
+}
+
+.objectVisual {
+  min-height: 350px;
+  border-radius: 18px;
+  overflow: hidden;
+  animation: fadeSlide 420ms ease;
+}
+
+.svgVisual {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.objectContent {
+  display: grid;
+  gap: 12px;
+  animation: fadeSlide 420ms ease;
+}
+
+.objectTitleRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.dots {
+  display: flex;
+  gap: 7px;
+  padding-top: 5px;
+}
+
+.dot,
+.dotActive {
+  width: 10px;
+  height: 10px;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.dot {
+  background: #c5d3e5;
+}
+
+.dotActive {
+  background: #1d5caa;
+  transform: scale(1.25);
+}
+
+.segmentButtons {
+  padding: 10px;
+  border-radius: 18px;
+  background: #edf6ff;
+}
+
+.segmentPanel {
+  padding: 16px;
+}
+
+.segmentPanel span,
+.specGrid span {
+  display: block;
+  color: #1f5d9d;
+  font-size: 0.74rem;
+  font-weight: 920;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.segmentPanel strong,
+.specGrid strong {
+  display: block;
+  margin-top: 6px;
+  color: #071f3c;
+}
+
+.segmentPanel p {
+  margin-top: 10px;
+}
+
+.specGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.specGrid div {
+  padding: 12px;
+  background: #f6faff;
+}
+
+.relationGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.relationCard {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.38fr) minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px;
+  align-items: center;
+}
+
+.portrait {
+  height: 285px;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.dealerSection,
+.memberCta,
+.shareSection,
+.signupSection {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.42fr) minmax(0, 1fr);
+  gap: clamp(18px, 3vw, 36px);
+  align-items: center;
+}
+
+.dealerVisual,
+.memberVisual {
+  min-height: 320px;
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+.dealerText,
+.shareSection > div:first-child,
+.memberCta > div:last-child,
+.signupSection > div:first-child {
+  display: grid;
+  gap: 14px;
+}
+
+.shareOptions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.signupSection {
+  grid-template-columns: minmax(0, 0.6fr) minmax(320px, 0.4fr);
+}
+
+.signupForm {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.signupForm input {
+  flex: 1;
+  min-height: 44px;
+  border: 1px solid rgba(47, 97, 153, 0.22);
+  border-radius: 14px;
+  padding: 0 16px;
+  color: #173a61;
+  background: #fff;
+}
+
+.offerGrid {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.offerGrid span {
+  padding: 16px;
+  border: 1px solid rgba(47, 97, 153, 0.22);
+  border-radius: 14px;
+  background: #e9f4fd;
+  font-weight: 900;
+}
+
+.footer {
+  width: min(calc(100% - 32px), 1520px);
+  margin: 0 auto;
+  padding: 24px 0 40px;
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  color: #071f3c;
+  font-size: 0.88rem;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0.25;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1280px) {
+  .featureGrid,
+  .priceGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .activityGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .hero,
+  .functionLayout,
+  .objectCard,
+  .relationGrid,
+  .dealerSection,
+  .memberCta,
+  .shareSection,
+  .signupSection {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .topbar {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .nav,
+  .topActions {
+    justify-content: flex-start;
+  }
+
+  .heroObjectPreview,
+  .relationCard,
+  .specGrid,
+  .featureGrid,
+  .priceGrid,
+  .activityGrid,
+  .offerGrid,
+  .shareOptions {
+    grid-template-columns: 1fr;
+  }
+
+  .membershipHeader,
+  .objectTitleRow {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .signupForm {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primaryButton,
+  .secondaryButton,
+  .ghostButton,
+  .primaryButtonSmall,
+  .secondaryButtonSmall,
+  .priceButton,
+  .segmentButton,
+  .segmentActive {
+    width: 100%;
+  }
+
+  .footer {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 560px) {
+  .section {
+    width: min(calc(100% - 20px), 1520px);
+    padding: 14px;
+    border-radius: 20px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 14vw, 4.2rem);
+  }
+
+  .objectVisual,
+  .dealerVisual,
+  .memberVisual,
+  .portrait {
+    min-height: 230px;
+    height: 230px;
+  }
+}
+
+.featureGridSection,
+.membershipSection,
+.activitySection,
+.relationsSection {
+  overflow: hidden;
+}
