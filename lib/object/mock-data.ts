@@ -1,7 +1,7 @@
-// app/objekt/[sourceKey]/[objectGroup]/[objectId]/mock-data.ts
+// lib/object/mock-data.ts
 //
 // Mock that mirrors the data in the user's HTML draft.
-// In production replace with a real API call (see page.tsx).
+// In production replace with real DB/service calls from the server layer.
 
 import type { ObjectKey, ObjectPresentationData } from "./types";
 

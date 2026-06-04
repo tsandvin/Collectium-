@@ -1,10 +1,10 @@
 "use client";
 
-// app/objekt/[sourceKey]/[objectGroup]/[objectId]/ObjectPresentation.tsx
+// components/object/ObjectPresentation.tsx
 //
 // SKIN-LYDIG objektpresentasjon.
 //
-// Komponentene refererer kun til --ct-*-tokens via styles.module.css.
+// Komponentene refererer kun til --ct-*-tokens via ObjectPresentation.module.css.
 // Når brukeren bytter skinn (Collectium / Enkel / Museum / Finans) via
 // Design-megamenyen, transformeres hele denne siden automatisk.
 //
@@ -15,7 +15,7 @@
 //   Side panel (Aktiv visning · Status · Del visning)
 
 import { useEffect, useMemo, useState } from "react";
-import styles from "./styles.module.css";
+import styles from "./ObjectPresentation.module.css";
 import type {
   ImageMode,
   ObjectKey,
@@ -25,7 +25,7 @@ import type {
   Segment,
   SourcedValue,
   ViewMode,
-} from "./types";
+} from "../../lib/object/types";
 
 type Props = {
   data: ObjectPresentationData;

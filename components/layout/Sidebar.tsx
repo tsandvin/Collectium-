@@ -1,12 +1,5 @@
 "use client";
 
-// app/components/Sidebar.tsx
-// Sidebar with:
-//   - Brand mark + title at top
-//   - Navigation (placeholder items — wire up to real routes later)
-//   - Sidebar-bottom watermark behind the nav
-//   - Design button locked at the very bottom (opens the mega menu)
-
 type NavItem = {
   href: string;
   label: string;
@@ -56,10 +49,8 @@ export default function Sidebar({
         ))}
       </nav>
 
-      {/* Watermark sits behind everything else, anchored to the sidebar */}
       <div className="ct-sidebar-watermark" aria-hidden />
 
-      {/* Design button locked to bottom of sidebar */}
       <div className="ct-sidebar-footer">
         <button
           type="button"

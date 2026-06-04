@@ -6,11 +6,11 @@
 // feature_key: object.presentation.view
 
 import { NextResponse } from "next/server";
-import { mockObjectData } from "../../../objekt/[sourceKey]/[objectGroup]/[objectId]/mock-data";
+import { mockObjectData } from "../../../../lib/object/mock-data";
 import type {
   ObjectGroup,
   ObjectPresentationData,
-} from "../../../objekt/[sourceKey]/[objectGroup]/[objectId]/types";
+} from "../../../../lib/object/types";
 
 function isObjectGroup(s: string | null): s is ObjectGroup {
   return s === "banknote" || s === "coin" || s === "collectible";

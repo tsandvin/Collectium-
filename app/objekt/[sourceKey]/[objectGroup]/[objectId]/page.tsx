@@ -9,14 +9,14 @@
 // inherits it automatically.
 
 import { notFound } from "next/navigation";
-import ObjectPresentation from "./ObjectPresentation";
-import { mockObjectData } from "./mock-data";
+import ObjectPresentation from "../../../../../components/object/ObjectPresentation";
+import { mockObjectData } from "../../../../../lib/object/mock-data";
 import type {
   ObjectGroup,
   ObjectPresentationData,
   Segment,
   ViewMode,
-} from "./types";
+} from "../../../../../lib/object/types";
 
 type PageParams = {
   sourceKey: string;

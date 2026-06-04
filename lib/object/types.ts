@@ -1,4 +1,4 @@
-// app/objekt/[sourceKey]/[objectGroup]/[objectId]/types.ts
+// lib/object/types.ts
 //
 // Full type contract for the object presentation page.
 // Matches the data shape used in the HTML draft at

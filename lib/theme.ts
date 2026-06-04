@@ -1,4 +1,4 @@
-// app/lib/theme.ts
+// lib/theme.ts
 // Collectium · design registry · v5
 //
 // Default standard: collectium / pc / 14px.

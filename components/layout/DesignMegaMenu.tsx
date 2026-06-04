@@ -1,12 +1,5 @@
 "use client";
 
-// app/components/DesignMegaMenu.tsx
-// Mega menu anchored to the Design button at the sidebar bottom.
-// Three sections:
-//   1. Tema      — four templates as color-preview cards
-//   2. Skjerm    — viewport selector (mobile / tablet / pc / wide / tv)
-//   3. Tekst     — font-size slider (12–18 px)
-
 import { useEffect, useRef } from "react";
 import {
   FONT_BASE_DEFAULT,
@@ -17,7 +10,7 @@ import {
   resetDesign,
   type Template,
   type Viewport,
-} from "../lib/theme";
+} from "../../lib/theme";
 
 type Props = {
   open: boolean;
@@ -25,9 +18,9 @@ type Props = {
   template: Template;
   viewport: Viewport;
   fontBase: number;
-  onTemplateChange: (t: Template) => void;
-  onViewportChange: (v: Viewport) => void;
-  onFontBaseChange: (px: number) => void;
+  onTemplateChange: (template: Template) => void;
+  onViewportChange: (viewport: Viewport) => void;
+  onFontBaseChange: (fontBase: number) => void;
 };
 
 export default function DesignMegaMenu({
@@ -42,29 +35,38 @@ export default function DesignMegaMenu({
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
-  // Close on Escape
   useEffect(() => {
     if (!open) return;
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
+
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") onClose();
     }
+
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
-  // Click outside closes (but ignore clicks on the Design button itself)
   useEffect(() => {
     if (!open) return;
-    function onDocClick(e: MouseEvent) {
-      const t = e.target as HTMLElement | null;
-      if (!t) return;
-      if (ref.current?.contains(t)) return;
-      if (t.closest(".ct-design-btn")) return;
+
+    function onDocClick(event: MouseEvent) {
+      const target = event.target as HTMLElement | null;
+      if (!target) return;
+      if (ref.current?.contains(target)) return;
+      if (target.closest(".ct-design-btn")) return;
       onClose();
     }
+
     document.addEventListener("mousedown", onDocClick);
     return () => document.removeEventListener("mousedown", onDocClick);
   }, [open, onClose]);
+
+  function handleReset() {
+    resetDesign();
+    onTemplateChange("collectium");
+    onViewportChange("pc");
+    onFontBaseChange(FONT_BASE_DEFAULT);
+  }
 
   return (
     <div
@@ -81,7 +83,7 @@ export default function DesignMegaMenu({
         <button
           type="button"
           className="ct-mega-reset"
-          onClick={resetDesign}
+          onClick={handleReset}
           title="Tilbakestill til standard"
         >
           <i className="ti ti-rotate-clockwise" aria-hidden />
@@ -97,79 +99,76 @@ export default function DesignMegaMenu({
         </button>
       </div>
 
-      {/* Section 1 — TEMA */}
       <section className="ct-mega-section">
         <h3 className="ct-mega-h">
           <i className="ti ti-palette" aria-hidden />
           Tema
         </h3>
         <div className="ct-mega-templates">
-          {TEMPLATES.map((t) => {
-            const active = t.id === template;
+          {TEMPLATES.map((item) => {
+            const active = item.id === template;
+
             return (
               <button
-                key={t.id}
+                key={item.id}
                 type="button"
                 className={`ct-mega-template${active ? " is-active" : ""}`}
-                onClick={() => onTemplateChange(t.id)}
+                onClick={() => onTemplateChange(item.id)}
                 aria-pressed={active}
               >
                 <div
                   className="ct-mega-template-swatch"
                   style={{
-                    background: `linear-gradient(135deg, ${t.swatch[0]} 0%, ${t.swatch[0]} 50%, ${t.swatch[1]} 50%, ${t.swatch[1]} 100%)`,
+                    background: `linear-gradient(135deg, ${item.swatch[0]} 0%, ${item.swatch[0]} 50%, ${item.swatch[1]} 50%, ${item.swatch[1]} 100%)`,
                   }}
                   aria-hidden
                 >
                   <span
                     className="ct-mega-template-dot"
-                    style={{ background: t.accent }}
+                    style={{ background: item.accent }}
                   />
                 </div>
                 <div className="ct-mega-template-text">
                   <div className="ct-mega-template-label">
-                    {t.label}
-                    <small>{t.tone}</small>
+                    {item.label}
+                    <small>{item.tone}</small>
                   </div>
-                  <div className="ct-mega-template-desc">{t.description}</div>
+                  <div className="ct-mega-template-desc">{item.description}</div>
                 </div>
-                {active && (
-                  <i className="ti ti-circle-check ct-mega-template-check" aria-hidden />
-                )}
+                {active ? <i className="ti ti-circle-check ct-mega-template-check" aria-hidden /> : null}
               </button>
             );
           })}
         </div>
       </section>
 
-      {/* Section 2 — SKJERM */}
       <section className="ct-mega-section">
         <h3 className="ct-mega-h">
           <i className="ti ti-device-desktop" aria-hidden />
           Skjermstørrelse
         </h3>
         <div className="ct-mega-vps">
-          {VIEWPORTS.map((v) => {
-            const active = v.id === viewport;
+          {VIEWPORTS.map((item) => {
+            const active = item.id === viewport;
+
             return (
               <button
-                key={v.id}
+                key={item.id}
                 type="button"
                 className={`ct-mega-vp${active ? " is-active" : ""}`}
-                onClick={() => onViewportChange(v.id)}
+                onClick={() => onViewportChange(item.id)}
                 aria-pressed={active}
               >
-                <i className={`ti ${v.icon}`} aria-hidden />
-                <span className="ct-mega-vp-label">{v.label}</span>
-                <small className="ct-mega-vp-width">{v.width}</small>
-                {v.hint && <span className="ct-mega-vp-hint">{v.hint}</span>}
+                <i className={`ti ${item.icon}`} aria-hidden />
+                <span className="ct-mega-vp-label">{item.label}</span>
+                <small className="ct-mega-vp-width">{item.width}</small>
+                {item.hint ? <span className="ct-mega-vp-hint">{item.hint}</span> : null}
               </button>
             );
           })}
         </div>
       </section>
 
-      {/* Section 3 — TEKST */}
       <section className="ct-mega-section">
         <h3 className="ct-mega-h">
           <i className="ti ti-letter-case" aria-hidden />
@@ -183,7 +182,7 @@ export default function DesignMegaMenu({
             max={FONT_BASE_MAX}
             step={1}
             value={fontBase}
-            onChange={(e) => onFontBaseChange(parseInt(e.target.value, 10))}
+            onChange={(event) => onFontBaseChange(parseInt(event.target.value, 10))}
             aria-label={`Tekststørrelse i piksler. Nåværende: ${fontBase}`}
             className="ct-mega-font-slider"
           />
@@ -193,13 +192,13 @@ export default function DesignMegaMenu({
         <div className="ct-mega-font-ticks" aria-hidden>
           {Array.from(
             { length: FONT_BASE_MAX - FONT_BASE_MIN + 1 },
-            (_, i) => FONT_BASE_MIN + i
-          ).map((n) => (
+            (_, index) => FONT_BASE_MIN + index,
+          ).map((item) => (
             <span
-              key={n}
-              className={`ct-mega-font-tick${n === fontBase ? " is-active" : ""}${n === FONT_BASE_DEFAULT ? " is-default" : ""}`}
+              key={item}
+              className={`ct-mega-font-tick${item === fontBase ? " is-active" : ""}${item === FONT_BASE_DEFAULT ? " is-default" : ""}`}
             >
-              {n}
+              {item}
             </span>
           ))}
         </div>
