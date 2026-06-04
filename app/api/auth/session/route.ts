@@ -1,20 +1,11 @@
-/**
- * COLLECTIUM FILE HEADER
- *
- * Overskrift:
- * Auth session API v15
- *
- * Definering / formål:
- * Reads the signed Collectium session cookie for frontend shell, Min side and admin.
- *
- * Berørte DB-brytere / feature_keys:
- * - auth.session.view
- */
+﻿import { NextResponse } from "next/server";
 
-import { NextRequest, NextResponse } from "next/server";
-import { COLLECTIUM_SESSION_COOKIE, verifySessionToken } from "../../../../lib/auth/collectiumSession";
+export async function GET(request: Request) {
+  const cookie = request.headers.get("cookie") ?? "";
+  const loggedIn = cookie.includes("collectium_session=");
 
-export async function GET(request: NextRequest) {
-  const session = verifySessionToken(request.cookies.get(COLLECTIUM_SESSION_COOKIE)?.value);
-  return NextResponse.json({ ok: true, authenticated: Boolean(session), session });
+  return NextResponse.json({
+    ok: true,
+    authenticated: loggedIn,
+  });
 }
