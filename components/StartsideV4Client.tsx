@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -13,20 +13,20 @@ type PriceMode = "monthly" | "yearly";
 const segmentData: Record<SegmentKey, { title: string; status: string; description: string; note: string }> = {
   samler: {
     title: "Samler",
-    status: "Min samling Â· Ã¸nskeliste Â· favoritt",
-    description: "Viser brukerens forhold til objektet: hjerte, stjerne, Min samling, kjÃ¸pspris, egne notater, kjÃ¸p, salg og deling.",
+    status: "Min samling · ønskeliste · favoritt",
+    description: "Viser brukerens forhold til objektet: hjerte, stjerne, Min samling, kjøpspris, egne notater, kjøp, salg og deling.",
     note: "Etter innlogging hentes brukerstatus og samlingsdata fra API.",
   },
   historie: {
     title: "Historie",
-    status: "Konge Â· periode Â· signatur Â· relasjoner",
+    status: "Konge · periode · signatur · relasjoner",
     description: "Viser historisk sammenheng: produsent, utgave, periode, regent, personer, signaturer, materiale, funn og relaterte objekter.",
     note: "Historiske relasjoner skal komme fra MariaDB og resolved views.",
   },
   finans: {
     title: "Finans",
-    status: "Verdi Â· trend Â· marked Â· index",
-    description: "Viser verdi, prisobservasjoner, auksjonsresultater, trend, likviditet, kjÃ¸pspris og sammenligning mot markedet.",
+    status: "Verdi · trend · marked · index",
+    description: "Viser verdi, prisobservasjoner, auksjonsresultater, trend, likviditet, kjøpspris og sammenligning mot markedet.",
     note: "0 kr skal aldri tolkes som ekte markedsverdi. Manglende verdi vises som ikke vurdert.",
   },
 };
@@ -36,7 +36,7 @@ const sourceData: Record<SourceKey, { label: string; title: string; type: string
     label: "SEDLER",
     title: "Seddelpresentasjon",
     type: "Norske sedler / banknote",
-    pills: ["Katalognummer", "Hjerte", "Stjerne", "Min samling", "KjÃ¸pspris"],
+    pills: ["Katalognummer", "Hjerte", "Stjerne", "Min samling", "Kjøpspris"],
   },
   mynter: {
     label: "MYNTER",
@@ -48,30 +48,30 @@ const sourceData: Record<SourceKey, { label: string; title: string; type: string
 
 const features: Array<{ key: FeatureKey; title: string; icon: string; text: string; note: string }> = [
   { key: "samler", title: "Samler", icon: "0", text: "Start, organiser og bygg samlingen din med egne lister, hjerte, stjerne og private notater.", note: "Etter innlogging vises funksjoner med riktig tilgang, data og global sidemeny." },
-  { key: "organisering", title: "Organisering av samling", icon: "1", text: "Samleren skal kunne gruppere objekter, lagre status, bygge egne lister og holde orden pÃ¥ kjÃ¸p, salg, bilder og dokumentasjon.", note: "Data skal hentes fra collection-API og brukerens reelle samlingsstatus." },
+  { key: "organisering", title: "Organisering av samling", icon: "1", text: "Samleren skal kunne gruppere objekter, lagre status, bygge egne lister og holde orden på kjøp, salg, bilder og dokumentasjon.", note: "Data skal hentes fra collection-API og brukerens reelle samlingsstatus." },
   { key: "verdi", title: "Verdsettelse & innhold", icon: "2", text: "Collectium skal koble katalogdata, kvalitet, historikk og reelle prisobservasjoner til et kontrollert verdigrunnlag.", note: "Ingen fiktive markedsverdier vises. Verdi krever sanndata." },
-  { key: "forhandler", title: "Forhandler kontakt", icon: "3", text: "Brukere skal kunne sende objekt til godkjent forhandler for vurdering, innlevering, auksjonsforslag eller nettbutikkforslag.", note: "Forhandler mÃ¥ godkjennes av admin og ha riktige objektgrupper." },
-  { key: "auksjon", title: "Auksjoner", icon: "4", text: "Auksjon skal vÃ¦re en markedskanal for godkjente objekter. Forhandler vurderer objektet, eier godkjenner vilkÃ¥r, og objektet kan publiseres.", note: "Avsluttede auksjoner kan bli reelle prisobservasjoner nÃ¥r resultatet er kontrollert." },
-  { key: "index", title: "Index marked", icon: "5", text: "Index skal vise utvikling i objekter, grupper, perioder, materialer og marked nÃ¥r reelle transaksjoner og observasjoner finnes.", note: "Index skal ikke bruke simulerte tall." },
-  { key: "sammenligning", title: "Objekt sammenligning", icon: "6", text: "Objekter skal kunne sammenlignes pÃ¥ kilde, utgave, kvalitet, sjeldenhet, historikk, prisobservasjoner og brukerens egen kjÃ¸pspris.", note: "Sammenligning mÃ¥ bruke object_id + object_group + source_key." },
-  { key: "museum", title: "Historisk-museum modul", icon: "7", text: "Museumvisning skal presentere objekter, personer, regenter, perioder, funn og historiske relasjoner som en digital utstilling.", note: "Egnet for kommuner, private samlinger og historiske miljÃ¸er." },
+  { key: "forhandler", title: "Forhandler kontakt", icon: "3", text: "Brukere skal kunne sende objekt til godkjent forhandler for vurdering, innlevering, auksjonsforslag eller nettbutikkforslag.", note: "Forhandler må godkjennes av admin og ha riktige objektgrupper." },
+  { key: "auksjon", title: "Auksjoner", icon: "4", text: "Auksjon skal være en markedskanal for godkjente objekter. Forhandler vurderer objektet, eier godkjenner vilkår, og objektet kan publiseres.", note: "Avsluttede auksjoner kan bli reelle prisobservasjoner når resultatet er kontrollert." },
+  { key: "index", title: "Index marked", icon: "5", text: "Index skal vise utvikling i objekter, grupper, perioder, materialer og marked når reelle transaksjoner og observasjoner finnes.", note: "Index skal ikke bruke simulerte tall." },
+  { key: "sammenligning", title: "Objekt sammenligning", icon: "6", text: "Objekter skal kunne sammenlignes på kilde, utgave, kvalitet, sjeldenhet, historikk, prisobservasjoner og brukerens egen kjøpspris.", note: "Sammenligning må bruke object_id + object_group + source_key." },
+  { key: "museum", title: "Historisk-museum modul", icon: "7", text: "Museumvisning skal presentere objekter, personer, regenter, perioder, funn og historiske relasjoner som en digital utstilling.", note: "Egnet for kommuner, private samlinger og historiske miljøer." },
 ];
 
 const whyItems = [
   "Relasjonsbasert katalog med historisk dybde",
   "Samler, Historie og Finans i samme objektvisning",
   "Markedsdata, auksjon og index koblet til samme objektgrunnlag",
-  "Forhandlerflyt for vurdering, salg, auksjon og oppgjÃ¸r",
+  "Forhandlerflyt for vurdering, salg, auksjon og oppgjør",
   "Museum- og historielag for personer, perioder, regenter og motiver",
   "Offentlig landing uten tekniske databasefelt eller intern systemtekst",
 ];
 
 const priceCards = [
-  { name: "Free", role: "Begrenset tilgang for Ã¥ komme i gang.", monthly: ["0 kr", "0 kr", "Gratis"], yearly: ["0 kr", "0 kr", "Gratis"], button: "Start gratis", items: ["Offentlig katalogutdrag", "Begrenset sÃ¸k", "Medlemskapstilbud"] },
-  { name: "Bronze", role: "LÃ¸pende mÃ¥nedsmedlemskap etter fÃ¸rste Ã¥r.", monthly: ["149 kr fÃ¸rste Ã¥r", "199 kr/mnd etterpÃ¥", "MÃ¥nedlig etter introÃ¥r"], yearly: ["Bronze mÃ¥nedlig", "199 kr/mnd etter introÃ¥r", "LÃ¸pende modell"], button: "Velg Bronze", items: ["Flere katalogfilter", "Grunnleggende samling", "Hjerte og stjerne", "Enkel markedsverdi"] },
-  { name: "Silver", role: "Avansert samler- og analysemedlemskap. Kan vises bÃ¥de som Ã¥r og mÃ¥ned.", monthly: ["250 kr/mnd tilbud", "500 kr/mnd etterpÃ¥", "MÃ¥nedlig alternativ"], yearly: ["3 000 kr/Ã¥r tilbud", "6 000 kr/Ã¥r", "Ã…rlig medlemskap"], button: "Velg Silver", items: ["Avansert katalog", "Flere filter", "Mer historikk", "Samlingsanalyse"], featured: true },
-  { name: "Gold", role: "For samlere og aktÃ¸rer som trenger avansert tilgang. Forhandlerregistrering gjÃ¸res i eget lÃ¸p.", monthly: ["Kun Ã¥rsavtale", "Ikke mÃ¥nedlig", "SÃ¸k Gold"], yearly: ["10 000 kr fÃ¸rste Ã¥r", "20 000 kr/Ã¥r etterpÃ¥", "Ã…rlig"], button: "SÃ¸k Gold", items: ["Avansert katalog", "Marked og index", "Forhandler kan sÃ¸ke separat", "Kun Ã¥rsavtale"] },
-  { name: "Platinum", role: "50 % rabatt i ett Ã¥r. Medlemskapet varer i to Ã¥r.", monthly: ["Ingen mÃ¥nedlig pris", "Kun Ã¥rlig", "Kontakt oss"], yearly: ["50 000 kr / 2 Ã¥r", "100 000 kr/Ã¥r", "Kun Ã¥rlig"], button: "Kontakt oss", items: ["Ingen mÃ¥nedlig pris", "Alle land og kilder", "Full historikk", "Profesjonell analyse"] },
+  { name: "Free", role: "Begrenset tilgang for å komme i gang.", monthly: ["0 kr", "0 kr", "Gratis"], yearly: ["0 kr", "0 kr", "Gratis"], button: "Start gratis", items: ["Offentlig katalogutdrag", "Begrenset søk", "Medlemskapstilbud"] },
+  { name: "Bronze", role: "Løpende månedsmedlemskap etter første år.", monthly: ["149 kr første år", "199 kr/mnd etterpå", "Månedlig etter introår"], yearly: ["Bronze månedlig", "199 kr/mnd etter introår", "Løpende modell"], button: "Velg Bronze", items: ["Flere katalogfilter", "Grunnleggende samling", "Hjerte og stjerne", "Enkel markedsverdi"] },
+  { name: "Silver", role: "Avansert samler- og analysemedlemskap. Kan vises både som år og måned.", monthly: ["250 kr/mnd tilbud", "500 kr/mnd etterpå", "Månedlig alternativ"], yearly: ["3 000 kr/år tilbud", "6 000 kr/år", "Årlig medlemskap"], button: "Velg Silver", items: ["Avansert katalog", "Flere filter", "Mer historikk", "Samlingsanalyse"], featured: true },
+  { name: "Gold", role: "For samlere og aktører som trenger avansert tilgang. Forhandlerregistrering gjøres i eget løp.", monthly: ["Kun årsavtale", "Ikke månedlig", "Søk Gold"], yearly: ["10 000 kr første år", "20 000 kr/år etterpå", "Årlig"], button: "Søk Gold", items: ["Avansert katalog", "Marked og index", "Forhandler kan søke separat", "Kun årsavtale"] },
+  { name: "Platinum", role: "50 % rabatt i ett år. Medlemskapet varer i to år.", monthly: ["Ingen månedlig pris", "Kun årlig", "Kontakt oss"], yearly: ["50 000 kr / 2 år", "100 000 kr/år", "Kun årlig"], button: "Kontakt oss", items: ["Ingen månedlig pris", "Alle land og kilder", "Full historikk", "Profesjonell analyse"] },
 ];
 
 export default function StartsideV4Client() {
@@ -95,8 +95,8 @@ export default function StartsideV4Client() {
 
       <section id="konsept" className={`${styles.section} ${styles.hero}`}>
         <div>
-          <p className={styles.kicker}>For samlere Â· for historien Â· for markedet</p>
-          <h1 className={styles.heroTitle}>For samlere. Av samlere. <span className={styles.blueText}>Alt pÃ¥ ett sted.</span></h1>
+          <p className={styles.kicker}>For samlere · for historien · for markedet</p>
+          <h1 className={styles.heroTitle}>For samlere. Av samlere. <span className={styles.blueText}>Alt på ett sted.</span></h1>
           <p className={styles.heroLead}>Collectium samler katalog, egen samling, verdsettelse, auksjon, forhandlerkontakt, index og historiske relasjoner i en strukturert plattform.</p>
           <div className={styles.heroCtas}><Link href="#medlemskap" className={`${styles.primaryButton} ${styles.animatedButton}`}>Start gratis</Link><Link href="#konsept" className={`${styles.secondaryButton} ${styles.animatedButton}`}>Se katalog</Link></div>
           <p className={styles.publicNote}>Offentlig forside uten sidemeny. Etter innlogging overtar global AppShell og viser sidemenyen.</p>
@@ -111,16 +111,16 @@ export default function StartsideV4Client() {
             </div>
             <div className={`${styles.objectCard} ${styles.animatedBox}`}>
               <div><Image src="/images/collectium-c-logo.png" alt="Collectium C" width={96} height={96} style={{ objectFit: "contain" }} /><span className={styles.objectType}>{activeSource.label}</span></div>
-              <div><h2 className={styles.objectTitle}>{activeSource.title}</h2><p className={styles.objectMeta}>Kilde Â· objektgruppe Â· object_id</p><p className={styles.objectStatus}>{activeSegment.status}</p><div className={styles.pillRow}>{activeSource.pills.map((pill) => <span key={pill} className={styles.pill}>{pill}</span>)}</div><div className={styles.objectPrice}><span>{activeSegment.title}: hentes fra API</span><span className={styles.realData}>sanndata</span></div></div>
+              <div><h2 className={styles.objectTitle}>{activeSource.title}</h2><p className={styles.objectMeta}>Kilde · objektgruppe · object_id</p><p className={styles.objectStatus}>{activeSegment.status}</p><div className={styles.pillRow}>{activeSource.pills.map((pill) => <span key={pill} className={styles.pill}>{pill}</span>)}</div><div className={styles.objectPrice}><span>{activeSegment.title}: hentes fra API</span><span className={styles.realData}>sanndata</span></div></div>
             </div>
-            <div className={`${styles.infoCard} ${styles.animatedBox}`}><h3>{activeSegment.title} Â· {activeSource.type}</h3><p>{activeSegment.description}</p><p style={{ marginTop: 10, color: "#0069b4", fontWeight: 900 }}>{activeSegment.note}</p></div>
+            <div className={`${styles.infoCard} ${styles.animatedBox}`}><h3>{activeSegment.title} · {activeSource.type}</h3><p>{activeSegment.description}</p><p style={{ marginTop: 10, color: "#0069b4", fontWeight: 900 }}>{activeSegment.note}</p></div>
           </div>
           <div className={`${styles.floatCard} ${styles.animatedBox}`}><Image src="/images/collectium-c-logo.png" alt="Collectium" width={42} height={42} /><p className={styles.floatTitle}>Min samling</p><p className={styles.floatValue}>API-data</p><p className={styles.floatText}>Objekter og verdi hentes reelt</p></div>
         </div>
       </section>
 
       <section className={styles.section}>
-        <p className={styles.kicker}>Funksjoner</p><h2 className={styles.sectionTitle}>Alt du trenger for Ã¥ starte, organisere, forstÃ¥ og selge</h2>
+        <p className={styles.kicker}>Funksjoner</p><h2 className={styles.sectionTitle}>Alt du trenger for å starte, organisere, forstå og selge</h2>
         <div className={styles.twoCol} style={{ marginTop: 28 }}>
           <div className={styles.featureList}>{features.map((feature) => <button key={feature.key} type="button" onClick={() => setFeatureKey(feature.key)} className={`${styles.featureItem} ${styles.animatedButton}`} style={{ cursor: "pointer", borderColor: featureKey === feature.key ? "#0069b4" : "#bdd0df" }}><span className={styles.featureIcon}>{feature.icon}</span><span>{feature.title}</span></button>)}</div>
           <article className={`${styles.panel} ${styles.animatedBox}`}><div className={styles.panelIcon}>â—Ž</div><p className={styles.kicker}>Mulighet i Collectium</p><h3>{activeFeature.title}</h3><p>{activeFeature.text}</p><p className={styles.panelNote}>{activeFeature.note}</p></article>
@@ -129,10 +129,10 @@ export default function StartsideV4Client() {
 
       <section className={styles.section}><div className={styles.whyGrid}><div><p className={styles.kicker}>Hvorfor Collectium?</p><h2 className={styles.sectionTitle}>En relasjonsplattform, ikke bare en katalog</h2></div><div className={styles.whyList}>{whyItems.map((item) => <div key={item} className={styles.whyItem}><span className={styles.dot} />{item}</div>)}</div></div></section>
 
-      <section className={styles.section} style={{ paddingTop: 0 }}><div style={{ position: "relative", width: "100%", minHeight: 520, borderRadius: 18, overflow: "hidden", background: "#050505" }}><Image src="/images/collectium-family.png" alt="Familie som samler objekter" fill style={{ objectFit: "cover" }} /><div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,.72), rgba(0,0,0,.18), rgba(0,0,0,.72))" }} /><div style={{ position: "absolute", left: 34, bottom: 32, maxWidth: 620 }}><p className={styles.kicker} style={{ color: "#f4d28a" }}>Familie Â· arv Â· samling</p><h2 className={styles.sectionTitle} style={{ color: "#fff" }}>Samling er historie som kan deles videre.</h2></div></div></section>
+      <section className={styles.section} style={{ paddingTop: 0 }}><div style={{ position: "relative", width: "100%", minHeight: 520, borderRadius: 18, overflow: "hidden", background: "#050505" }}><Image src="/images/collectium-family.png" alt="Familie som samler objekter" fill style={{ objectFit: "cover" }} /><div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,.72), rgba(0,0,0,.18), rgba(0,0,0,.72))" }} /><div style={{ position: "absolute", left: 34, bottom: 32, maxWidth: 620 }}><p className={styles.kicker} style={{ color: "#f4d28a" }}>Familie · arv · samling</p><h2 className={styles.sectionTitle} style={{ color: "#fff" }}>Samling er historie som kan deles videre.</h2></div></div></section>
 
       <section id="medlemskap" className={styles.section}>
-        <div className={styles.priceHeader}><div><p className={styles.kicker}>Medlemskap</p><h2 className={styles.sectionTitle}>Riktige priser og tilgangsnivÃ¥</h2><p className={styles.priceIntro}>Premium brukes ikke. Platinum finnes ikke som mÃ¥nedlig medlemskap.</p></div><div className={styles.toggle}><button type="button" onClick={() => setPriceMode("monthly")} style={{ minHeight: 36, padding: "0 18px", border: 0, borderRadius: 999, background: priceMode === "monthly" ? "#fff" : "transparent", fontWeight: 950, cursor: "pointer" }}>MÃ¥nedlig</button><button type="button" onClick={() => setPriceMode("yearly")} style={{ minHeight: 36, padding: "0 18px", border: 0, borderRadius: 999, background: priceMode === "yearly" ? "#fff" : "transparent", fontWeight: 950, cursor: "pointer" }}>Ã…rlig</button></div></div>
+        <div className={styles.priceHeader}><div><p className={styles.kicker}>Medlemskap</p><h2 className={styles.sectionTitle}>Riktige priser og tilgangsnivå</h2><p className={styles.priceIntro}>Premium brukes ikke. Platinum finnes ikke som månedlig medlemskap.</p></div><div className={styles.toggle}><button type="button" onClick={() => setPriceMode("monthly")} style={{ minHeight: 36, padding: "0 18px", border: 0, borderRadius: 999, background: priceMode === "monthly" ? "#fff" : "transparent", fontWeight: 950, cursor: "pointer" }}>Månedlig</button><button type="button" onClick={() => setPriceMode("yearly")} style={{ minHeight: 36, padding: "0 18px", border: 0, borderRadius: 999, background: priceMode === "yearly" ? "#fff" : "transparent", fontWeight: 950, cursor: "pointer" }}>Årlig</button></div></div>
         <div className={styles.priceGrid}>{priceCards.map((price) => { const p = price[priceMode]; return <article key={price.name} className={`${styles.priceCard} ${styles.animatedBox} ${price.featured ? styles.priceCardFeatured : ""}`}><h3>{price.name}</h3><p className={styles.priceRole}>{price.role}</p><p className={styles.priceMain}>{p[0]}</p><p className={styles.priceSub}>{p[1]}</p><p className={styles.priceNote}>{p[2]}</p><ul className={styles.priceList}>{price.items.map((item) => <li key={item}>{item}</li>)}</ul><Link href="/login" className={`${styles.cardButton} ${styles.animatedButton}`}>{price.button}</Link></article>; })}</div>
       </section>
 
@@ -320,7 +320,7 @@ export default function StartsideV4Client() {
         </div>
       </section>
 
-      <footer className={styles.footer}><span>Â©Collectium</span><span>Â© Collectium 2026 Â· Katalog Â· Relasjoner Â· Verdi</span></footer>
+      <footer className={styles.footer}><span>©Collectium</span><span>© Collectium 2026 · Katalog · Relasjoner · Verdi</span></footer>
     </main>
   );
 }
