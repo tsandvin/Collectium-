@@ -40,9 +40,9 @@
 }
 
 [data-skin="signature-light"] {
-  --ct-logo-primary: var(--ct-brand-gold);
-  --ct-logo-text: var(--ct-brand-dark);
-  --ct-page-bg: var(--ct-brand-sand);
+  --ct-logo-primary: var(--ct-brand-nordic-blue);
+  --ct-logo-text: var(--ct-brand-ink);
+  --ct-page-bg: var(--ct-brand-white);
 }
 
 [data-skin="signature-dark"] {
