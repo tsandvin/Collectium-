@@ -2,18 +2,19 @@
  * COLLECTIUM FILE HEADER
  *
  * Overskrift:
- * Root Layout Minimal
+ * Root Layout Minimal White
  *
  * Definering / formål:
- * Minimal global layout uten sidebar og topmeny.
+ * Minimal global root layout uten sidebar, topmeny, skin-runtime eller permanent Collectium-bakgrunn.
  *
  * Bruksområde:
- * Brukes midlertidig for ren frontend med kun forside, login og logout.
+ * Brukes for ren frontend-baseline med kun /, /login og /logout.
  *
  * Berørte sider / routes:
  * - /
  * - /login
  * - /logout
+ * - /_not-found
  *
  * Berørte DB-brytere / feature_keys:
  * - landing.view
@@ -34,16 +35,14 @@
  *
  * Logging:
  * log_category: shell
- * log_action: minimal_layout
+ * log_action: minimal_white_layout
  *
  * Endringsregel:
- * Fjerner bare aktiv frontend shell. API, DB, config og env skal ikke endres.
+ * Ingen DB-config, API, env, package eller backend endres.
  */
 
 import type { Metadata } from "next";
 import "./globals.css";
-import "./collectium-brand-tokens.css";
-import "./collectium-front-foundation.css";
 
 export const metadata: Metadata = {
   title: "Collectium",
@@ -56,8 +55,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="no" data-template="collectium" data-skin="signature-light" data-vp="pc">
-      <body>{children}</body>
+    <html lang="no">
+      <body style={{ margin: 0, background: "#ffffff", color: "#061827" }}>
+        {children}
+      </body>
     </html>
   );
 }
