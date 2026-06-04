@@ -3,9 +3,9 @@ export const DEFAULT_SKIN = "signature-light";
 export const DEFAULT_VIEWPORT = "pc";
 export const FRONT_VERSION = "v4.1";
 
-export type CollectiumTemplate = "collectium" | "enkel";
-export type CollectiumSkin = "signature-light" | "signature-dark" | "minimal-light" | "minimal-dark";
-export type ViewportMode = "mobile" | "tablet" | "pc" | "wide" | "tv";
+export type CollectiumTemplate = "collectium";
+export type CollectiumSkin = "signature-light";
+export type ViewportMode = "pc";
 
 export type ThemeMeta = {
   id: CollectiumSkin;
@@ -18,76 +18,44 @@ export const THEMES: ReadonlyArray<ThemeMeta> = [
   {
     id: "signature-light",
     label: "Signature Lys",
-    description: "For samlere - for historien",
+    description: "For samlere - for historien (Standard)",
     accent: "#145c38",
-  },
-  {
-    id: "signature-dark",
-    label: "Signature Mørk",
-    description: "Mørk galleri-stil med gull og latin",
-    accent: "#b99a55",
-  },
-  {
-    id: "minimal-light",
-    label: "Minimal Lys",
-    description: "Minimal skandinavisk objekt & relasjon",
-    accent: "#1e5a9a",
-  },
-  {
-    id: "minimal-dark",
-    label: "Minimal Mørk",
-    description: "Terminal markeds-feed smaragd",
-    accent: "#27a777",
   },
 ];
 
-export function normalizeSkin(value: string | null | undefined): CollectiumSkin {
-  if (!value) return DEFAULT_SKIN;
-  const cleaned = value.trim().toLowerCase();
-  if (cleaned === "signature-dark" || cleaned === "museum") return "signature-dark";
-  if (cleaned === "minimal-light" || cleaned === "enkel" || cleaned === "samler") return "minimal-light";
-  if (cleaned === "minimal-dark" || cleaned === "finans") return "minimal-dark";
-  if (cleaned === "signature-light" || cleaned === "collectium") return "signature-light";
+export function normalizeSkin(value?: string | null | undefined): CollectiumSkin {
   return DEFAULT_SKIN;
 }
 
-export function templateForSkin(skin: CollectiumSkin): CollectiumTemplate {
-  return skin.startsWith("minimal") ? "enkel" : "collectium";
+export function templateForSkin(skin?: CollectiumSkin): CollectiumTemplate {
+  return DEFAULT_TEMPLATE;
 }
 
-export function getLegacyClass(skin: CollectiumSkin): string {
-  if (skin === "signature-dark") return "museum";
-  if (skin === "minimal-light") return "enkel";
-  if (skin === "minimal-dark") return "finans";
+export function getLegacyClass(skin?: CollectiumSkin): string {
   return "collectium";
 }
 
-export function applyTheme(skinValue: string | null | undefined, viewportValue?: string | null | undefined): void {
+export function applyTheme(skinValue?: string | null | undefined, viewportValue?: string | null | undefined): void {
   if (typeof document === "undefined") return;
-  
-  const skin = normalizeSkin(skinValue);
-  const template = templateForSkin(skin);
-  const vp = (viewportValue || document.documentElement.dataset.vp || document.body.dataset.vp || DEFAULT_VIEWPORT) as ViewportMode;
 
-  document.documentElement.dataset.template = template;
-  document.body.dataset.template = template;
-  document.documentElement.dataset.skin = skin;
-  document.body.dataset.skin = skin;
+  document.documentElement.dataset.template = DEFAULT_TEMPLATE;
+  document.body.dataset.template = DEFAULT_TEMPLATE;
+  document.documentElement.dataset.skin = DEFAULT_SKIN;
+  document.body.dataset.skin = DEFAULT_SKIN;
   document.documentElement.dataset.collectiumFront = FRONT_VERSION;
   document.body.dataset.collectiumFront = FRONT_VERSION;
-  document.documentElement.dataset.vp = vp;
-  document.body.dataset.vp = vp;
+  document.documentElement.dataset.vp = DEFAULT_VIEWPORT;
+  document.body.dataset.vp = DEFAULT_VIEWPORT;
 
   try {
-    window.localStorage.setItem("collectium-skin", skin);
-    window.localStorage.setItem("ct-skin", skin);
-    window.localStorage.setItem("collectium-template", template);
-    window.localStorage.setItem("ct-template", template);
-    window.localStorage.setItem("collectium-vp", vp);
-    window.localStorage.setItem("ct-vp", vp);
-
-    // Clean up legacy items
-    const legacyKeys = [
+    // Clear all theme/design settings in localStorage
+    const keysToRemove = [
+      "collectium-skin",
+      "ct-skin",
+      "collectium-template",
+      "ct-template",
+      "collectium-vp",
+      "ct-vp",
       "collectium.public.design",
       "collectium-template-old",
       "collectium-template-v22",
@@ -95,8 +63,17 @@ export function applyTheme(skinValue: string | null | undefined, viewportValue?:
       "collectium-design-skin",
       "collectium.public.skin"
     ];
-    for (const key of legacyKeys) {
+    for (const key of keysToRemove) {
       window.localStorage.removeItem(key);
+    }
+
+    // Proactively scan for any extra collectium-design values
+    for (let i = 0; i < window.localStorage.length; i++) {
+      const key = window.localStorage.key(i);
+      if (key && (key.startsWith("collectium-design-") || key.startsWith("ct-design-"))) {
+        window.localStorage.removeItem(key);
+        i--;
+      }
     }
   } catch {
     /* ignore private mode / storage errors */

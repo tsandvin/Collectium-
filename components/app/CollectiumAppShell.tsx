@@ -39,7 +39,7 @@
 
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { type CollectiumSkin, type ViewportMode, normalizeSkin, templateForSkin, applyTheme, DEFAULT_SKIN } from "../../app/lib/theme";
+import { applyTheme } from "../../app/lib/theme";
 import AdminDealersClient from "../admin/AdminDealersClient";
 import AdminSettingsClient from "../admin/AdminSettingsClient";
 import AdminUsersClient from "../admin/AdminUsersClient";
@@ -189,27 +189,18 @@ function buildNotificationSections() {
 
 const notificationSections = buildNotificationSections();
 
-function applyCollectiumFront(skinValue: string | null | undefined) {
-  applyTheme(skinValue);
-}
-
-function applyCollectiumDesign(template: string) {
-  applyTheme(template);
-}
-
-
 export default function CollectiumAppShell({ page, adminModule = "dashboard", customerId, children }: CollectiumAppShellProps) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const [designOpen, setDesignOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
 
   useEffect(() => {
-    const savedSkin = window.localStorage.getItem("collectium-skin") || window.localStorage.getItem("ct-skin") || DEFAULT_SKIN;
-    applyTheme(savedSkin);
+    applyTheme();
     const guard = window.setInterval(() => {
       const current = document.body.getAttribute("data-skin");
-      if (!current || document.body.getAttribute("data-collectium-front") !== "v4.1") applyTheme(window.localStorage.getItem("collectium-skin") || savedSkin);
+      if (!current || document.body.getAttribute("data-collectium-front") !== "v4.1") {
+        applyTheme();
+      }
     }, 800);
     return () => window.clearInterval(guard);
   }, []);
@@ -305,18 +296,12 @@ export default function CollectiumAppShell({ page, adminModule = "dashboard", cu
           </label>
           <div className={styles.appTopbarActions}>
             <div className={styles.topbarMenuWrap}>
-              <button type="button" onClick={() => { setDesignOpen((open) => !open); setNotificationsOpen(false); }} data-feature-key="admin.design.control">Design</button>
-            </div>
-            <div className={styles.topbarMenuWrap}>
-              <button type="button" onClick={() => { setNotificationsOpen((open) => !open); setDesignOpen(false); }} data-feature-key="admin.notifications.view">Varsler <b>{notificationSections.length}</b></button>
+              <button type="button" onClick={() => { setNotificationsOpen((open) => !open); }} data-feature-key="admin.notifications.view">Varsler <b>{notificationSections.length}</b></button>
             </div>
             <button type="button" onClick={logout} data-feature-key="auth.logout">Logg ut</button>
           </div>
         </header>
 
-        <DesignMenuPortal open={designOpen} onClose={() => setDesignOpen(false)}>
-          <DesignOverlay />
-        </DesignMenuPortal>
         <NotificationMenuPortal open={notificationsOpen} onClose={() => setNotificationsOpen(false)}>
           <NotificationOverlay />
         </NotificationMenuPortal>
@@ -345,49 +330,6 @@ function isActive(page: AppPage, href: string, adminModule: AdminModule) {
   if (page === "forhandler" && href === "/forhandler") return true;
   if (page === "admin" && href === "/admin" && adminModule === "dashboard") return true;
   return false;
-}
-
-function setDesignVars(key: string, value: string) {
-  if (typeof document === "undefined") return;
-  document.documentElement.style.setProperty(key, value);
-  document.body.style.setProperty(key, value);
-  window.localStorage.setItem(`collectium-design-${key}`, value);
-}
-
-function DesignMenuPortal({ open, onClose, children }: { open: boolean; onClose: () => void; children: ReactNode }) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!open) return;
-
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") onClose();
-    }
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [open, onClose]);
-
-  if (!mounted || !open) return null;
-
-  return createPortal(
-    <>
-      <button
-        type="button"
-        aria-label="Lukk designmeny"
-        className={styles.designOverlayBackdrop}
-        onClick={onClose}
-      />
-      <div className={styles.designOverlayPanel} role="dialog" aria-modal="true" aria-label="Design">
-        {children}
-      </div>
-    </>,
-    document.body
-  );
 }
 
 function NotificationMenuPortal({ open, onClose, children }: { open: boolean; onClose: () => void; children: ReactNode }) {
@@ -421,34 +363,6 @@ function NotificationMenuPortal({ open, onClose, children }: { open: boolean; on
       {children}
     </>,
     document.body,
-  );
-}
-
-function DesignOverlay() {
-  return (
-    <div className={`${styles.designOverlay} ct-card`}>
-      <strong>Design</strong>
-      <p>Styrer innlogget arbeidsflate globalt.</p>
-      <div className={styles.designButtonGrid}>
-        {[
-          ["signature-light", "Signature lys"],
-          ["signature-dark", "Signature mørk"],
-          ["minimal-light", "Minimal lys"],
-          ["minimal-dark", "Minimal mørk"],
-        ].map(([key, label]) => (
-          <button key={key} type="button" onClick={() => applyCollectiumDesign(key)}>{label}</button>
-        ))}
-      </div>
-      <label>Hovedskrift <input type="range" min="9" max="17" defaultValue="13" onChange={(event) => setDesignVars("--ct-body-size", `${event.target.value}px`)} /></label>
-      <label>Overskrift <input type="range" min="16" max="25" defaultValue="20" onChange={(event) => setDesignVars("--ct-title-size", `${event.target.value}px`)} /></label>
-      <label>Headline <input type="range" min="18" max="42" defaultValue="32" onChange={(event) => setDesignVars("--ct-headline-size", `${event.target.value}px`)} /></label>
-      <label>Luft i bokser <input type="range" min="8" max="28" defaultValue="16" onChange={(event) => setDesignVars("--ct-card-pad", `${event.target.value}px`)} /></label>
-      <div className={styles.designButtonGrid}>
-        <button type="button" onClick={() => { document.documentElement.setAttribute("data-vp", "pc"); document.body.setAttribute("data-vp", "pc"); }}>Normal</button>
-        <button type="button" onClick={() => { document.documentElement.setAttribute("data-vp", "wide"); document.body.setAttribute("data-vp", "wide"); }}>Bred</button>
-        <button type="button" onClick={() => { document.documentElement.setAttribute("data-vp", "tv"); document.body.setAttribute("data-vp", "tv"); }}>TV</button>
-      </div>
-    </div>
   );
 }
 

@@ -38,8 +38,8 @@
  * log_action: public_auth_page.submit
  */
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
-import { type CollectiumSkin, normalizeSkin, templateForSkin, getLegacyClass } from "../../app/lib/theme";
+import { FormEvent, useEffect, useState } from "react";
+import { applyTheme } from "../../app/lib/theme";
 import PublicTopMenu from "../layout/PublicTopMenu";
 import styles from "../landing/collectium-frontpage.module.css";
 
@@ -57,26 +57,16 @@ const planOptions = [
 ];
 
 export default function AuthPageClient({ mode }: AuthPageClientProps) {
-  const [skin, setSkin] = useState<CollectiumSkin>("signature-light");
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isRegister = mode === "register";
 
   useEffect(() => {
-    try {
-      const rawSkin = window.localStorage.getItem("collectium-skin") || window.localStorage.getItem("ct-skin") || window.localStorage.getItem("collectium.public.skin");
-      setSkin(normalizeSkin(rawSkin));
-    } catch {
-      // localStorage is optional.
-    }
+    applyTheme();
   }, []);
 
-  const logoSrc = useMemo(() => {
-    if (skin === "signature-dark" || skin === "minimal-dark") return "/brand/collectium-logo-white.png";
-    if (skin === "minimal-light") return "/brand/collectium-logo-wide.png";
-    return "/brand/collectium-logo-dark.png";
-  }, [skin]);
+  const logoSrc = "/brand/collectium-logo-dark.png";
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -117,10 +107,9 @@ export default function AuthPageClient({ mode }: AuthPageClientProps) {
     }
   }
 
-  const legacyClass = getLegacyClass(skin);
   return (
-    <main className={`${styles.page} ${styles[legacyClass]}`} data-skin={skin} data-template={templateForSkin(skin)}>
-      <PublicTopMenu skin={skin} logoSrc={logoSrc} onSkinChange={setSkin} />
+    <main className={`${styles.page} collectium`} data-skin="signature-light" data-template="collectium" data-vp="pc">
+      <PublicTopMenu logoSrc={logoSrc} />
 
       <section className={styles.authShell}>
         <div className={`${styles.authIntro} ct-panel`}>

@@ -48,12 +48,11 @@
  * log_action: view
  */
 
-import { useEffect, useMemo, useState } from "react";
-import { type CollectiumSkin, normalizeSkin, templateForSkin, getLegacyClass } from "../../app/lib/theme";
+import { useEffect, useState } from "react";
+import { applyTheme } from "../../app/lib/theme";
 import PublicTopMenu from "../layout/PublicTopMenu";
 import styles from "./collectium-frontpage.module.css";
 
-type Skin = CollectiumSkin;
 type BillingMode = "month" | "year";
 type ObjectSegment = "samler" | "historie" | "finans";
 type ObjectFamily = "banknote" | "coin";
@@ -293,13 +292,13 @@ function formatPrice(plan: (typeof plans)[number], billingMode: BillingMode) {
 }
 
 export default function CollectiumFrontpageClient() {
-  const [skin, setSkin] = useState<CollectiumSkin>("signature-light");
   const [billingMode, setBillingMode] = useState<BillingMode>("year");
   const [objectSegment, setObjectSegment] = useState<ObjectSegment>("samler");
   const [objectFamily, setObjectFamily] = useState<ObjectFamily>("banknote");
   const [activeFeatureIndex, setActiveFeatureIndex] = useState(0);
 
   useEffect(() => {
+    applyTheme();
     const timer = window.setInterval(() => {
       setObjectFamily((current) =>
         current === "banknote" ? "coin" : "banknote",
@@ -312,17 +311,11 @@ export default function CollectiumFrontpageClient() {
   const selectedFamily = objectFamilyMeta[objectFamily];
   const selectedFeature = featureGroups[activeFeatureIndex];
 
-  const logoSrc = useMemo(() => {
-    if (skin === "signature-dark" || skin === "minimal-dark")
-      return "/brand/collectium-logo-white.png";
-    if (skin === "minimal-light") return "/brand/collectium-logo-wide.png";
-    return "/brand/collectium-logo-dark.png";
-  }, [skin]);
+  const logoSrc = "/brand/collectium-logo-dark.png";
 
-  const legacyClass = getLegacyClass(skin);
   return (
-    <main className={`${styles.page} ${styles[legacyClass]}`} data-skin={skin} data-template={templateForSkin(skin)}>
-      <PublicTopMenu skin={skin} logoSrc={logoSrc} onSkinChange={setSkin} />
+    <main className={`${styles.page} collectium`} data-skin="signature-light" data-template="collectium" data-vp="pc">
+      <PublicTopMenu logoSrc={logoSrc} />
 
       <section className={styles.hero}>
         <div className={styles.heroText}>
