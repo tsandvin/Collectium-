@@ -10,7 +10,7 @@ import { mockObjectData } from "../../../objekt/[sourceKey]/[objectGroup]/[objec
 import type {
   ObjectGroup,
   ObjectPresentationData,
-} from "@/app/objekt/[sourceKey]/[objectGroup]/[objectId]/types";
+} from "../../../objekt/[sourceKey]/[objectGroup]/[objectId]/types";
 
 function isObjectGroup(s: string | null): s is ObjectGroup {
   return s === "banknote" || s === "coin" || s === "collectible";
