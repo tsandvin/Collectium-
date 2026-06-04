@@ -43,7 +43,7 @@
  */
 
 import type { Metadata } from "next";
-import CollectiumFrontPageClient from "@/components/frontpage/CollectiumFrontPageClient";
+import CollectiumFrontPageClient from "../components/frontpage/CollectiumFrontPageClient";
 
 export const metadata: Metadata = {
   title: "Collectium | Samlerplattform for sedler, mynter og historie",

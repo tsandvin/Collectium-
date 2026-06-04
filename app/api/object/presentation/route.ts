@@ -6,7 +6,7 @@
 // feature_key: object.presentation.view
 
 import { NextResponse } from "next/server";
-import { mockObjectData } from "@/app/objekt/[sourceKey]/[objectGroup]/[objectId]/mock-data";
+import { mockObjectData } from "../../../objekt/[sourceKey]/[objectGroup]/[objectId]/mock-data";
 import type {
   ObjectGroup,
   ObjectPresentationData,
